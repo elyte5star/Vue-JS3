@@ -197,13 +197,13 @@
 
 <script lang="ts">
 
-import { productStore } from '@/stores/products'
+import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
 
 import { storeToRefs } from 'pinia';
 
-import moment from "moment";
+import * as moment from 'moment'
 
 
 export default {

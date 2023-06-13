@@ -48,9 +48,10 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 
-import { userAuthStore } from "@/stores/auth_store.js";
+import { userAuthStore } from "@/stores/auth_store";
+
 import { isUserNameValid } from "@/helpers/script";
 
 export default {
@@ -89,7 +90,7 @@ export default {
             }
 
         },
-        
+
 
     },
 

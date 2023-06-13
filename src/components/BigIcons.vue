@@ -37,7 +37,7 @@
 </template>
 
 
-<script>
+<script lang="ts">
 
 import { filterEntries } from '@/helpers/script';
 
@@ -45,7 +45,7 @@ import { filterEntries } from '@/helpers/script';
 export default {
   name: 'BigIcons',
   methods: {
-    searchEntries(){
+    searchEntries() {
       filterEntries();
     }
   },

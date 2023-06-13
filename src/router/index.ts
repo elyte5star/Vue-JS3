@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView'
-import LoginView from '../views/LoginView'
-import UserView from '../views/UserView'
-import CartView from '@/views/CartView'
-import NotFound from '@/views/NotFound'
-import ProductView from '@/views/ProductView'
-import AdminView from '@/views/AdminView'
+import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
+import UserView from '../views/UserView.vue'
+import CartView from '@/views/CartView.vue'
+import NotFound from '@/views/NotFound.vue'
+import ProductView from '@/views/ProductView.vue'
+import AdminView from '@/views/AdminView.vue'
 
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
@@ -81,7 +81,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes
 })
 

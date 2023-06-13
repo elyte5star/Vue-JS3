@@ -36,7 +36,8 @@
 
     </div>
 </template>
-<script>
+
+<script lang="ts">
 
 import { storeToRefs } from 'pinia';
 

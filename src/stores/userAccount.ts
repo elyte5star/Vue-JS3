@@ -6,7 +6,7 @@ import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 import { userAuthStore } from '@/stores/auth_store'
 
-const baseURL = process.env.VUE_APP_API_URL + 'users';
+const baseURL = import.meta.env.VITE_APP_API_URL + 'users';
 
 export const userStore = defineStore({
     id: 'users',
@@ -16,7 +16,7 @@ export const userStore = defineStore({
     actions: {
         async getUsers() {
             try {
-                const response = await fetchMethodWrapper.get(baseURL + '/all');
+                const response = await fetchMethodWrapper.get(baseURL + '/all', {});
                 this.users = response.users;
 
             } catch (error) {
@@ -40,7 +40,7 @@ export const userStore = defineStore({
         },
         async getUserById(id) {
             try {
-                const response = await fetchMethodWrapper.get(baseURL + '/' + id);
+                const response = await fetchMethodWrapper.get(baseURL + '/' + id, {});
                 this.user = response.user;
 
             } catch (error) {
@@ -49,7 +49,7 @@ export const userStore = defineStore({
 
 
         },
-        async updateUserById(id, new_data) {
+        async updateUserById(id: string, new_data: any) {
             try {
                 await fetchMethodWrapper.put(baseURL + '/' + id, new_data);
                 const authStore = userAuthStore();
@@ -64,7 +64,7 @@ export const userStore = defineStore({
 
         },
 
-        async deleteUserAccount(id) {
+        async deleteUserAccount(id: string) {
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -74,10 +74,10 @@ export const userStore = defineStore({
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
-            }).then( async (result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
 
-                    await fetchMethodWrapper.delete(baseURL + '/' + id);
+                    await fetchMethodWrapper.delete(baseURL + '/' + id, {});
                     // remove user from list after deleted
                     this.users = this.users.filter(x => x.id !== id);
 

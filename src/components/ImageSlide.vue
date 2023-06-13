@@ -16,7 +16,8 @@
 
     </div>
 </template>
-<script>
+
+<script lang="ts">
 
 export default {
     name: 'ImageSlide',
@@ -66,7 +67,7 @@ export default {
             return pidList
 
         },
-        
+
     },
     mounted() {
         this.startSlide();

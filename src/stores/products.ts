@@ -3,18 +3,18 @@ import { defineStore } from 'pinia';
 import { userAlertStore } from './alert';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const baseURL = process.env.VUE_APP_API_URL + 'products';
+const baseURL = import.meta.env.VITE_APP_API_URL + 'products';
 
 
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        products: [], product: {}, key: "", reviews: [], quantity: 0, productRecommendations:[]
+        products: [], product: {}, key: "", reviews: [], quantity: 0, productRecommendations: []
     }),
     actions: {
         async getProducts() {
             try {
-                const response = await fetchMethodWrapper.get(baseURL);
+                const response = await fetchMethodWrapper.get(baseURL, {});
                 this.products = response.products;
 
             } catch (error) {
@@ -22,7 +22,7 @@ export const productStore = defineStore({
             }
 
         },
-        async submitReview(review) {
+        async submitReview(review: any) {
             const alertStore = userAlertStore();
             const response = await fetchMethodWrapper.post(baseURL + '/create/review', review);
             if (response["success"]) {
@@ -32,8 +32,8 @@ export const productStore = defineStore({
 
             }
         },
-        async getProductById(pid) {
-            const response = await fetchMethodWrapper.get(baseURL + '/' + pid);
+        async getProductById(pid: string) {
+            const response = await fetchMethodWrapper.get(baseURL + '/' + pid, {});
             if (response["success"]) {
                 this.product = response.product;
                 this.quantity = response.product.stock_quantity;
@@ -45,15 +45,15 @@ export const productStore = defineStore({
             }
 
         },
-        async deleteProductById(id) {
-            await fetchMethodWrapper.delete(baseURL + '/' + id);
+        async deleteProductById(id: string) {
+            await fetchMethodWrapper.delete(baseURL + '/' + id, {});
 
         },
 
-        async sortProductsBykey(key) {
+        async sortProductsBykey(key: string) {
             try {
                 this.key = key;
-                this.products = await fetchMethodWrapper.get(baseURL + '/sort/' + key);
+                this.products = await fetchMethodWrapper.get(baseURL + '/sort/' + key, {});
 
             } catch (error) {
                 this.products = { error };

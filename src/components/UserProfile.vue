@@ -119,10 +119,12 @@
 </template>
 
 
-<script>
+<script lang="ts">
+
 /* eslint-disable */
 
-import moment from "moment";
+import * as moment from 'moment'
+
 import { userStore } from "@/stores/userAccount";
 
 export default {

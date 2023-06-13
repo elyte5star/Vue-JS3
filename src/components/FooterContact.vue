@@ -6,7 +6,6 @@
     </div>
 </template>
 <style scoped>
-
 #customer a {
     color: #424242;
 }
@@ -20,9 +19,8 @@
     text-align: center;
     color: #424242;
 }
-
 </style>
-<script>
+<script lang="ts">
 export default {
     name: 'FooterContact',
 }

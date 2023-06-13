@@ -8,14 +8,14 @@ import router from '@/router/index'
 
 import { postToTokenEndpoint } from "@/helpers/script.js";
 
-const baseURL = process.env.VUE_APP_API_URL + 'auth';
+const baseURL = import.meta.env.VITE_APP_API_URL + 'auth';
 
 export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
         user: JSON.parse(localStorage.getItem('user')),
-        returnUrl: null,
+        returnUrl: '',
     }),
     actions: {
 

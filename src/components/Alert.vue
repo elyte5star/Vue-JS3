@@ -1,7 +1,7 @@
 <template>
     <div v-if="alert" class="container">
         <div class="m-3">
-            <div :class="'alert alert-dismissable  fade show ' + alert.type" role=alert >
+            <div :class="'alert alert-dismissable  fade show ' + alert.type" role=alert>
                 <strong>Error !</strong> {{ alert.message }}
                 <button @click="alertstore.clear()" class="btn btn-link close">
                     <span aria-hidden="true">&times;</span>
@@ -11,7 +11,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 
 import { storeToRefs } from 'pinia';
 import { userAlertStore } from '@/stores/alert'

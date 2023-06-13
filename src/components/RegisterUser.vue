@@ -64,7 +64,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 
 import { is_Input_Error } from '@/helpers/script';
 import { userStore } from "@/stores/userAccount";
@@ -90,11 +90,11 @@ export default {
         }
     },
     mounted: function () {
-        document.getElementById("username_").value=" ";
-        document.getElementById("email_").value=" ";
-        document.getElementById("pass").value=" ";
-        document.getElementById("pass_").value=" ";
-        document.getElementById("tel").value=" ";
+        document.getElementById("username_").value = " ";
+        document.getElementById("email_").value = " ";
+        document.getElementById("pass").value = " ";
+        document.getElementById("pass_").value = " ";
+        document.getElementById("tel").value = " ";
     }
 }
 

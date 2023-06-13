@@ -26,8 +26,8 @@ export default {
 
     return {
       activeComponent: UserProfile,
-      user_image: null,
-      user: null,
+      user_image: '',
+      user: {},
     };
   },
   async created() {
