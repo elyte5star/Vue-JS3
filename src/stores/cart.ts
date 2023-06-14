@@ -8,7 +8,7 @@ let itemsInCart = window.localStorage.getItem('cartCount');
 
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const baseURL = import.meta.env.VITE_APP_API_URL + 'booking';
+const baseURL = import.meta.env.VITE_API_URL + 'booking';
 
 import { userAlertStore } from './alert';
 

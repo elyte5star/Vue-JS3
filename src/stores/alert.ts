@@ -5,17 +5,17 @@ import { defineStore } from 'pinia';
 export const userAlertStore = defineStore({
     id: 'alert',
     state: () => ({
-        alert: {}
+        alert: null
     }),
     actions: {
-        success(message: String) {
+        success(message) {
             this.alert = { message, type: 'alert-success' };
         },
-        error(message: String) {
+        error(message) {
             this.alert = { message, type: 'alert-danger' };
         },
         clear() {
-            this.alert = {};
+            this.alert = null;
         }
     }
 });

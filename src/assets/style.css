@@ -276,28 +276,7 @@ h4 {
 }
 
 /* External Login */
-img.google {
-    border-top: 5px solid #3299BB;
-    border-bottom: 5px solid #3299BB;
-    width: 100px;
-    margin-bottom: 3px;
-    margin-right: 5px;
-}
 
-img.microsoft {
-    border-top: 5px solid #3299BB;
-    border-bottom: 5px solid #3299BB;
-    width: 100px;
-    margin-bottom: 3px;
-    margin-right: 5px;
-
-}
-
-#msoft {
-    position: relative;
-    left: 100px;
-    padding: 30px;
-}
 
 /* Login end */
 

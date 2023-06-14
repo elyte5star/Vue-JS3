@@ -3,18 +3,18 @@ import { defineStore } from 'pinia';
 import { userAlertStore } from './alert';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const baseURL = import.meta.env.VITE_APP_API_URL + 'products';
+const baseURL = import.meta.env.VITE_API_URL + 'products';
 
 
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        products: [], product: {}, key: "", reviews: [], quantity: 0, productRecommendations: []
+        products: Array(), product: {}, key: "", reviews: Array(), quantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts() {
             try {
-                const response = await fetchMethodWrapper.get(baseURL, {});
+                const response = await fetchMethodWrapper.get(baseURL);
                 this.products = response.products;
 
             } catch (error) {
@@ -33,7 +33,7 @@ export const productStore = defineStore({
             }
         },
         async getProductById(pid: string) {
-            const response = await fetchMethodWrapper.get(baseURL + '/' + pid, {});
+            const response = await fetchMethodWrapper.get(baseURL + '/' + pid);
             if (response["success"]) {
                 this.product = response.product;
                 this.quantity = response.product.stock_quantity;
@@ -45,15 +45,15 @@ export const productStore = defineStore({
             }
 
         },
-        async deleteProductById(id: string) {
-            await fetchMethodWrapper.delete(baseURL + '/' + id, {});
+        async deleteProductById(pid: string) {
+            await fetchMethodWrapper.delete(baseURL + '/' + pid);
 
         },
 
         async sortProductsBykey(key: string) {
             try {
                 this.key = key;
-                this.products = await fetchMethodWrapper.get(baseURL + '/sort/' + key, {});
+                this.products = await fetchMethodWrapper.get(baseURL + '/sort/' + key);
 
             } catch (error) {
                 this.products = { error };

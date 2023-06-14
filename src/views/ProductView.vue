@@ -6,7 +6,7 @@
             <h1>Product number: {{ product.pid }}</h1>
             <div class="framed1">
                 <div class="prod_left">
-                    <img v-if="product.image" :src="'../images/products/' + product.image" :alt="product.name">
+                    <img v-if="product.image" :src="'src/assets/images/products/' + product.image" :alt="product.name">
                     <div class="category1">{{ product.category }}</div>
                 </div>
                 <div class="prod_right1">
@@ -16,7 +16,7 @@
                     <p id="average_review"><i class="fa fa-star"></i> 3.2 ({{ reviewCount }} Reviews)</p>
                 </div>
                 <div class="prod_order">
-                    <label :id="lb4">Quantity(multiples of 1):
+                    <label id="lb4">Quantity(multiples of 1):
                         <input type="number" name="volume" id="num_items" placeholder="e.g 1,2" step="1"
                             :min="inStock ? 1 : 0" :max="inStock ? productQuantity : 0" :value="inStock ? 1 : 0"></label>
                     <button class="form-btn" @click="addToCart()" :disabled="!inStock" type="button" id="add_to_cart">
@@ -44,7 +44,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="cart-product-imitation">
-                                                        <img :src="'../images/user-icon.png'" alt="client">
+                                                        <img :src="'src/assets/images/user-icon.png'" alt="client">
                                                     </div>
 
                                                 </td>
@@ -203,7 +203,7 @@ import { userAlertStore } from '@/stores/alert'
 
 import { storeToRefs } from 'pinia';
 
-import * as moment from 'moment'
+import moment from 'moment'
 
 
 export default {
@@ -215,12 +215,13 @@ export default {
     },
     data() {
         return {
+            moment: moment,
             product: Object,
             productQuantity: 0,
-            reviewer_name: null,
-            reviewer_email: null,
-            rating: null,
-            review: null,
+            reviewer_name: '',
+            reviewer_email: '',
+            rating: 0,
+            review: '',
             pStore: productStore(),
             cartStore: userCartStore(),
             reviews: []
@@ -229,7 +230,7 @@ export default {
 
     methods: {
         addToCart() {
-            const volume = document.getElementById("num_items").value;
+            const volume = (<HTMLInputElement>document.getElementById("num_items")).value;
             this.cartStore.addToCart(this.product, volume)
         },
         formatDate(value) {
@@ -249,10 +250,10 @@ export default {
                 console.log(productReview)
 
                 await this.pStore.submitReview(productReview)
-                this.reviewer_name = null
-                this.rating = null
-                this.review = null
-                this.reviewer_email = null
+                this.reviewer_name = ''
+                this.rating = 0
+                this.review = ''
+                this.reviewer_email = 'S'
             } else {
                 const alertStore = userAlertStore();
                 if (!this.rating) alertStore.error("Product evaluation required!");

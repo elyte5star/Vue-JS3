@@ -4,7 +4,7 @@
             <h1 v-if="products">Products</h1>
             <article class="framed column" :id="'' + product.pid" v-for="product in products" v-bind:key="product">
                 <div class="prod_left">
-                    <img :src="'../images/products/' + product.image" v-bind:alt="product.name">
+                    <img :src="'src/assets/images/products/' + product.image" :alt="product.name">
                     <div class="category">{{ product['category'] }}</div>
                 </div>
 

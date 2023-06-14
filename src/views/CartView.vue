@@ -17,7 +17,7 @@
                                             <tr>
                                                 <td :style="{ width: '90px' }">
                                                     <div class="cart-product-imitation">
-                                                        <img :src="'../images/products/' + product.image"
+                                                        <img :src="'src/assets/images/products/' + product.image"
                                                             v-bind:alt="product.name">
                                                     </div>
                                                 </td>
@@ -96,31 +96,33 @@
                                     <form @submit.prevent="onSubmit" class="payment-form">
                                         <div class="d-flex justify-content-between"><span>Card
                                                 details</span><img v-if="user" class="rounded"
-                                                :src="'../images/' + userImage" v-bind:alt="user.username" width="30">
+                                                :src="'src/assets/images/' + userImage" v-bind:alt="user.username"
+                                                width="30">
                                         </div>
                                         <span class="type d-block mt-3 mb-1">Card type</span>
                                         <div id="card_type" class="card_type">
                                             <label class="radio"><input v-model="card" type="radio" name="card"
                                                     value="mastercard" checked>
-                                                <span><img width="30" :src="'../images/credit_cards/mastercard.png'"
+                                                <span><img width="30" :src="'src/assets/images/credit_cards/mastercard.png'"
                                                         alt="mastercard" /></span>
                                             </label>
 
                                             <label class="radio"> <input v-model="card" type="radio" name="card"
                                                     value="visa">
-                                                <span><img width="30" :src="'../images/credit_cards/visa.png'"
+                                                <span><img width="30" :src="'src/assets/images/credit_cards/visa.png'"
                                                         alt="visarcard" /></span> </label>
 
                                             <label class="radio"> <input v-model="card" type="radio" name="card"
                                                     value="amex">
-                                                <span><img width="30" :src="'../images/credit_cards/amex.png'"
+                                                <span><img width="30" :src="'src/assets/images/credit_cards/amex.png'"
                                                         alt="amex" /></span>
                                             </label>
 
 
                                             <label class="radio"><input v-model="card" type="radio" name="card"
                                                     value="paypal"><span><img width="30"
-                                                        :src="'../images/credit_cards/paypal.png'" alt="paypal" /></span>
+                                                        :src="'src/assets/images/credit_cards/paypal.png'"
+                                                        alt="paypal" /></span>
                                             </label>
                                         </div>
 
@@ -239,14 +241,14 @@ export default {
     name: 'CartView',
     data() {
         return {
-            cart: [], user: null, recommendationList: [], itemsInCart: 0,
+            cart: Array(), user: {}, recommendationList: [], itemsInCart: 0,
             isDisabled: true, card: null, expiryDate: null, cardCvv: null,
             cardNumber: null, nameOnCard: null, cartStore: userCartStore(), authStore: userAuthStore()
 
         }
     },
     methods: {
-        removeFromCart(product) {
+        removeFromCart(product: object) {
             this.cartStore.removeFromCart(product)
         },
         emptyCart() {
@@ -287,10 +289,9 @@ export default {
     mounted() {
         const { user } = storeToRefs(this.authStore);
         const { cart, itemsInCart } = storeToRefs(this.cartStore);
-        this.itemsInCart = itemsInCart
+        this.itemsInCart = Number(itemsInCart);
         this.cart = cart;
-        this.user = user;
-
+        this.user = { ...user };
 
 
     },

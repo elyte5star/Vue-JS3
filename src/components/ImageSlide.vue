@@ -7,7 +7,7 @@
                     params: {
                         pid: currentPid
                     }
-                }"><img v-if="currentImg !== null" :src="'../images/products/' + currentImg" v-bind:alt="currentImg" />
+                }"><img v-if="currentImg !== null" :src="'src/assets/images/products/' + currentImg" v-bind:alt="currentImg" />
                 </router-link>
             </div>
         </transition-group>

@@ -8,7 +8,7 @@ import router from '@/router/index'
 
 import { postToTokenEndpoint } from "@/helpers/script.js";
 
-const baseURL = import.meta.env.VITE_APP_API_URL + 'auth';
+const baseURL = import.meta.env.VITE_API_URL + 'auth';
 
 export const userAuthStore = defineStore({
     id: 'auth',

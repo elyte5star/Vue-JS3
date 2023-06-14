@@ -12,7 +12,7 @@
                             style="font-size: 40px"></i></a>
                 </div>
                 <div class="item_left">
-                    <img :src="'../images/' + user_image" v-bind:alt="user_info.username" />
+                    <img :src="'src/assets/images/' + user_image" v-bind:alt="user_info.username" />
                     <div class="discount">Discount : {{ user_info.discount }}%</div>
                 </div>
                 <div class="item_right">
