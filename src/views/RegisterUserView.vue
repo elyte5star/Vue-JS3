@@ -1,66 +1,106 @@
 <template>
-    <div >
+    <div>
         <div id="add_entry">
-            <ul class="nav nav-justified mb-3"  role="tablist">
-                <li class="nav-item" role="presentation">
-                    <router-link :to="{ name: 'Login' }">Login</router-link>
-                </li>
-            </ul>
-            <form @submit.prevent="registerUser">
-                <div class="text-center mb-3">
-                    <p>Sign up with:</p>
-                    <button type="button" class="btn btn-link btn-floating mx-1">
-                        <i class="fa fa-windows"></i>
-                    </button>
-                    <button type="button" class="btn btn-link btn-floating mx-1">
-                        <i class="fa fa-google"></i>
-                    </button>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form @submit.prevent="registerUser">
+                            <div class="text-center mb-3">
+                                <p>Sign up with:</p>
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fa fa-windows"></i>
+                                </button>
+                                <button type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fa fa-google"></i>
+                                </button>
 
+                            </div>
+
+                            <p class="text-center">or:</p>
+
+                            <!-- Username input -->
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="registerUsername">Username:</label>
+                                <input type="text" id="registerUsername" class="form-control" />
+                            </div>
+
+                            <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="registerEmail">Email:</label>
+                                <input type="email" id="registerEmail" class="form-control" />
+                            </div>
+
+                            <!-- Password input -->
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="registerPassword">Password:</label>
+                                <input type="password" id="registerPassword" class="form-control" />
+                            </div>
+
+                            <!-- Repeat Password input -->
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="registerRepeatPassword">Repeat password:</label>
+                                <input type="password" id="registerRepeatPassword" class="form-control" />
+                            </div>
+                            <!-- Telephone input -->
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="registerTel">Telephone:</label>
+                                <input type="tel" id="registerTel" class="form-control" />
+                            </div>
+
+
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-block mb-3">Create account</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Support</h5>
+                            </div>
+                            <div class="ibox-content text-center">
+                                <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
+                                <h3><a href="mailto:checkuti@gmail.com"><i class="fa fa-envelope-o"></i>
+                                        checkuti@gmail.com</a></h3>
+                                <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a></h3>
+                                <span class="small">
+                                    Please contact with us if you have any questions. We are avalible 24h.
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-
-                <p class="text-center">or:</p>
-
-                <!-- Username input -->
-                <div class="form-outline mb-4">
-                    <label class="form-label" for="registerUsername">Username</label>
-                    <input type="text" id="registerUsername" class="form-control" />
-                </div>
-
-                <!-- Email input -->
-                <div class="form-outline mb-4">
-                    <label class="form-label" for="registerEmail">Email</label>
-                    <input type="email" id="registerEmail" class="form-control" />
-                </div>
-
-                <!-- Password input -->
-                <p class="form-outline mb-4">
-                    <label class="form-label" for="registerPassword">Password</label>
-                    <input type="password" id="registerPassword" class="form-control" />
-                </p>
-
-                <!-- Repeat Password input -->
-                <p class="form-outline mb-4">
-                    <label class="form-label" for="registerRepeatPassword">Repeat password</label>
-                    <input type="password" id="registerRepeatPassword" class="form-control" />  
-                </p>
-                <!-- Telephone input -->
-                <p class="form-outline mb-4">
-                    <label class="form-label" for="registerTel">Telephone</label>
-                    <input type="tel" id="registerTel" class="form-control" /> 
-                </p>
-
-                <!-- Checkbox -->
-                <div class="form-check d-flex justify-content-center mb-4">
-                    <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked />
-                    <label class="form-check-label" for="registerCheck">I have read and agree to the terms</label>
-                </div>
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>
-            </form>
+            </div>
         </div>
     </div>
 </template>
+<style scoped>
+form .fa {
+    font-size: 30px;
+    color: #3299BB;
+    text-shadow: 4px 4px 4px #aaa;
+}
 
+label {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+form {
+    text-align: left;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+</style>
 <script lang="ts">
 
 import { is_Input_Error } from '@/helpers/script';

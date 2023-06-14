@@ -86,7 +86,7 @@ nav li {
 
 }
 
- 
+
 nav a {
     color: white;
     font-weight: bold;
@@ -406,8 +406,7 @@ h4 {
 }
 
 /** Main content **/
-main
- {
+main {
     overflow: auto;
     position: relative;
     padding-top: 100px;
@@ -481,8 +480,9 @@ a {
     margin-top: 8px;
 
 }
+
 .rate {
-  padding: 0px;
+    padding: 0px;
 }
 
 .rate:not(:checked)>input {
@@ -504,7 +504,7 @@ a {
 
 .rate:not(:checked)>label:before {
     content: '★ ';
-    
+
 }
 
 .rate>input:checked~label {
@@ -525,11 +525,12 @@ a {
 }
 
 
-#old_rating .fa{ 
+#old_rating .fa {
     font-size: 35px;
     padding-left: 15px;
 
 }
+
 #submit_review {
     margin: 5px;
     width: 100%;
@@ -542,20 +543,21 @@ a {
     font-size: 1.2em;
     font-weight: bold;
     position: relative;
-   
+
 
 }
 
-#product{
+#product {
     overflow: auto;
     position: relative;
     padding-top: 0px;
     margin: 0 auto;
     min-width: auto;
     max-width: 78%;
-   
-  
+
+
 }
+
 #rating,
 #num_items {
     border-radius: 4px;
@@ -572,14 +574,14 @@ a {
 }
 
 .prod_right1 {
-   
+
     /* just to make it clear */
     width: auto;
     overflow: hidden;
     position: relative;
     left: 65px;
     height: auto;
-    
+
 }
 
 .prod_order {
@@ -593,13 +595,15 @@ a {
     height: 230px;
     width: 230px;
 }
-.product-review-table img{
+
+.product-review-table img {
     width: 50px;
     height: 50px;
 
 }
-.product-review-table tr{
-    background-color:lightcyan;
+
+.product-review-table tr {
+    background-color: lightcyan;
     border: 1px solid #E9E9E9;
 
 }
@@ -609,10 +613,10 @@ a {
 .product form {
     float: right;
     position: relative;
-    background-color: lightcyan;
-    
-    
    
+
+
+
 }
 
 .product textarea {
@@ -676,7 +680,7 @@ a {
     font-size: 0.8em;
 }
 
-h6 a{
+h6 a {
     text-decoration: none;
 }
 
@@ -773,7 +777,7 @@ table.shoping-cart-table tr td:last-child {
 }
 
 
-.form-control.credit-inputs{
+.form-control.credit-inputs {
     background: rgb(102, 102, 221);
     color: #fff !important;
     border-color: rgb(102, 102, 221);
@@ -932,13 +936,14 @@ article h3 {
     text-align: center;
 }
 
+/* 
 label {
     width: 200px;
     float: left;
     margin-right: 1em;
     text-align: right;
 }
-
+*/
 .static {
     background-color: #ececec;
 }
