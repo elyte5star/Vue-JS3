@@ -20,7 +20,15 @@
                             <!-- Username input -->
                             <div class="form-outline">
                                 <label class="form-label" for="loginUsername">Username:</label>
-                                <input type="text" id="loginUsername" v-model="username" class="form-control" required />
+                                <input type="text" id="loginUsername" v-model="username" class="form-control"
+                                    aria-describedby="usernameHelpBlock" />
+                                <div id="usernameHelpBlock" class="form-text">
+                                    Usernames can only have:
+                                    - Lowercase Letters (a-z)
+                                    - Numbers (0-9)
+                                    - Dots (.)
+                                    - Underscores (_)
+                                </div>
 
                             </div>
 
@@ -28,7 +36,7 @@
                             <div class="form-outline">
                                 <label class="form-label" for="loginPassword">Password:</label>
                                 <input type="password" id="loginPassword" v-model="password" class="form-control"
-                                    aria-describedby="passwordHelpBlock" required />
+                                    aria-describedby="passwordHelpBlock" autocomplete="on" />
                                 <div id="passwordHelpBlock" class="form-text">
                                     Your password must be 4-20 characters long, contain letters and numbers, and must
                                     not
@@ -70,16 +78,16 @@
     </div>
 </template>
 <style scoped>
-.fa {
+form .fa {
     font-size: 30px;
     color: #3299BB;
     text-shadow: 4px 4px 4px #aaa;
 }
 
-label {
+label,p {
     color: #aaa;
     letter-spacing: 1px;
-    margin: 25px 0 15px;
+    margin: 0px;
     font-size: 0.6em;
     text-transform: uppercase;
     font-weight: bold;
@@ -88,7 +96,7 @@ label {
 
 form {
     text-align: left;
-    padding: 40px;
+    padding: 20px;
     border-radius: 10px;
 }
 
@@ -101,7 +109,7 @@ import { userAuthStore } from "@/stores/auth_store";
 
 import { isUserNameValid } from "@/helpers/script";
 import { userAlertStore } from '@/stores/alert'
-
+import ImageSlide from '../components/ImageSlide.vue';
 
 export default {
     name: "LoginView",
@@ -127,8 +135,8 @@ export default {
                 form.append("username", this.username);
                 form.append("password", this.password);
                 const userData = new URLSearchParams();
-                for (const pair of form) {
-                    userData.append(pair[0], pair[1]);
+                for (const [key, value] of form) {
+                    userData.append(key, value);
                 }
                 const authStore = userAuthStore();
                 await authStore.login(userData);
@@ -138,8 +146,7 @@ export default {
             } else {
                 const alertStore = userAlertStore();
                 if (!this.password) alertStore.error("Password required!");
-                if(!isUserNameValid(this.username)) alertStore.error("Invalid username!");
-
+                if (!isUserNameValid(this.username)) alertStore.error("Invalid username!");
 
 
             }
