@@ -138,6 +138,7 @@ export default {
             } else {
                 const alertStore = userAlertStore();
                 if (!this.password) alertStore.error("Password required!");
+                if(!isUserNameValid(this.username)) alertStore.error("Invalid username!");
 
 
 
