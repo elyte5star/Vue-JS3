@@ -1,12 +1,13 @@
 <template>
-    <div v-if="product" class="product">
-        <div id="product">
+    <div v-if="product">
+        <!-- Product panel -->
+        <div id="product" class="product">
             <router-link id="cont_shopping_product" :to="{ name: 'Home' }"><i class="fa fa-arrow-left"></i> Continue
                 shopping</router-link>
             <h1>Product number: {{ product.pid }}</h1>
             <div class="framed1">
                 <div class="prod_left">
-                    <img v-if="product.image" :src="'src/assets/images/products/' + product.image" :alt="product.name">
+                    <img v-if="product.image" :src="productImage(product.image)" :alt="product.name">
                     <div class="category1">{{ product.category }}</div>
                 </div>
                 <div class="prod_right1">
@@ -20,7 +21,7 @@
                         <input type="number" name="volume" id="num_items" placeholder="e.g 1,2" step="1"
                             :min="inStock ? 1 : 0" :max="inStock ? productQuantity : 0" :value="inStock ? 1 : 0"></label>
                     <button class="form-btn" @click="addToCart()" :disabled="!inStock" type="button" id="add_to_cart">
-                        Add to Cart.
+                        Add to cart.
                     </button>
                 </div>
 
@@ -28,7 +29,8 @@
             <h1>Product Details</h1>
             <div class="product_details1">{{ product.details }}</div>
         </div>
-        <div class="container">
+        <!-- Product Review -->
+        <div class="container product">
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row">
                     <div class="col-md-7">
@@ -86,6 +88,7 @@
                         </div>
 
                     </div>
+                    <!-- Write Product Review -->
                     <div class="col-md-5">
                         <div class="ibox">
                             <div class="ibox-title">
@@ -97,11 +100,11 @@
                                     <form @submit.prevent="onSubmitReview" class="reviewer-form" id="review_form">
                                         <p>
                                             <label for="reviewer_name">Nickname:</label>
-                                            <input id="reviewer_name" v-model="reviewer_name" required>
+                                            <input id="reviewer_name" v-model="reviewer_name" required autocomplete="on">
                                         </p>
                                         <p>
                                             <label for="reviewer_email">Email(We won't publish it):</label>
-                                            <input id="reviewer_email" v-model="reviewer_email" required>
+                                            <input id="reviewer_email" v-model="reviewer_email" required autocomplete="on">
                                         </p>
                                         <p>
                                             <label for="review">Review:</label>
@@ -136,6 +139,8 @@
                             </div>
                         </div>
 
+                        <!-- Support -->
+
                         <div class="ibox">
                             <div class="ibox-title">
                                 <h5>Support</h5>
@@ -158,7 +163,6 @@
 
                         <div class="ibox">
                             <div class="ibox-content">
-
                                 <p class="font-bold">
                                     Similar products you may be interested
                                 </p>
@@ -224,7 +228,8 @@ export default {
             review: '',
             pStore: productStore(),
             cartStore: userCartStore(),
-            reviews: []
+            reviews: [],
+            alertStore: userAlertStore()
         }
     },
 
@@ -233,10 +238,14 @@ export default {
             const volume = (<HTMLInputElement>document.getElementById("num_items")).value;
             this.cartStore.addToCart(this.product, volume)
         },
-        formatDate(value) {
+        formatDate(value: Date) {
             if (value) {
                 return moment(String(value)).format("DD-MM-YYYY hh:mm");
             }
+        },
+        productImage(image: string): string {
+            return new URL('../../src/assets/images/products/' + image, import.meta.url).href
+
         },
         async onSubmitReview() {
             if (this.rating) {
@@ -255,8 +264,8 @@ export default {
                 this.review = ''
                 this.reviewer_email = 'S'
             } else {
-                const alertStore = userAlertStore();
-                if (!this.rating) alertStore.error("Product evaluation required!");
+
+                if (!this.rating) this.alertStore.error("Product evaluation required!");
 
             }
 
@@ -277,7 +286,7 @@ export default {
 
 
         } else {
-            this.$swal("<strong>Wrong!</strong> " + " Supply a Product ID!");
+            this.alertStore.error(" Supply a Product ID!");
         }
 
     },

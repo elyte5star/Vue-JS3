@@ -7,6 +7,7 @@ import NotFound from '@/views/NotFound.vue'
 import ProductView from '@/views/ProductView.vue'
 import AdminView from '@/views/AdminView.vue'
 import RegisterUser from '@/views/RegisterUserView.vue'
+import ContactUs from '@/views/ContactView.vue'
 
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
@@ -20,6 +21,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomeView
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: ContactUs
   },
   {
     path: '/register',
@@ -100,7 +106,7 @@ router.beforeEach(async (to) => {
   alertStore.clear();
 
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login', 'Home', 'oneProduct', 'Cart','Register'];
+  const publicPages = ['Login', 'Home', 'oneProduct','Contact','Cart', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
 

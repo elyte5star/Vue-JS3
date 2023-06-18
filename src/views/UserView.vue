@@ -1,9 +1,9 @@
 <template>
   <div v-if="user" class="user">
-    <keep-alive>
-      <component :is="activeComponent" :user_info="user" :user_image="user_image"
-        @changeActiveComponent="_changeActiveComponent" />
-    </keep-alive>
+
+    <component :is="{...activeComponent}" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="user_image"
+      @changeActiveComponent="_changeActiveComponent" />
+
   </div>
 </template>
 
@@ -13,6 +13,7 @@ import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from "pinia";
 import EditUser from "@/components/EditUser.vue";
 import UserProfile from "@/components/UserProfile.vue";
+
 
 export default {
   name: "UserView",
@@ -28,19 +29,21 @@ export default {
       activeComponent: UserProfile,
       user_image: '',
       user: {},
+      bookingsHistory: [] as Array<any>
     };
   },
   async created() {
     const user_store = userStore();
     await user_store.getUserById(this.userid);
-    const { user } = storeToRefs(user_store);
+    const { user, bookingsHistory } = storeToRefs(user_store);
     this.user = user;
+    this.bookingsHistory = bookingsHistory
     this.user_image = this.user.admin ? "admin-icon.png" : "user-icon.png";
 
   },
 
   methods: {
-    _changeActiveComponent(str) {
+    _changeActiveComponent(str: string) {
       if (str === 'update_details') {
         this.activeComponent = EditUser;
 

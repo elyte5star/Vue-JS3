@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Login panel -->
-        <div id="login_access">
+        <div id="login_access" class="login_access">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
@@ -9,10 +9,10 @@
                             <div class="text-center mb-3">
                                 <p>Sign in with:</p>
                                 <button v-on:click="getMsoftToken()" type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fa fa-windows" aria-hidden="true"></i>
+                                    <i class="fa fa-windows"></i>
                                 </button>
                                 <button v-on:click="getGoogleToken()" type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fa fa-google" aria-hidden="true"></i>
+                                    <i class="fa fa-google"></i>
                                 </button>
                             </div>
 
@@ -24,10 +24,10 @@
                                     aria-describedby="usernameHelpBlock" />
                                 <div id="usernameHelpBlock" class="form-text">
                                     Usernames can only have:
-                                    - Lowercase Letters (a-z)
-                                    - Numbers (0-9)
-                                    - Dots (.)
-                                    - Underscores (_)
+                                    - Lowercase Letters(a-z)
+                                    - Numbers(0-9)
+                                    - Dots(.)
+                                    - Underscores(_)
                                 </div>
 
                             </div>

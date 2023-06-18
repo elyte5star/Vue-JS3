@@ -7,11 +7,11 @@ import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 import { userAuthStore } from '@/stores/auth_store'
 
 const baseURL = import.meta.env.VITE_API_URL + 'users';
-
+import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
     state: () => ({
-        users: [], user: {}
+        users: null, user: null, bookingsHistory: []
     }),
     actions: {
         async getUsers() {
@@ -26,15 +26,12 @@ export const userStore = defineStore({
         },
         async signUP(user) {
             const response = await fetchMethodWrapper.post(baseURL + '/signup', user);
+            const alertStore = userAlertStore();
             if (response["success"]) {
-                Swal.fire('Good job!', "User with ID " + response.userid + " has been created!", 'success');
+                alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
+
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Email/Username already registered!',
-                    footer: '<a href="/">Return to home page.</a>'
-                })
+                alertStore.error(response.message);
 
             }
         },
@@ -42,6 +39,7 @@ export const userStore = defineStore({
             try {
                 const response = await fetchMethodWrapper.get(baseURL + '/' + id);
                 this.user = response.user;
+                this.bookingsHistory = response.user.bookings
 
             } catch (error) {
                 this.user = { error };

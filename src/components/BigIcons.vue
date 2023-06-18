@@ -2,8 +2,8 @@
   <div class="big-icons">
     <!-- Search content -->
     <div id="search">
-      <i class="fa fa-search"></i><input @keyup="searchEntries()" type="text" name="search" id="search-icon" size="15"
-        placeholder="Search content" />
+      <input :style="{ backgroundImage: 'url(' + searchImage + ')' }" @keyup="searchEntries()" type="text"
+        name="search" id="search-icon" size="15" placeholder="Search.." />
     </div>
     <h1 id="welcome">Welcome to e-Market</h1>
     <!-- Sort content -->
@@ -32,7 +32,7 @@
             class="icon-text">Hotels</span></a></div>
       <div class="icon-div"><a href="/news"><i class="fa fa-newspaper-o"></i><span class="icon-text">News</span></a></div>
     </div>
-
+    
   </div>
 </template>
 
@@ -49,6 +49,16 @@ export default {
       filterEntries();
     }
   },
+  computed: {
+    searchImage() {
+      return new URL('../../src/assets/images/searchicon.png', import.meta.url).href
+
+    }
+
+
+
+  }
+
 
 }
 </script>

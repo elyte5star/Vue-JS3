@@ -3,7 +3,6 @@
     <BigIcons />
     <ImageSlide v-bind:products="products" />
     <MainProducts v-bind:products="products" />
-    <FooterContact />
   </div>
 </template>
 
@@ -12,14 +11,14 @@
 import BigIcons from '../components/BigIcons.vue'
 import ImageSlide from '../components/ImageSlide.vue';
 import MainProducts from '../components/Products.vue'
-import FooterContact from '../components/FooterContact.vue'
+
 import { storeToRefs } from 'pinia';
 import { productStore } from '@/stores/products'
 
 export default {
   name: 'HomeView',
   components: {
-    BigIcons, ImageSlide, MainProducts, FooterContact
+    BigIcons, ImageSlide, MainProducts
   },
   data() {
     return {

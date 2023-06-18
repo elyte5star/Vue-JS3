@@ -1,6 +1,6 @@
 
 <template>
-    <div v-if="cart" id="basket">
+    <div v-if="cart" id="basket" class="basket">
         <div class="container">
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row">
@@ -241,7 +241,7 @@ export default {
     name: 'CartView',
     data() {
         return {
-            cart: Array(), user: {}, recommendationList: [], itemsInCart: 0,
+            cart: Array(), user: {}, recommendationList: [], itemsInCart: null,
             isDisabled: true, card: null, expiryDate: null, cardCvv: null,
             cardNumber: null, nameOnCard: null, cartStore: userCartStore(), authStore: userAuthStore()
 
@@ -289,7 +289,7 @@ export default {
     mounted() {
         const { user } = storeToRefs(this.authStore);
         const { cart, itemsInCart } = storeToRefs(this.cartStore);
-        this.itemsInCart = Number(itemsInCart);
+        this.itemsInCart = itemsInCart;
         this.cart = cart;
         this.user = { ...user };
 

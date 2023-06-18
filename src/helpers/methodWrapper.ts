@@ -51,7 +51,6 @@ async function handleResponse(response) {
                 icon: 'error',
                 title: 'Oops...',
                 text: "Session Expired",
-                confirmButtonText: 'Home',
                 footer: '<a href="/login">Please, log in again!.</a>'
             })
             logout();
