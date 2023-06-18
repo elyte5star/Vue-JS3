@@ -1,8 +1,8 @@
 <template>
     <div v-if="alert" class="container">
-        <div class="m-3">
+        <div class="m-3" id="alert1">
             <div :class="'alert alert-dismissable  fade show ' + alert.type" role=alert>
-                <strong>Error !</strong> {{ alert.message }}
+                <strong>{{ alert.message }}</strong>
                 <button @click="alertstore.clear()" class="btn btn-link close">
                     <span aria-hidden="true">&times;</span>
                 </button>

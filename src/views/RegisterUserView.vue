@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="add_entry">
+        <div id="add_entry" class="add_entry">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
@@ -21,30 +21,50 @@
                             <!-- Username input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerUsername">Username:</label>
-                                <input type="text" id="registerUsername" class="form-control" />
+                                <input v-model="registerUsername" type="text" id="registerUsername" class="form-control"
+                                    aria-describedby="usernameHelpBlock" />
+                                <div id="usernameHelpBlock" class="form-text">
+                                    Usernames must be 5-20 and can only have:
+                                    - Lowercase Letters(a-z)
+                                    - Numbers(0-9)
+                                    - Dots(.)
+                                    - Underscores(_)
+                                </div>
                             </div>
 
                             <!-- Email input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerEmail">Email:</label>
-                                <input type="email" id="registerEmail" class="form-control" />
+                                <input v-model="registerEmail" type="email" id="registerEmail" class="form-control" />
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerPassword">Password:</label>
-                                <input type="password" id="registerPassword" class="form-control" />
+                                <input v-model="registerPassword" type="password" id="registerPassword" class="form-control"
+                                    aria-describedby="passwordHelpBlock" autocomplete="on" />
+                                <div id="passwordHelpBlock" class="form-text">
+                                    Your password must be 5-20 characters long, contain letters and numbers, and must
+                                    not
+                                    contain spaces, special characters, or emoji.
+                                </div>
                             </div>
 
                             <!-- Repeat Password input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerRepeatPassword">Repeat password:</label>
-                                <input type="password" id="registerRepeatPassword" class="form-control" />
+                                <input v-model="registerRepeatPassword" type="password" id="registerRepeatPassword"
+                                    class="form-control" />
+                                <div id="passwordHelpBlock" class="form-text">
+                                    Your password must be 5-20 characters long, contain letters and numbers, and must
+                                    not
+                                    contain spaces, special characters, or emoji.
+                                </div>
                             </div>
                             <!-- Telephone input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerTel">Telephone:</label>
-                                <input type="tel" id="registerTel" class="form-control" />
+                                <input v-model="registerTel" type="tel" id="registerTel" class="form-control" />
                             </div>
 
 
@@ -74,63 +94,38 @@
         </div>
     </div>
 </template>
-<style scoped>
-form .fa {
-    font-size: 30px;
-    color: #3299BB;
-    text-shadow: 4px 4px 4px #aaa;
-}
 
-label {
-    color: #aaa;
-    letter-spacing: 1px;
-    margin: 0px;
-    font-size: 0.6em;
-    text-transform: uppercase;
-    font-weight: bold;
-
-}
-
-form {
-    text-align: left;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-a {
-    text-decoration: none;
-}
-</style>
 <script lang="ts">
 
 import { is_Input_Error } from '@/helpers/script';
 import { userStore } from "@/stores/userAccount";
+import { userAlertStore } from '@/stores/alert'
 
 export default {
     name: 'RegisterUser',
+    data() {
+        return {
+            registerTel: '', registerRepeatPassword: '', registerPassword: '', registerEmail: '', registerUsername: ''
+        }
+    },
     methods: {
-
         async registerUser() {
-            const userName = (<HTMLInputElement>document.getElementById("registerUsername")).value;
-            const email = (<HTMLInputElement>document.getElementById("registerEmail")).value;
-            const password1 = (<HTMLInputElement>document.getElementById("registerPassword")).value;
-            const passWord2 = (<HTMLInputElement>document.getElementById("registerRepeatPassword")).value;
-            const tel = (<HTMLInputElement>document.getElementById("registerTel")).value;
-            if (!is_Input_Error(userName, email, password1, passWord2, tel)) {
-                const user = { "username": userName, "email": email, "password": password1, "telephone": tel };
+            if (!is_Input_Error(this.registerUsername, this.registerEmail, this.registerPassword, this.registerRepeatPassword, this.registerTel)) {
+                const registerUser = { "username": this.registerUsername, "email": this.registerEmail, "password": this.registerPassword, "telephone": Number(this.registerTel) };
                 const user_store = userStore();
-                await user_store.signUP(user);
+                await user_store.signUP(registerUser);
+                this.registerUsername = '';
+                this.registerEmail = '';
+                this.registerPassword = '';
+                this.registerRepeatPassword = '';
+                this.registerTel = '';
+                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+
             }
 
         }
     },
-    mounted: function () {
-        (<HTMLInputElement>document.getElementById("registerUsername")).value = "";
-        (<HTMLInputElement>document.getElementById("registerEmail")).value = "";
-        (<HTMLInputElement>document.getElementById("registerPassword")).value = "";
-        (<HTMLInputElement>document.getElementById("registerRepeatPassword")).value = "";
-        (<HTMLInputElement>document.getElementById("registerTel")).value = "";
-    }
+
 }
 
 </script>

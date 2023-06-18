@@ -23,7 +23,7 @@
                                 <input type="text" id="loginUsername" v-model="username" class="form-control"
                                     aria-describedby="usernameHelpBlock" />
                                 <div id="usernameHelpBlock" class="form-text">
-                                    Usernames can only have:
+                                    Usernames must be 5-20 and can only have:
                                     - Lowercase Letters(a-z)
                                     - Numbers(0-9)
                                     - Dots(.)
@@ -38,7 +38,7 @@
                                 <input type="password" id="loginPassword" v-model="password" class="form-control"
                                     aria-describedby="passwordHelpBlock" autocomplete="on" />
                                 <div id="passwordHelpBlock" class="form-text">
-                                    Your password must be 4-20 characters long, contain letters and numbers, and must
+                                    Your password must be 5-20 characters long, contain letters and numbers, and must
                                     not
                                     contain spaces, special characters, or emoji.
                                 </div>
@@ -77,39 +77,19 @@
         </div>
     </div>
 </template>
-<style scoped>
-form .fa {
-    font-size: 30px;
-    color: #3299BB;
-    text-shadow: 4px 4px 4px #aaa;
-}
 
-label,p {
-    color: #aaa;
-    letter-spacing: 1px;
-    margin: 0px;
-    font-size: 0.6em;
-    text-transform: uppercase;
-    font-weight: bold;
 
-}
 
-form {
-    text-align: left;
-    padding: 20px;
-    border-radius: 10px;
-}
 
-a {
-    text-decoration: none;
-}
-</style>
+
+
+
+
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
 
 import { isUserNameValid } from "@/helpers/script";
-import { userAlertStore } from '@/stores/alert'
-import ImageSlide from '../components/ImageSlide.vue';
+import { userAlertStore } from '@/stores/alert';
 
 export default {
     name: "LoginView",

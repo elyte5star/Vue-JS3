@@ -24,10 +24,11 @@ export const userStore = defineStore({
             }
 
         },
-        async signUP(user) {
+        async signUP(user: {}) {
             const response = await fetchMethodWrapper.post(baseURL + '/signup', user);
             const alertStore = userAlertStore();
             if (response["success"]) {
+
                 alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
 
             } else {
@@ -35,7 +36,7 @@ export const userStore = defineStore({
 
             }
         },
-        async getUserById(id) {
+        async getUserById(id:string) {
             try {
                 const response = await fetchMethodWrapper.get(baseURL + '/' + id);
                 this.user = response.user;

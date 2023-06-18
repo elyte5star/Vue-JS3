@@ -262,7 +262,7 @@ export default {
                 this.reviewer_name = ''
                 this.rating = 0
                 this.review = ''
-                this.reviewer_email = 'S'
+                this.reviewer_email = ''
             } else {
 
                 if (!this.rating) this.alertStore.error("Product evaluation required!");

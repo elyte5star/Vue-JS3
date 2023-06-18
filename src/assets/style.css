@@ -706,7 +706,70 @@ article:hover {
 /* Login Modify Register*/
 
 
+.login_access form .fa {
+    font-size: 30px;
+    color: #3299BB;
+    text-shadow: 4px 4px 4px #aaa;
+}
 
+.add_entry form .fa {
+    font-size: 30px;
+    color: #3299BB;
+    text-shadow: 4px 4px 4px #aaa;
+}
+
+.add_entry label {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+
+.login_access form {
+    text-align: left;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.add_entry form {
+    text-align: left;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+
+.login_access label {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+.login_access p {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+/* To overide boostraps underline */
+.login_access a {
+    text-decoration: none;
+}
+
+.add_entry a {
+    text-decoration: none;
+}
 
 /* End Login */
 

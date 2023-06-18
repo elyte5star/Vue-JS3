@@ -55,14 +55,14 @@ export const postToTokenEndpoint = async (url = "", data = {}) => {
     return response.json();
 }
 
-export const show_add_entry = (id) => {
-    let element = document.getElementById(id);
+export const show_add_entry = (id: string) => {
+    let element = (<HTMLInputElement>document.getElementById(id));
     element.style.display = "";
 
 }
 
-export const hide_add_entry = (id) => {
-    let element = document.getElementById(id);
+export const hide_add_entry = (id: string) => {
+    let element = (<HTMLInputElement>document.getElementById(id));
     element.style.display = "none";
 }
 
@@ -78,34 +78,33 @@ function isValidTel(tel) {
     return re.test(tel);
 }
 
-export const is_Input_Error = (name, email, password, password_, tel) => {
+export const is_Input_Error = (name: string, email: string, password: string, password_: string, tel: string) => {
     if (name.length == 0) {
-        return Swal.fire("<strong>Wrong!</strong> " + "Empty username!");
+        Swal.fire("<strong>Wrong!</strong> " + "Empty username!");
+    }
+    // check for valid letters
+    else if (name.length < 5 || !isUserNameValid(name)) {
+        Swal.fire("<strong>Wrong!</strong> " + " Invalid letters for username!");
     }
     else if (email.length == 0) {
-        return Swal.fire("<strong>Wrong!</strong> " + " Empty email field!");
-    }
-    else if (tel.length == 0) {
-
-        return Swal.fire("<strong>Wrong!</strong> " + "Empty Telephone field!");
-    }
-    else if (password.length == 0 || password_.length == 0) {
-        return Swal.fire("<strong>Wrong!</strong> " + " Empty Password Field!");
-    }
-    else if (password !== password_) {
-        return Swal.fire("<strong>Wrong!</strong> " + " Invalid Credentials.Password mismatch!");
-    }
-    // check for valid telephone
-    else if (tel.length > 0 && !isValidTel(tel)) {
-        return Swal.fire("<strong>Wrong!</strong> " + "Invalid letters for telephone!");
+        Swal.fire("<strong>Wrong!</strong> " + " Empty email field!");
     }
     // check for valid email
     else if (email.length > 0 && !is_valid_Email(email)) {
         Swal.fire("<strong>Wrong!</strong> " + "Invalid email address!");
     }
-    // check for valid letters
-    else if (name.length > 0 && !isUserNameValid(name)) {
-        return Swal.fire("<strong>Wrong!</strong> " + " Invalid letters for username!");
+    else if (password.length == 0) {
+        Swal.fire("<strong>Wrong!</strong> " + " Empty Password Field!");
+    }
+    else if (password.length < 5 || password !== password_) {
+        Swal.fire("<strong>Wrong!</strong> " + " Invalid Credentials. Password mismatch!");
+    }
+    else if (tel.length == 0) {
+        Swal.fire("<strong>Wrong!</strong> " + "Empty Telephone field!");
+    }
+    // check for valid telephone
+    else if (tel.length > 0 && !isValidTel(tel)) {
+        Swal.fire("<strong>Wrong!</strong> " + "Invalid letters for telephone!");
     }
     // no error
     else {
@@ -147,10 +146,10 @@ function mark_text() {
 
 
 export const filterEntries = () => {
-    let strSearch = document.getElementById("search-icon").value;
+    let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
     document.querySelectorAll("article.framed").forEach(
         function (article_ele) {
-            let art = document.getElementById(article_ele.id);
+            let art = (<HTMLInputElement>document.getElementById(article_ele.id));
             let h = article_ele.querySelectorAll("h3,h4");
             if (strSearch.length > 0 && !checkString(strSearch, h[0].innerHTML) && !checkString(strSearch, h[1].innerHTML)) {
                 art.style.display = "none";
