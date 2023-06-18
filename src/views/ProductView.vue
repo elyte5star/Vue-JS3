@@ -279,7 +279,7 @@ export default {
             this.product = product;
             this.productQuantity = quantity;
             this.reviews = reviews;
-            const elem = document.getElementById("add_to_cart");
+            const elem = (<HTMLInputElement>document.getElementById("add_to_cart"));
             if (!this.productQuantity) elem.innerHTML = "Out of Stock";
             else elem.innerHTML = "Add to Cart";
             //document.getElementById('product').scrollIntoView();

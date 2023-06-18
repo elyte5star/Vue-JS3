@@ -4,7 +4,7 @@ import Swal from 'sweetalert2/dist/sweetalert2';
 /* eslint-disable */
 
 
-export const decodeJwtResponse = (token) => {
+export const decodeJwtResponse = (token: string) => {
     let base64Url = token.split(".")[1];
     let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     let jsonPayload = decodeURIComponent(
@@ -20,7 +20,7 @@ export const decodeJwtResponse = (token) => {
     return JSON.parse(jsonPayload);
 }
 
-export const isUserNameValid = (username) => {
+export const isUserNameValid = (username: string) => {
     /* 
       Usernames can only have: 
       - Lowercase Letters (a-z) 
@@ -124,7 +124,7 @@ function checkString(str, ele_txt) {
 
 /* Mark terms functions */
 function mark_text() {
-    let strSearch = document.getElementById("search-icon").value;
+    let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
     let patt = /"(.*?)"/gi;
     let matches = new Array();
     let match = null;
