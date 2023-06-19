@@ -762,13 +762,23 @@ article:hover {
 
 }
 
+.bi {
+    position: relative;
+    left: 575px;
+    bottom: 30px;
+   
+}
+
 /* To overide boostraps underline */
 .login_access a {
     text-decoration: none;
+    
 }
+
 
 .add_entry a {
     text-decoration: none;
+    
 }
 
 /* End Login */

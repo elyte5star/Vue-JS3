@@ -21,7 +21,7 @@
                             <div class="form-outline">
                                 <label class="form-label" for="loginUsername">Username:</label>
                                 <input type="text" id="loginUsername" v-model="username" class="form-control"
-                                    aria-describedby="usernameHelpBlock" />
+                                    aria-describedby="usernameHelpBlock" maxlength="20" />
                                 <div id="usernameHelpBlock" class="form-text">
                                     Usernames must be 5-20 and can only have:
                                     - Lowercase Letters(a-z)
@@ -35,17 +35,17 @@
                             <!-- Password input -->
                             <div class="form-outline">
                                 <label class="form-label" for="loginPassword">Password:</label>
-                                <input type="password" id="loginPassword" v-model="password" class="form-control"
-                                    aria-describedby="passwordHelpBlock" autocomplete="on" />
+                                <input type="password" name="password" id="password" v-model="password" class="form-control"
+                                    aria-describedby="passwordHelpBlock" autocomplete="on" maxlength="20" />
+                                <a href="javascript:void(0)" @click="showPassword()"><i class="bi bi-eye-slash"
+                                        id="togglePassword"></i></a>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Your password must be 5-20 characters long, contain letters and numbers, and must
                                     not
                                     contain spaces, special characters, or emoji.
                                 </div>
-                                <!-- An element to toggle between password visibility -->
-                                <input type="checkbox" :click="showPassword"> Show Password
                             </div>
-                            <div><a href="#!">Forgot password?</a></div>
+                            <div id="forgetget_password"><a href="#!">Forgot password?</a></div>
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary">Sign in</button>
@@ -97,7 +97,11 @@ export default {
     },
     methods: {
         showPassword() {
-            console.log("SHOW password!!");
+            const togglePassword = document.querySelector('#togglePassword');
+            const passWord = (<HTMLInputElement>document.querySelector('#password'));
+            const type = passWord.getAttribute('type') === 'password' ? 'text' : 'password';
+            passWord.setAttribute('type', type);
+            togglePassword?.classList.toggle('bi-eye');
 
         },
         getGoogleToken() {
