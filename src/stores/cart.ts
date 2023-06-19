@@ -54,7 +54,7 @@ export const userCartStore = defineStore({
             const alertStore = userAlertStore();
             const response = await fetchMethodWrapper.post(baseURL + '/create', bookingDetails);
             if (response.success) {
-                alertStore.success("<strong> Success! </strong> " + "Booking with id " + response.oid + " created!")
+                alertStore.success("Booking with id " + response.oid + " created!")
                 this.clearCart();
 
             } else {
