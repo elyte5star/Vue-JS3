@@ -42,6 +42,8 @@
                                     not
                                     contain spaces, special characters, or emoji.
                                 </div>
+                                <!-- An element to toggle between password visibility -->
+                                <input type="checkbox" :click="showPassword"> Show Password
                             </div>
                             <div><a href="#!">Forgot password?</a></div>
 
@@ -80,11 +82,6 @@
 
 
 
-
-
-
-
-
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
 
@@ -99,6 +96,10 @@ export default {
         }
     },
     methods: {
+        showPassword() {
+            console.log("SHOW password!!");
+
+        },
         getGoogleToken() {
 
             console.log("Google is here");

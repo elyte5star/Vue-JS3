@@ -1,5 +1,6 @@
 
-import Swal from 'sweetalert2/dist/sweetalert2';
+import { userAlertStore } from "@/stores/alert";
+
 
 /* eslint-disable */
 
@@ -79,32 +80,36 @@ function isValidTel(tel) {
 }
 
 export const is_Input_Error = (name: string, email: string, password: string, password_: string, tel: string) => {
+    const alertStore = userAlertStore();
     if (name.length == 0) {
-        Swal.fire("<strong>Wrong!</strong> " + "Empty username!");
+        alertStore.error("Empty username!");
+
     }
     // check for valid letters
     else if (name.length < 5 || !isUserNameValid(name)) {
-        Swal.fire("<strong>Wrong!</strong> " + " Invalid letters for username!");
+        alertStore.error(" Invalid Username!");
     }
     else if (email.length == 0) {
-        Swal.fire("<strong>Wrong!</strong> " + " Empty email field!");
+        alertStore.error("Empty email field!");
+
     }
     // check for valid email
     else if (email.length > 0 && !is_valid_Email(email)) {
-        Swal.fire("<strong>Wrong!</strong> " + "Invalid email address!");
+
+        alertStore.error("Invalid email address!");
     }
     else if (password.length == 0) {
-        Swal.fire("<strong>Wrong!</strong> " + " Empty Password Field!");
+        alertStore.error("Empty Password Field!");
     }
     else if (password.length < 5 || password !== password_) {
-        Swal.fire("<strong>Wrong!</strong> " + " Invalid Credentials. Password mismatch!");
+        alertStore.error("Invalid Credentials or Password mismatch!");
     }
     else if (tel.length == 0) {
-        Swal.fire("<strong>Wrong!</strong> " + "Empty Telephone field!");
+        alertStore.error("Empty Telephone field!");
     }
     // check for valid telephone
     else if (tel.length > 0 && !isValidTel(tel)) {
-        Swal.fire("<strong>Wrong!</strong> " + "Invalid letters for telephone!");
+        alertStore.error("Invalid letters for telephone!");
     }
     // no error
     else {
