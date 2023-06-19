@@ -34,7 +34,8 @@ html {
 }
 
 #login_access,
-#add_entry {
+#add_entry,
+#update_entry {
     border: 5px solid #ececec;
     margin: 10px;
     position: relative;
@@ -728,6 +729,15 @@ article:hover {
 
 }
 
+.update_entry label {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
 
 .login_access form {
     text-align: left;
@@ -736,6 +746,12 @@ article:hover {
 }
 
 .add_entry form {
+    text-align: left;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.update_entry form {
     text-align: left;
     padding: 20px;
     border-radius: 10px;
@@ -766,19 +782,23 @@ article:hover {
     position: relative;
     left: 575px;
     bottom: 30px;
-   
+
 }
 
 /* To overide boostraps underline */
 .login_access a {
     text-decoration: none;
-    
+
 }
 
+.update_entry a {
+    text-decoration: none;
+
+}
 
 .add_entry a {
     text-decoration: none;
-    
+
 }
 
 /* End Login */

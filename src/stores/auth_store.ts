@@ -6,7 +6,7 @@ import { userAlertStore } from './alert';
 
 import router from '@/router/index'
 
-import { postToTokenEndpoint } from "@/helpers/script.js";
+import { postToTokenEndpoint } from "@/helpers/script";
 
 const baseURL = import.meta.env.VITE_API_URL + 'auth';
 

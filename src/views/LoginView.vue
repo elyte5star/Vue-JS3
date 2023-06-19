@@ -37,8 +37,8 @@
                                 <label class="form-label" for="loginPassword">Password:</label>
                                 <input type="password" name="password" id="password" v-model="password" class="form-control"
                                     aria-describedby="passwordHelpBlock" autocomplete="on" maxlength="20" />
-                                <a href="javascript:void(0)" @click="showPassword()"><i class="bi bi-eye-slash"
-                                        id="togglePassword"></i></a>
+                                <a href="javascript:void(0)" @click="showPassword('password')"><i class="bi bi-eye-slash"
+                                        id="toggleLoginPassword"></i></a>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Your password must be 5-20 characters long, contain letters and numbers, and must
                                     not
@@ -85,25 +85,18 @@
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
 
-import { isUserNameValid } from "@/helpers/script";
+import { isUserNameValid, showPassword } from "@/helpers/script";
 import { userAlertStore } from '@/stores/alert';
 
 export default {
     name: "LoginView",
     data() {
         return {
-            username: "", password: ""
+            username: "", password: "", showPassword
         }
     },
     methods: {
-        showPassword() {
-            const togglePassword = document.querySelector('#togglePassword');
-            const passWord = (<HTMLInputElement>document.querySelector('#password'));
-            const type = passWord.getAttribute('type') === 'password' ? 'text' : 'password';
-            passWord.setAttribute('type', type);
-            togglePassword?.classList.toggle('bi-eye');
 
-        },
         getGoogleToken() {
 
             console.log("Google is here");

@@ -43,6 +43,9 @@
                                 <label class="form-label" for="registerPassword">Password:</label>
                                 <input v-model="registerPassword" type="password" id="registerPassword" class="form-control"
                                     aria-describedby="passwordHelpBlock" autocomplete="on" />
+                                <a href="javascript:void(0)"
+                                    @click="showPassword('registerPassword', 'toggleRegisterPassword')"><i
+                                        class="bi bi-eye-slash" id="toggleRegisterPassword"></i></a>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Your password must be 5-20 characters long, contain letters and numbers, and must
                                     not
@@ -55,6 +58,9 @@
                                 <label class="form-label" for="registerRepeatPassword">Repeat password:</label>
                                 <input v-model="registerRepeatPassword" type="password" id="registerRepeatPassword"
                                     class="form-control" />
+                                <a href="javascript:void(0)"
+                                    @click="showPassword('registerRepeatPassword', 'toggleRegisterRepeatPassword')"><i
+                                        class="bi bi-eye-slash" id="toggleRegisterRepeatPassword"></i></a>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Your password must be 5-20 characters long, contain letters and numbers, and must
                                     not
@@ -97,15 +103,14 @@
 
 <script lang="ts">
 
-import { is_Input_Error } from '@/helpers/script';
+import { is_Input_Error, showPassword } from '@/helpers/script';
 import { userStore } from "@/stores/userAccount";
-import { userAlertStore } from '@/stores/alert'
 
 export default {
     name: 'RegisterUser',
     data() {
         return {
-            registerTel: '', registerRepeatPassword: '', registerPassword: '', registerEmail: '', registerUsername: ''
+            registerTel: '', registerRepeatPassword: '', registerPassword: '', registerEmail: '', registerUsername: '', showPassword
         }
     },
     methods: {

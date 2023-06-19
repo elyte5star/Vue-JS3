@@ -4,6 +4,14 @@ import { userAlertStore } from "@/stores/alert";
 
 /* eslint-disable */
 
+export function showPassword(ele_id: string, ele2_id: string = 'toggleLoginPassword') {
+    const togglePassword = document.querySelector('#' + ele2_id);
+    const passWord = (<HTMLInputElement>document.querySelector('#' + ele_id));
+    const type = passWord.getAttribute('type') === 'password' ? 'text' : 'password';
+    passWord.setAttribute('type', type);
+    togglePassword?.classList.toggle('bi-eye');
+
+}
 
 export const decodeJwtResponse = (token: string) => {
     let base64Url = token.split(".")[1];
@@ -119,7 +127,7 @@ export const is_Input_Error = (name: string, email: string, password: string, pa
 }
 
 /* Search functions */
-function checkString(str, ele_txt) {
+function checkString(str: string, ele_txt: string) {
     str = str.toLowerCase();
     return (ele_txt.toLowerCase().indexOf(str) > -1);
 }
