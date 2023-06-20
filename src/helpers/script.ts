@@ -6,7 +6,7 @@ import { userAlertStore } from "@/stores/alert";
 
 export function showPassword(ele_id: string, ele2_id: string = 'toggleLoginPassword') {
     const togglePassword = document.querySelector('#' + ele2_id);
-    const passWord = (<HTMLInputElement>document.querySelector('#' + ele_id));
+    const passWord = document.querySelector('#' + ele_id)!;
     const type = passWord.getAttribute('type') === 'password' ? 'text' : 'password';
     passWord.setAttribute('type', type);
     togglePassword?.classList.toggle('bi-eye');
@@ -75,13 +75,13 @@ export const hide_add_entry = (id: string) => {
     element.style.display = "none";
 }
 
-function is_valid_Email(email) {
+export function is_valid_Email(email: string) {
     return email.match(
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 }
 
-function isValidTel(tel) {
+function isValidTel(tel: string) {
     // check for allowed characters using a regular expression
     const re = /^[0-9()+\-\s]*$/
     return re.test(tel);

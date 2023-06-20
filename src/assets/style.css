@@ -191,13 +191,7 @@ mark {
     color: black;
 }
 
-.fa-search {
-    position: relative;
-    left: 300px;
-    color: #3299BB;
-    text-shadow: 2px 2px 2px #aaa;
-    font-size: 20px;
-}
+
 
 #search input {
     width: 130px;
@@ -560,7 +554,6 @@ article:hover {
     position: relative;
     margin: 12px;
 
-
 }
 
 .prod_order {
@@ -701,7 +694,10 @@ article:hover {
     color: #c59b08;
 }
 
+.product a {
+    text-decoration: none;
 
+}
 /* End One product */
 
 /* Login Modify Register*/
@@ -1001,3 +997,80 @@ article h3 {
 
 
 /** USER CARD **/
+
+/** CONTACT US **/
+.customer_service textarea {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
+
+
+
+.customer_service label {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+.customer_service form {
+    text-align: left;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#customer_service a {
+    text-decoration: none;
+}
+
+
+#customer_service {
+    border: 5px solid #ececec;
+    margin: 10px;
+    position: relative;
+    padding: 5px;
+    width: 98%;
+    background-color: white;
+}
+
+#customer_service h1 {
+    background-color: #BCBCBC;
+    color: white;
+    padding: 5px;
+    font-size: 1.2em;
+    margin-top: 5px;
+    text-align: center;
+}
+
+#email_contact,
+#name_contact,
+#subject {
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+}
+
+.customer_service .fa {
+    font-size: 40px;
+    
+    text-shadow: 3px 3px 3px #aaa;
+}
+/** END CONTACT US **/
+/** LOST AND FOUND **/
+
+
+#lost h1 {
+    background-color: #BCBCBC;
+    color: white;
+    padding: 5px;
+    font-size: 1.2em;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/** END LOST AND FOUND **/

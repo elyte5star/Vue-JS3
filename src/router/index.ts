@@ -51,7 +51,7 @@ const routes = [
     component: CartView
   },
   {
-    path: '/:pid',
+    path: '/product/:pid',
     name: 'oneProduct',
     component: ProductView,
     props: true

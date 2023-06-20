@@ -21,7 +21,7 @@
                                     itemsInCart }}</span></router-link></li>
                     <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
                     </li>
-                    <li><router-link :to="{ name: 'Contact' }" id="greeting"><i class="fa fa-comments">Contact
+                    <li><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments">Contact
                         us</i></router-link>
             </li>
                 </ul>
