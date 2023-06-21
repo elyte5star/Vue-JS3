@@ -69,7 +69,7 @@
 
                     <div class="col-md-5">
                         <div class="ibox-title">
-                            <h5>Products per order</h5>
+                            <h5 v-if="bookingsHistoryCount">Click order to view products per order</h5>
                         </div>
                         <div class="table-responsive" id="items_order">
 
