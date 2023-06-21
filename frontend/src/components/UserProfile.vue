@@ -114,7 +114,7 @@
                 </div>
             </div>
         </div>
-       
+
     </div>
 </template>
 
@@ -186,7 +186,7 @@ export default {
 
     computed: {
         overallTotal() {
-            let amount = 0;
+            let amount: number = 0;
             for (let price of this.bookingsHistory) {
                 amount += price.total_price;
             }
@@ -196,7 +196,7 @@ export default {
             return new URL('../../src/assets/images/' + this.user_image, import.meta.url).href
 
         },
-        bookingsHistoryCount() {
+        bookingsHistoryCount(): number {
             return this.bookingsHistory.length
         },
 
