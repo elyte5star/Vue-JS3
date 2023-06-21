@@ -114,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <div> No reservation history found.</div>
+       
     </div>
 </template>
 
