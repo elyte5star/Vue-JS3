@@ -102,7 +102,7 @@
                                         <span class="type d-block mt-3 mb-1">Card type</span>
                                         <div id="card_type" class="card_type">
                                             <label class="radio"><input v-model="card" type="radio" name="card"
-                                                    value="mastercard" checked>
+                                                    value="mastercard">
                                                 <span><img width="30" :src="'src/assets/images/credit_cards/mastercard.png'"
                                                         alt="mastercard" /></span>
                                             </label>
@@ -129,21 +129,21 @@
                                         <div>
                                             <label class="credit-card-label">Name on card:</label><input type="text"
                                                 class="form-control credit-inputs" v-model="nameOnCard" placeholder="Name"
-                                                required>
+                                                >
                                         </div>
                                         <div>
                                             <label class="credit-card-label">Card number:</label>
                                             <input type="tel" class="form-control credit-inputs" v-model.number="cardNumber"
                                                 pattern="[0-9]*" maxlength="16" placeholder="0000 0000 0000 0000"
-                                                minlength="16" required>
+                                                minlength="16" >
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6"><label class="credit-card-label">Card Expiry:
                                                 </label><input type="month" v-model="expiryDate"
-                                                    class="form-control credit-inputs" placeholder="12/24" required></div>
+                                                    class="form-control credit-inputs" placeholder="12/24"></div>
                                             <div class="col-md-6"><label class="credit-card-label">CVV</label><input
                                                     type="tel" v-model.number="cardCvv" class="form-control credit-inputs"
-                                                    placeholder="342" pattern="[0-9]*" maxlength="3" required></div>
+                                                    placeholder="342" pattern="[0-9]*" maxlength="3" ></div>
                                         </div>
                                         <hr class="line">
                                         <div class="d-flex justify-content-between information">

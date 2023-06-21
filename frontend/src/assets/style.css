@@ -575,6 +575,10 @@ article:hover {
 
 }
 
+
+
+
+
 .product textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -698,6 +702,7 @@ article:hover {
     text-decoration: none;
 
 }
+
 /* End One product */
 
 /* Login Modify Register*/
@@ -973,8 +978,11 @@ table.shoping-cart-table tr td:first-child {
 }
 
 
-#reservations {
-    height: auto;
+#order_history tr td {
+    background-color: lightgoldenrodyellow;
+}
+#order_history tr td:hover{
+   cursor: pointer;
 }
 
 article h3 {
@@ -1057,9 +1065,10 @@ article h3 {
 
 .customer_service .fa {
     font-size: 40px;
-    
+
     text-shadow: 3px 3px 3px #aaa;
 }
+
 /** END CONTACT US **/
 /** LOST AND FOUND **/
 

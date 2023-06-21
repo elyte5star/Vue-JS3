@@ -39,7 +39,7 @@
                             </div>
                             <div v-for="booking in bookingsHistory " v-bind:key="booking" class="ibox-content">
                                 <div class="table-responsive">
-                                    <table class="table shoping-cart-table" id="order_history"
+                                    <table class="table shoping-cart-table order_history" id="order_history"
                                         @click="orderDetailsTable(booking.cart)">
                                         <tbody>
                                             <tr>
@@ -91,7 +91,6 @@
                                         Continue
                                         shopping</router-link>
                                 </div>
-                                <router-view />
                             </div>
                         </div>
                         <div class="ibox">
@@ -131,6 +130,12 @@ import { userStore } from "@/stores/userAccount";
 
 export default {
     name: "UserProfile",
+    data() {
+        return {
+            isDisabled: true
+        }
+
+    },
     props: {
         user_info: {
             type: Object
