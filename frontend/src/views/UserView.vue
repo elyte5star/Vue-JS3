@@ -13,7 +13,7 @@ import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from "pinia";
 import EditUser from "@/components/EditUser.vue";
 import UserProfile from "@/components/UserProfile.vue";
-
+import { Booking,User } from "@/helpers/my-types";
 
 export default {
   name: "UserView",
@@ -29,7 +29,7 @@ export default {
       activeComponent: UserProfile,
       user_image: '',
       user: {},
-      bookingsHistory: [] as Array<any>
+      bookingsHistory: [] as Array<Booking>
     };
   },
   async created() {

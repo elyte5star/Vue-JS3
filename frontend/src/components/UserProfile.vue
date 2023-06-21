@@ -101,7 +101,7 @@
                             <div class="ibox-content text-center">
                                 <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
                                 <h3><a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
-                                    elyte5star@gmail.com</a></h3>
+                                        elyte5star@gmail.com</a></h3>
                                 <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i>
                                         elyte5star</a></h3>
                                 <span class="small">
@@ -131,7 +131,20 @@ import { userStore } from "@/stores/userAccount";
 
 export default {
     name: "UserProfile",
-    props: ["user_info", "user_image", "bookingsHistory"],
+    props: {
+        user_info: {
+            type: Object
+
+        },
+        user_image: {
+            type: String
+        },
+
+        bookingsHistory: {
+            type: Array
+
+        }
+    },
     methods: {
         orderDetailsTable(itemsArray: []) {
             let tableDiv = document.getElementById("items_order")!;
@@ -181,7 +194,7 @@ export default {
         bookingsHistoryCount() {
             return this.bookingsHistory.length
         },
-        
+
     }
 
 };

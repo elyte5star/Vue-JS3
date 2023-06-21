@@ -30,7 +30,12 @@ export type Review = {
     product_id: string;
 
 }
-
+export type Enquiry = {
+    client_name: string;
+    client_email: string;
+    subject: string;
+    message: string;
+}
 export type Product = {
     pid: string;
     details: string;

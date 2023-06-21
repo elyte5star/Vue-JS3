@@ -5,13 +5,14 @@ import Swal from 'sweetalert2/dist/sweetalert2';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 import { userAuthStore } from '@/stores/auth_store'
+import { Booking } from '@/helpers/my-types';
 
 const baseURL = import.meta.env.VITE_API_URL + 'users';
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
     state: () => ({
-        users: null, user: null, bookingsHistory: []
+        users: null, user: null, bookingsHistory: null, alertStore: userAlertStore()
     }),
     actions: {
         async getUsers() {
@@ -26,17 +27,27 @@ export const userStore = defineStore({
         },
         async signUP(user: {}) {
             const response = await fetchMethodWrapper.post(baseURL + '/signup', user);
-            const alertStore = userAlertStore();
+
             if (response["success"]) {
 
-                alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
+                this.alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
 
             } else {
-                alertStore.error(response.message);
+                this.alertStore.error(response.message);
 
             }
         },
-        async getUserById(id:string) {
+        async customerEnquiry(enquiry) {
+            const response = await fetchMethodWrapper.post(baseURL + '/customer/service', enquiry);
+            if (response["success"]) {
+                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.eid);
+            }
+            else {
+                this.alertStore.error(response.message);
+
+            }
+        },
+        async getUserById(id: string) {
             try {
                 const response = await fetchMethodWrapper.get(baseURL + '/' + id);
                 this.user = response.user;

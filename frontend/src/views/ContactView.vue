@@ -107,21 +107,24 @@
 
 <script lang="ts">
 import { userAlertStore } from '@/stores/alert';
+import { userStore } from '@/stores/userAccount';
 import { is_valid_Email } from '@/helpers/script';
+import { Enquiry } from '@/helpers/my-types';
 
 export default {
     name: 'ContactUs',
     data() {
         return {
-            name_contact: null, message: null, subject: null, email_contact: null,
+            name_contact: null, message: null, subject: null, email_contact: null, user_store: userStore()
 
         }
     },
     methods: {
-        onSubmitEnquiry() {
+        async onSubmitEnquiry() {
             const alertStore = userAlertStore();
             if (this.name_contact && this.email_contact && is_valid_Email(this.email_contact) && this.subject && this.message) {
-                const enquiry = { 'client_name': this.name_contact, 'client_email': this.email_contact, 'subject': this.subject, 'message': this.message }
+                const enquiry:Enquiry = { 'client_name': this.name_contact, 'client_email': this.email_contact, 'subject': this.subject, 'message': this.message }
+                await this.user_store.customerEnquiry(enquiry);
                 this.name_contact = null;
                 this.email_contact = null;
                 this.subject = null;
