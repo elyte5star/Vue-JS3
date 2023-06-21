@@ -20,7 +20,7 @@ export default {
   components: { EditUser, UserProfile },
   props: {
     userid: {
-      type: String,
+      type: String,required: true
     }
   },
   data() {

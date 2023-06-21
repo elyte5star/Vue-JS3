@@ -9,7 +9,7 @@
                                 <div class="btn-group">
                                     <button @click="deleteUser(user_info.userid)" class="btn btn-danger" type="submit"
                                         id="delete_account"><i class="fa fa-trash-o"></i>
-                                        Delete account</button> 
+                                        Delete account</button>
                                     <button id="user_info" @click="changeActiveComponent('user_details')"
                                         class="btn btn-info"><i class="fa fa-user-circle"></i>
                                         User
@@ -114,7 +114,7 @@ export default {
     },
     props: {
         user_info: {
-            type: Object,
+            type: Object, required: true
         }
     },
     methods: {
