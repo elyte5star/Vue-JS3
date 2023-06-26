@@ -12,12 +12,12 @@ import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
     state: () => ({
-        users: null, user: null, bookingsHistory: null, alertStore: userAlertStore()
+        users: [], user: {}, bookingsHistory: null, alertStore: userAlertStore()
     }),
     actions: {
         async getUsers() {
             try {
-                const response = await fetchMethodWrapper.get(baseURL + '/all');
+                const response = await fetchMethodWrapper.get(baseURL);
                 this.users = response.users;
 
             } catch (error) {
@@ -84,7 +84,7 @@ export const userStore = defineStore({
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
-            }).then(async (result) => {
+            }).then(async (result: any) => {
                 if (result.isConfirmed) {
 
                     await fetchMethodWrapper.delete(baseURL + '/' + id);

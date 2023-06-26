@@ -153,7 +153,7 @@
                             <div class="ibox-content text-center">
                                 <h6><i class="fa fa-phone"></i> +47 409 78 057</h6>
                                 <h6><a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
-                                    elyte5star@gmail.com</a></h6>
+                                        elyte5star@gmail.com</a></h6>
                                 <h6><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a></h6>
                                 <span class="small">
                                     Please contact with us if you have any questions. We are avalible 24h.
@@ -258,15 +258,15 @@ export default {
                     email: this.reviewer_email,
                     rating: Number(this.rating),
                     comment: this.review,
-                    product_id: this.product.pid
+                    product_id: this.product.pid,
                 }
-                console.log(productReview)
 
                 await this.pStore.submitReview(productReview)
-                this.reviewer_name = ''
-                this.rating = 0
-                this.review = ''
-                this.reviewer_email = ''
+                this.reviewer_name = '';
+                this.rating = 0;
+                this.review = '';
+                this.reviewer_email = '';
+                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
             } else {
 
                 if (!this.rating) this.alertStore.error("Product evaluation required!");
