@@ -93,7 +93,7 @@
                                 </span>
                                 <hr>
                                 <div class="payment-info">
-                                    <form @submit.prevent="onSubmit" class="payment-form">
+                                    <form @submit.prevent="makeReservation" class="payment-form">
                                         <div class="d-flex justify-content-between"><span>Card
                                                 details</span><img v-if="user" class="rounded"
                                                 :src="'src/assets/images/' + userImage" v-bind:alt="user.username"
@@ -254,7 +254,7 @@ export default {
         emptyCart() {
             this.cartStore.clearCart();
         },
-        async onSubmit() {
+        async makeReservation() {
             if (this.cardNumber && this.expiryDate && this.card && this.cardCvv && this.nameOnCard) {
                 let bookingDetails = {
                     "cardNumber": Number(this.cardNumber),
