@@ -1,5 +1,6 @@
 
 import { userAlertStore } from "@/stores/alert";
+import type { object } from "node_modules/vue-types/dist";
 
 
 /* eslint-disable */
@@ -53,6 +54,37 @@ export const greet = () => {
     return `Good ${time} <i class="fa fa-${icon}"></i>`
 
 }
+export function clone(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    // Handle Date
+    if (obj instanceof Date) {
+        let copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        let copy = [];
+        for (let i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        let copy = {};
+        for (let attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+}
 
 export const postToTokenEndpoint = async (url = "", data = {}) => {
     let options = {
@@ -81,13 +113,13 @@ export function is_valid_Email(email: string) {
     );
 }
 
-function isValidTel(tel: string) {
+export function isValidTel(tel: string) {
     // check for allowed characters using a regular expression
     const re = /^[0-9()+\-\s]*$/
     return re.test(tel);
 }
 
-export const is_Input_Error = (name: string, email: string, password: string, password_: string, tel: string) => {
+export const is_Input_Error = (name: string | null, email: string | null, password: string | null, password_: string | null, tel: string | null) => {
     const alertStore = userAlertStore();
     if (name.length == 0) {
         alertStore.error("Empty username!");

@@ -1,6 +1,5 @@
 <template>
   <div v-if="user" class="user">
-
     <component :is="{...activeComponent}" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="user_image"
       @changeActiveComponent="_changeActiveComponent" />
 

@@ -804,6 +804,10 @@ article:hover {
 
 }
 
+#passwordHelpBlock {
+    margin-top: -1.25rem;
+}
+
 /* End Login */
 
 /** CART **/
@@ -983,8 +987,9 @@ table.shoping-cart-table tr td:first-child {
 #order_history tr td {
     background-color: lightgoldenrodyellow;
 }
-#order_history tr td:hover{
-   cursor: pointer;
+
+#order_history tr td:hover {
+    cursor: pointer;
 }
 
 article h3 {

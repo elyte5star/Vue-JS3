@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="user_info">
         <div id="update_entry" class="update_entry">
             <div class="container">
                 <div class="row">
@@ -7,8 +7,8 @@
                         <form @submit.prevent="updateDetails">
                             <div class="text-center mb-3">
                                 <div class="btn-group">
-                                    <button @click="deleteUser(user_info.userid)" class="btn btn-danger" type="submit"
-                                        id="delete_account"><i class="fa fa-trash-o"></i>
+                                    <button @click.prevent="deleteUser(user_info.userid)" class="btn btn-danger"
+                                        type="submit" id="delete_account"><i class="fa fa-trash-o"></i>
                                         Delete account</button>
                                     <button id="user_info" @click="changeActiveComponent('user_details')"
                                         class="btn btn-info"><i class="fa fa-user-circle"></i>
@@ -40,7 +40,8 @@
 
                             <!-- Password input -->
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="editPassword">Password:</label>
+                                <label class="form-label" for="editPassword">Password: <em>(Leave default to
+                                        keep the same password)</em></label>
                                 <input v-model="editPassword" type="password" id="editPassword" class="form-control"
                                     aria-describedby="passwordHelpBlock" autocomplete="on" />
                                 <a href="javascript:void(0)" @click="showPassword('editPassword', 'toggleEditPassword')"><i
@@ -54,9 +55,10 @@
 
                             <!-- Repeat Password input -->
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="editRepeatPassword">Repeat password:</label>
+                                <label class="form-label" for="editRepeatPassword">Repeat password: <em>(Leave default to
+                                        keep the same password)</em></label>
                                 <input v-model="editRepeatPassword" type="password" id="editRepeatPassword"
-                                    class="form-control" />
+                                    class="form-control" aria-describedby="passwordHelpBlock" autocomplete="on" />
                                 <a href="javascript:void(0)"
                                     @click="showPassword('editRepeatPassword', 'toggleEditRepeatPassword')"><i
                                         class="bi bi-eye-slash" id="toggleEditRepeatPassword"></i></a>
@@ -69,7 +71,7 @@
                             <!-- Telephone input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editTel">Telephone:</label>
-                                <input v-model="editTel" type="tel" id="editTel" class="form-control" />
+                                <input v-model="editTel" type="tel" id="editTel" class="form-control" maxlength="20" />
                             </div>
 
 
@@ -103,14 +105,16 @@
 
 
 import { userStore } from "@/stores/userAccount";
-import { showPassword } from "@/helpers/script";
+import { showPassword, is_Input_Error } from "@/helpers/script";
+import { defineComponent } from 'vue'
 
 
-export default {
+
+export default defineComponent({
     name: 'EditUser',
     data() {
 
-        return { editTel: '', editRepeatPassword: '', editPassword: '', editEmail: '', editUsername: '', showPassword }
+        return { editTel: null, editRepeatPassword: null, editPassword: null, editEmail: null, editUsername: null, showPassword, userStore: userStore() }
     },
     props: {
         user_info: {
@@ -122,12 +126,15 @@ export default {
             this.$emit('changeActiveComponent', str);
         },
         async updateDetails() {
-            console.log("Here to update");
-        },
-        async deleteUser(id: string) {
-            const user_store = userStore();
-            await user_store.deleteUserAccount(id);
+            if (!is_Input_Error(this.editUsername, this.editEmail, this.editPassword, this.editRepeatPassword, this.editTel)) {
+                const updateUserData = { username: this.editUsername, email: this.editEmail, telephone: this.editTel, password: this.editPassword }
+                if (this.editPassword == 'default') updateUserData.password = null;
+                await this.userStore.updateUserById(this.user_info.userid, updateUserData);
+            }
 
+        },
+        async deleteUser(userid: string) {
+            await this.userStore.deleteUserAccount(userid);
         }
 
     },
@@ -135,7 +142,10 @@ export default {
         this.editUsername = this.user_info.username;
         this.editTel = this.user_info.telephone;
         this.editEmail = this.user_info.email;
+        this.editRepeatPassword = 'default'
+        this.editPassword = 'default'
+
     },
 
-}
+})
 </script>

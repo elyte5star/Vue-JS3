@@ -279,7 +279,6 @@ export default {
                 if (!this.expiryDate) alertStore.error("Expiry Date required");
                 if (!this.cardCvv) alertStore.error("CVV number required");
 
-
             }
 
 

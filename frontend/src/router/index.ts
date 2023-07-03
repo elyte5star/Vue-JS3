@@ -98,6 +98,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  console.log(import.meta.env.BASE_URL);
 
   // clear alert on route change
   const alertStore = userAlertStore();

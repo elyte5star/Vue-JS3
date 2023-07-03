@@ -57,7 +57,7 @@
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerRepeatPassword">Repeat password:</label>
                                 <input v-model="registerRepeatPassword" type="password" id="registerRepeatPassword"
-                                    class="form-control" />
+                                    class="form-control"  aria-describedby="passwordHelpBlock" autocomplete="on"/>
                                 <a href="javascript:void(0)"
                                     @click="showPassword('registerRepeatPassword', 'toggleRegisterRepeatPassword')"><i
                                         class="bi bi-eye-slash" id="toggleRegisterRepeatPassword"></i></a>

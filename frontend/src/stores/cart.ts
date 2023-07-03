@@ -8,7 +8,9 @@ let itemsInCart = window.localStorage.getItem('cartCount');
 
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const baseURL = import.meta.env.VITE_API_URL + 'booking';
+const baseURL = import.meta.env.VITE_API_URL;
+
+
 
 import { userAlertStore } from './alert';
 
@@ -52,7 +54,20 @@ export const userCartStore = defineStore({
         },
         async checkOut(bookingDetails) {
             const alertStore = userAlertStore();
-            const response = await fetchMethodWrapper.post(baseURL + '/create', bookingDetails);
+            const response = await fetchMethodWrapper.post(baseURL + 'booking/create', bookingDetails);
+            if (!response.success) {
+                alertStore.error(response.message || 'Couldnt make reservation');
+                return;
+
+
+            }
+            alertStore.success("Booking with id " + response.oid + " created!")
+            this.clearCart();
+
+        },
+        async checkOutQueue(bookingDetails) {
+            const alertStore = userAlertStore();
+            const response = await fetchMethodWrapper.post(baseURL + 'q_booking/create', bookingDetails);
             if (response.success) {
                 alertStore.success("Booking with id " + response.oid + " created!")
                 this.clearCart();

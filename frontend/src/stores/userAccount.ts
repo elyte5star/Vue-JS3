@@ -16,66 +16,58 @@ export const userStore = defineStore({
     }),
     actions: {
         async getUsers() {
-            try {
-                const response = await fetchMethodWrapper.get(baseURL);
-                this.users = response.users;
-
-            } catch (error) {
-                this.users = { error };
+            const response = await fetchMethodWrapper.get(baseURL);
+            if (!response.success) {
+                this.alertStore.error(response.message || 'Couldnt get Users');
+                return;
             }
-
+            this.users = response.users;
         },
         async signUP(user: {}) {
             const response = await fetchMethodWrapper.post(baseURL + '/signup', user);
-
-            if (response["success"]) {
-
-                this.alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
-
-            } else {
-                this.alertStore.error(response.message);
-
+            if (!response.success) {
+                this.alertStore.error(response.message || 'Registration unsuccessful!');
+                return;
             }
+            this.alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
+
         },
         async customerEnquiry(enquiry) {
             const response = await fetchMethodWrapper.post(baseURL + '/customer/service', enquiry);
-            if (response["success"]) {
-                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.eid);
+            if (!response.success) {
+                this.alertStore.error(response.message || 'Operation unsuccessful');
+                return;
             }
-            else {
-                this.alertStore.error(response.message);
-
-            }
-        },
-        async getUserById(id: string) {
-            try {
-                const response = await fetchMethodWrapper.get(baseURL + '/' + id);
-                this.user = response.user;
-                this.bookingsHistory = response.user.bookings
-
-            } catch (error) {
-                this.user = { error };
-            }
-
+            this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.eid);
 
         },
-        async updateUserById(id: string, new_data: any) {
-            try {
-                await fetchMethodWrapper.put(baseURL + '/' + id, new_data);
-                const authStore = userAuthStore();
-                if (id === authStore.user.userid) {
-                    const user = { ...authStore.user, ...new_data };
-                    localStorage.setItem('user', JSON.stringify(user));
-                }
-            } catch (error) {
-                this.user = { error };
+        async getUserById(userid: string) {
+            const response = await fetchMethodWrapper.get(baseURL + '/' + userid);
+            if (!response.success) {
+                this.alertStore.error(response.message || 'Operation unsuccessful');
+                return;
             }
+            this.user = response.user;
+            this.bookingsHistory = response.user.bookings
 
+        },
+        async updateUserById(userid: string, new_data: any) {
+            const response = await fetchMethodWrapper.put(baseURL + '/' + userid, new_data);
+            if (!response.success) {
+                this.alertStore.error(response.message || 'Operation unsuccessful');
+                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+                return;
+            }
+            const authStore = userAuthStore();
+            if (userid === authStore.user.userid) {
+                const user = { ...authStore.user, ...new_data };
+                localStorage.setItem('user', JSON.stringify(user));
+                authStore.user = user;
+            }
 
         },
 
-        async deleteUserAccount(id: string) {
-
+        async deleteUserAccount(userid: string) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -86,25 +78,20 @@ export const userStore = defineStore({
                 confirmButtonText: 'Yes, delete it!'
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
-
-                    await fetchMethodWrapper.delete(baseURL + '/' + id);
-                    // remove user from list after deleted
-                    this.users = this.users.filter(x => x.id !== id);
-
-                    const authStore = userAuthStore();
-                    if (id === authStore.user.userid) {
-                        authStore.logout();
+                    const response = await fetchMethodWrapper.delete(baseURL + '/' + userid);
+                    if (!response.success) {
+                        this.alertStore.error(response.message || 'Operation unsuccessful');
+                        return;
                     }
+                    // remove user from list after deleted
+                    this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
+                    const authStore = userAuthStore();
+                    if (userid === authStore.user.userid) authStore.logout();
 
-                    Swal.fire(
-                        'Deleted!',
-                        'Your account has been deleted.',
-                        'success'
-                    )
+                    this.alertStore.success('Your account has been deleted.')
+
                 }
             })
-
-
 
         },
 
