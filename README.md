@@ -23,6 +23,29 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
+ - Clone project with
+
+  ```
+  git clone git@github.com:elyte5star/e-commerce.git
+  ```
+
+  - Create file .env and set values for the environment variables below:
+
+  ```
+NODE_ENV=development
+VITE_API_URL=http://localhost:8000/
+VITE_API_CLIENT_ID=elyte
+VITE_BASE_URL=http://localhost:9000/
+NGINX_PROXY_PASS=http://api:8000/
+NGINX_PORT=8000
+VITE_WAIT_TIME=100
+VITE_APP_MSAL_CLIENT_ID=xxxxxx
+VITE_APP_MSAL_LOGIN_AUTHORITY=https://login.microsoftonline.com/xxxxxx
+VITE_GOOGLE_CLIENT_ID=xxxxxx.apps.googleusercontent.com
+VITE_GOOGLE_CLIENT_SECRET=xxxxxx
+  ```
+
+
 ```sh
 npm install
 ```
