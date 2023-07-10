@@ -53,3 +53,4 @@ venv.bak/
 # Session
 Session.vim
 Sessionx.vim
+*.local
