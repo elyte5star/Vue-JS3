@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <div>
@@ -8,7 +6,7 @@
     <div>
       <AlertVue />
     </div>
-    <router-view />
+    <div><router-view /></div>
   </div>
 </template>
 

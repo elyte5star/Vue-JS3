@@ -5,7 +5,7 @@ import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 import Swal from 'sweetalert2/dist/sweetalert2';
 
 
-const baseURL = import.meta.env.VITE_API_URL + 'products';
+const APIURL = import.meta.env.VITE_API_URL + 'products';
 
 
 export const productStore = defineStore({
@@ -15,7 +15,7 @@ export const productStore = defineStore({
     }),
     actions: {
         async getProducts() {
-            const response = await fetchMethodWrapper.get(baseURL);
+            const response = await fetchMethodWrapper.get(APIURL);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Couldnt get products');
                 return;
@@ -24,7 +24,7 @@ export const productStore = defineStore({
 
         },
         async submitReview(review: any) {
-            const response = await fetchMethodWrapper.post(baseURL + '/create/review', review);
+            const response = await fetchMethodWrapper.post(APIURL + '/create/review', review);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');
                 return;
@@ -33,7 +33,7 @@ export const productStore = defineStore({
 
         },
         async getProductById(pid: string) {
-            const response = await fetchMethodWrapper.get(baseURL + '/' + pid);
+            const response = await fetchMethodWrapper.get(APIURL + '/' + pid);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');
                 return;
@@ -54,7 +54,7 @@ export const productStore = defineStore({
                 confirmButtonText: 'Yes, delete it!'
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
-                    const response = await fetchMethodWrapper.delete(baseURL + '/' + pid);
+                    const response = await fetchMethodWrapper.delete(APIURL + '/' + pid);
                     if (!response.success) {
                         this.alertStore.error(response.message || 'Operation unsuccessful');
                         return;
@@ -69,7 +69,7 @@ export const productStore = defineStore({
         async sortProductsBykey(key: string) {
             try {
                 this.key = key;
-                this.products = await fetchMethodWrapper.get(baseURL + '/sort/' + key);
+                this.products = await fetchMethodWrapper.get(APIURL + '/sort/' + key);
 
             } catch (error) {
                 this.products = { error };

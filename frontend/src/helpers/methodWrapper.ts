@@ -10,7 +10,7 @@ export const fetchMethodWrapper = {
 
 
 function request(method: string) {
-    return (url: string, body: object) => {
+    return (url: string, body) => {
         const requestOptions = {
             method,
             headers: authHeader(url)
@@ -22,6 +22,7 @@ function request(method: string) {
         return fetch(url, requestOptions).then(handleResponse);
     }
 }
+
 
 
 
@@ -43,6 +44,7 @@ async function handleResponse(response) {
     const isJson = response.headers?.get('content-type')?.includes('application/json');
     const data = isJson ? await response.json() : null;
     // check for error response
+
     if (!response.ok) {
         const { user, logout } = userAuthStore();
         if ([401, 403].includes(response.status) && user) {

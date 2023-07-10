@@ -1,6 +1,6 @@
 
 
-export type tokenData = {
+export interface tokenData {
     access_token: string;
     refresh_token: string;
     token_type: string;
@@ -12,7 +12,7 @@ export type tokenData = {
 }
 
 
-export type Booking = {
+export interface Booking{
     total_price: number;
     cart: Array<Product>;
     owner_id: string;
@@ -20,7 +20,7 @@ export type Booking = {
     created_at: Date
 }
 
-export type Review = {
+export interface Review {
     rating: number;
     rid: string;
     created_at: Date;
@@ -30,13 +30,13 @@ export type Review = {
     product_id: string;
 
 }
-export type Enquiry = {
+export interface Enquiry {
     client_name: string;
     client_email: string;
     subject: string;
     message: string;
 }
-export type Product = {
+export interface Product {
     pid: string;
     details: string;
     description: string;
@@ -51,7 +51,7 @@ export type Product = {
 
 }
 
-export type User = {
+export interface User{
     username: string;
     email: string;
     active: boolean;

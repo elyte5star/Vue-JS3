@@ -8,7 +8,7 @@ let itemsInCart = window.localStorage.getItem('cartCount');
 
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const baseURL = import.meta.env.VITE_API_URL;
+const APIURL = import.meta.env.VITE_API_URL;
 
 
 
@@ -18,7 +18,7 @@ import { userAlertStore } from './alert';
 export const userCartStore = defineStore({
     id: 'cart',
     state: () => ({
-        cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0,
+        cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0, alertStore: userAlertStore()
     }),
     actions: {
         addToCart(product, volume) {
@@ -53,28 +53,24 @@ export const userCartStore = defineStore({
 
         },
         async checkOut(bookingDetails) {
-            const alertStore = userAlertStore();
-            const response = await fetchMethodWrapper.post(baseURL + 'booking/create', bookingDetails);
+
+            const response = await fetchMethodWrapper.post(APIURL + 'booking/create', bookingDetails);
             if (!response.success) {
-                alertStore.error(response.message || 'Couldnt make reservation');
+                this.alertStore.error(response.message || 'Couldnt make reservation');
                 return;
-
-
             }
-            alertStore.success("Booking with id " + response.oid + " created!")
+            this.alertStore.success("Booking with id " + response.oid + " created!")
             this.clearCart();
 
         },
         async checkOutQueue(bookingDetails) {
-            const alertStore = userAlertStore();
-            const response = await fetchMethodWrapper.post(baseURL + 'q_booking/create', bookingDetails);
+            const response = await fetchMethodWrapper.post(APIURL + 'q_booking/create', bookingDetails);
             if (response.success) {
-                alertStore.success("Booking with id " + response.oid + " created!")
+                this.alertStore.success("Booking with id " + response.oid + " created!")
                 this.clearCart();
 
             } else {
-                alertStore.error(response.message);
-
+                this.alertStore.error(response.message);
             }
 
         }

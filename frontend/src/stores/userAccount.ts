@@ -7,7 +7,7 @@ import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 import { userAuthStore } from '@/stores/auth_store'
 import { Booking } from '@/helpers/my-types';
 
-const baseURL = import.meta.env.VITE_API_URL + 'users';
+const APIURL = import.meta.env.VITE_API_URL + 'users';
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
@@ -16,7 +16,7 @@ export const userStore = defineStore({
     }),
     actions: {
         async getUsers() {
-            const response = await fetchMethodWrapper.get(baseURL);
+            const response = await fetchMethodWrapper.get(APIURL);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Couldnt get Users');
                 return;
@@ -24,7 +24,7 @@ export const userStore = defineStore({
             this.users = response.users;
         },
         async signUP(user: {}) {
-            const response = await fetchMethodWrapper.post(baseURL + '/signup', user);
+            const response = await fetchMethodWrapper.post(APIURL + '/signup', user);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Registration unsuccessful!');
                 return;
@@ -33,7 +33,7 @@ export const userStore = defineStore({
 
         },
         async customerEnquiry(enquiry) {
-            const response = await fetchMethodWrapper.post(baseURL + '/customer/service', enquiry);
+            const response = await fetchMethodWrapper.post(APIURL + '/customer/service', enquiry);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');
                 return;
@@ -42,7 +42,7 @@ export const userStore = defineStore({
 
         },
         async getUserById(userid: string) {
-            const response = await fetchMethodWrapper.get(baseURL + '/' + userid);
+            const response = await fetchMethodWrapper.get(APIURL + '/' + userid);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');
                 return;
@@ -52,7 +52,7 @@ export const userStore = defineStore({
 
         },
         async updateUserById(userid: string, new_data: any) {
-            const response = await fetchMethodWrapper.put(baseURL + '/' + userid, new_data);
+            const response = await fetchMethodWrapper.put(APIURL + '/' + userid, new_data);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
@@ -78,7 +78,7 @@ export const userStore = defineStore({
                 confirmButtonText: 'Yes, delete it!'
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
-                    const response = await fetchMethodWrapper.delete(baseURL + '/' + userid);
+                    const response = await fetchMethodWrapper.delete(APIURL + '/' + userid);
                     if (!response.success) {
                         this.alertStore.error(response.message || 'Operation unsuccessful');
                         return;
@@ -87,7 +87,6 @@ export const userStore = defineStore({
                     this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
                     const authStore = userAuthStore();
                     if (userid === authStore.user.userid) authStore.logout();
-
                     this.alertStore.success('Your account has been deleted.')
 
                 }

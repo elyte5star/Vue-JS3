@@ -9,8 +9,11 @@
   ],
   "compilerOptions": {
     "composite": true,
-    
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   }
 }

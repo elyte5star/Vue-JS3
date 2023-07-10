@@ -1,5 +1,7 @@
-import { defineStore } from 'pinia';
 
+
+
+import { defineStore } from 'pinia';
 
 
 import { userAlertStore } from './alert';
@@ -7,24 +9,23 @@ import { userAlertStore } from './alert';
 import router from '@/router/index'
 
 import { postToTokenEndpoint } from "@/helpers/script";
+import { msalConfig, loginRequest } from "@/helpers/msoftAuthConfig";
+import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const baseURL = import.meta.env.VITE_API_URL + 'auth';
-
+const APIURL = import.meta.env.VITE_API_URL + 'auth';
+let user = localStorage.getItem('user')
 export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
-        user: JSON.parse(localStorage.getItem('user')),
-        returnUrl: '',
+        user: user ? JSON.parse(user) : null,
+        returnUrl: '', alert: userAlertStore(), msalConfig
     }),
     actions: {
 
-        async login(userData) {
-
-
-            const response = await postToTokenEndpoint(baseURL + '/token', userData)
-
-            if (response["success"]) {
+        async login(userData: object) {
+            const response = await postToTokenEndpoint(APIURL + '/token', userData)
+            if (response.success && response.token_data !== undefined) {
 
                 this.user = response.token_data;
 
@@ -33,14 +34,37 @@ export const userAuthStore = defineStore({
                 return router.push(this.returnUrl || '/');
 
             } else {
-                const alertStore = userAlertStore();
-                alertStore.error(response.message);
+                this.alert.error(response.message);
             }
         },
-        logout() {
+
+        async cloudLogin(userData: object) {
+            const response = await fetchMethodWrapper.post(APIURL + '/get_token', userData);
+            if (response.success && response.token_data !== undefined) {
+
+                this.user = response.token_data;
+
+                localStorage.setItem('user', JSON.stringify(response.token_data));
+
+                return router.push(this.returnUrl || {
+                    name: 'oneUser', params: {
+                        userid: this.user.userid
+                    }
+                });
+
+
+            } else {
+
+                this.alert.error(response.message);
+            }
+
+
+        },
+
+        async logout() {
             this.user = null;
             localStorage.removeItem('user');
-            router.push('/login');
+            router.push('/');
         }
 
     }

@@ -8,10 +8,12 @@
                         <form @submit.prevent="onSubmitLogin" class="login-form" id="login_form">
                             <div class="text-center mb-3">
                                 <p>Sign in with:</p>
-                                <button v-on:click="getMsoftToken()" type="button" class="btn btn-link btn-floating mx-1">
+                                <button v-on:click.prevent="msoftLogin" type="button"
+                                    class="btn btn-link btn-floating mx-1">
                                     <i class="fa fa-windows"></i>
                                 </button>
-                                <button v-on:click="getGoogleToken()" type="button" class="btn btn-link btn-floating mx-1">
+                                <button v-on:click.prevent="googleLogin" type="button"
+                                    class="btn btn-link btn-floating mx-1">
                                     <i class="fa fa-google"></i>
                                 </button>
                             </div>
@@ -64,7 +66,7 @@
                             <div class="ibox-content text-center">
                                 <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
                                 <h3><a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
-                                    elyte5star@gmail.com</a></h3>
+                                        elyte5star@gmail.com</a></h3>
                                 <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a></h3>
                                 <span class="small">
                                     Please contact with us if you have any questions. We are avalible 24h.
@@ -84,30 +86,52 @@
 
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
+import * as msal from "@azure/msal-browser";
+import { googleOneTap, decodeCredential, CallbackTypes } from "vue3-google-login"
+import { isUserNameValid, showPassword, clone } from "@/helpers/script";
+import { loginRequest } from "@/helpers/msoftAuthConfig";
+import { defineComponent } from 'vue'
 
-import { isUserNameValid, showPassword } from "@/helpers/script";
-import { userAlertStore } from '@/stores/alert';
-
-export default {
+export default defineComponent({
     name: "LoginView",
     data() {
         return {
-            username: "", password: "", showPassword
+            username: "", password: "", showPassword, account: null, authStore: userAuthStore(),
         }
     },
     methods: {
 
-        getGoogleToken() {
+        async googleLogin() {
+            try {
+                const loginResponse = await googleOneTap();
+                const userData: any = decodeCredential(loginResponse.credential)
+                await this.authStore.cloudLogin({ userid: userData.sub, email: userData.email, username: userData.name })
 
-            console.log("Google is here");
+            } catch (error) {
+
+                console.error(`error during authentication: ${error}`);
+            }
+
         },
-        getMsoftToken() {
+        async msoftLogin() {
+            try {
+                const loginResponse: msal.AuthenticationResult = await this.$msalInstance.loginPopup(loginRequest);
+                this.account = loginResponse.account;
+                const userData = { userid: this.account.idTokenClaims.oid, email: this.account.username, username: this.account.name }
+                await this.authStore.cloudLogin(userData)
+                    ;
+            } catch (error) {
 
-            console.log("MSOFT is here");
+                console.error(`error during authentication: ${error}`);
+            }
 
+
+        },
+        async SignOut() {
+            await this.$msalInstance.logout({});
         },
         async onSubmitLogin() {
-            const alertStore = userAlertStore();
+
             if (isUserNameValid(this.username) && this.password) {
                 let form = new FormData();
                 form.append("username", this.username);
@@ -116,23 +140,26 @@ export default {
                 for (const [key, value] of form) {
                     userData.append(key, value);
                 }
-                const authStore = userAuthStore();
-                await authStore.login(userData);
+
+                await this.authStore.login(userData);
                 this.username = "";
                 this.password = "";
 
             } else {
-               
-                if (!this.password) alertStore.error("Password required!");
-                if (!isUserNameValid(this.username)) alertStore.error("Invalid username!");
+
+                if (!this.password) this.authStore.alert.error("Password required!");
+                if (!isUserNameValid(this.username)) this.authStore.alert.error("Invalid username!");
 
 
             }
         }
 
     },
+    created() {
+        this.$msalInstance = new msal.PublicClientApplication(this.authStore.msalConfig);
+    },
+   
 
 
-
-};
+});
 </script>
