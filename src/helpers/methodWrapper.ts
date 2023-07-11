@@ -1,5 +1,6 @@
 import { userAuthStore } from "@/stores/auth_store";
 import Swal from 'sweetalert2/dist/sweetalert2';
+
 export const fetchMethodWrapper = {
     get: request('GET'),
     post: request('POST'),
@@ -31,7 +32,7 @@ function authHeader(url) {
     // return auth header with jwt if user is logged in and request is to the api url
     const { user } = userAuthStore();
     const isLoggedIn = !!user?.access_token;
-    const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL);
+    const isApiUrl = url.startsWith(process.env.VUE_API_URL);
     if (isLoggedIn && isApiUrl) {
         return { Authorization: 'Bearer ' + user.access_token };
     } else {

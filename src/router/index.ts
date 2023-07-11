@@ -104,7 +104,7 @@ router.beforeEach(async (to) => {
   const alertStore = userAlertStore();
 
 
-  alertStore.clear();
+  alertStore.reset();
 
   // redirect to login page if not logged in and trying to access a restricted page
   const publicPages = ['Login', 'Home', 'oneProduct','Contact','Cart', 'Register'];

@@ -12,12 +12,7 @@ import * as msal from "@azure/msal-browser";
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
  */
 
-export interface MsalPluginOptions {
-    clientId: string;
-    loginAuthority: string;
-    passwordAuthority: string;
-    knownAuthority: string;
-}
+
 
 
 
@@ -25,8 +20,8 @@ export interface MsalPluginOptions {
 
 export const msalConfig: msal.Configuration = {
     auth: {
-        clientId: import.meta.env.VITE_APP_MSAL_CLIENT_ID,
-        authority: import.meta.env.VITE_APP_MSAL_LOGIN_AUTHORITY,
+        clientId: process.env.VUE_APP_MSAL_CLIENT_ID,
+        authority: process.env.VUE_APP_MSAL_LOGIN_AUTHORITY,
         redirectUri: import.meta.env.BASE_URL,
         postLogoutRedirectUri: '/logout'
     },
@@ -66,7 +61,7 @@ export const msalConfig: msal.Configuration = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest: msal.PopupRequest = {
-    scopes: ["User.Read.All", "openid", "profile", "offline_access"]
+    scopes: ["User.Read.All"]
 };
 
 /**

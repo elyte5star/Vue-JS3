@@ -1,20 +1,20 @@
 import { defineStore } from 'pinia';
 
-
+import type { Alert } from '@/helpers/my-types';
 
 export const userAlertStore = defineStore({
     id: 'alert',
     state: () => ({
-        alert: null
+        alert: null as Alert | null
     }),
     actions: {
-        success(message) {
+        success(message: string) {
             this.alert = { message, type: 'alert-success' };
         },
-        error(message) {
+        error(message: string) {
             this.alert = { message, type: 'alert-danger' };
         },
-        clear() {
+        reset() {
             this.alert = null;
         }
     }

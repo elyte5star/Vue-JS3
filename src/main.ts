@@ -31,11 +31,10 @@ const options = {
 const app = createApp(App);
 app.config.globalProperties.$msalInstance = {};
 
-console.log(process.env.NGINX_PROXY_PASS)
 
 app.use(VueSweetalert2, options);
 app.use(vue3GoogleLogin, {
-    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID
+    clientId: process.env.VUE_GOOGLE_CLIENT_ID
 })
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(createPinia());

@@ -8,7 +8,7 @@ let itemsInCart = window.localStorage.getItem('cartCount');
 
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const APIURL = import.meta.env.VITE_API_URL;
+const APIURL = process.env.VUE_API_URL;
 
 
 

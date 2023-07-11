@@ -158,7 +158,14 @@ export default defineComponent({
     created() {
         this.$msalInstance = new msal.PublicClientApplication(this.authStore.msalConfig);
     },
-   
+    mounted() {
+        const accounts = this.$msalInstance.getAllAccounts();
+        if (accounts.length == 0) {
+            return;
+        }
+        this.account = accounts[0];
+        
+    },
 
 
 });

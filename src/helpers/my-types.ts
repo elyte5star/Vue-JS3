@@ -11,8 +11,11 @@ export interface tokenData {
 
 }
 
-
-export interface Booking{
+export interface Alert {
+    type: string;
+    message: string;
+}
+export interface Booking {
     total_price: number;
     cart: Array<Product>;
     owner_id: string;
@@ -51,7 +54,7 @@ export interface Product {
 
 }
 
-export interface User{
+export interface User {
     username: string;
     email: string;
     active: boolean;

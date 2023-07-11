@@ -5,9 +5,9 @@ import Swal from 'sweetalert2/dist/sweetalert2';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 import { userAuthStore } from '@/stores/auth_store'
-import { Booking } from '@/helpers/my-types';
 
-const APIURL = import.meta.env.VITE_API_URL + 'users';
+
+const APIURL = process.env.VUE_API_URL + 'users';
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',

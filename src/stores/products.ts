@@ -5,7 +5,7 @@ import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 import Swal from 'sweetalert2/dist/sweetalert2';
 
 
-const APIURL = import.meta.env.VITE_API_URL + 'products';
+const APIURL = process.env.VUE_API_URL + 'products';
 
 
 export const productStore = defineStore({

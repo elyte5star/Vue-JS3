@@ -12,7 +12,7 @@ import { postToTokenEndpoint } from "@/helpers/script";
 import { msalConfig, loginRequest } from "@/helpers/msoftAuthConfig";
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
-const APIURL = import.meta.env.VITE_API_URL + 'auth';
+const APIURL = process.env.VUE_API_URL + 'auth';
 let user = localStorage.getItem('user')
 export const userAuthStore = defineStore({
     id: 'auth',
