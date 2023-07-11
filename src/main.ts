@@ -29,7 +29,7 @@ const options = {
 
 
 const app = createApp(App);
-app.config.globalProperties.$msalInstance = {};
+//app.config.globalProperties.$msalInstance = {};
 
 
 app.use(VueSweetalert2, options);

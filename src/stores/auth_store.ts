@@ -9,7 +9,7 @@ import { userAlertStore } from './alert';
 import router from '@/router/index'
 
 import { postToTokenEndpoint } from "@/helpers/script";
-import { msalConfig, loginRequest } from "@/helpers/msoftAuthConfig";
+
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 const APIURL = process.env.VUE_API_URL + 'auth';
@@ -19,7 +19,7 @@ export const userAuthStore = defineStore({
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
         user: user ? JSON.parse(user) : null,
-        returnUrl: '', alert: userAlertStore(), msalConfig
+        returnUrl: '', alert: userAlertStore(), 
     }),
     actions: {
 

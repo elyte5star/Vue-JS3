@@ -87,16 +87,16 @@
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
 import * as msal from "@azure/msal-browser";
-import { googleOneTap, decodeCredential, CallbackTypes } from "vue3-google-login"
-import { isUserNameValid, showPassword, clone } from "@/helpers/script";
-import { loginRequest } from "@/helpers/msoftAuthConfig";
+import { googleOneTap, decodeCredential } from "vue3-google-login"
+import { isUserNameValid, showPassword } from "@/helpers/script";
+import { loginRequest, _msalInstance } from "@/helpers/msoftAuthConfig";
 import { defineComponent } from 'vue'
 
 export default defineComponent({
     name: "LoginView",
     data() {
         return {
-            username: "", password: "", showPassword, account: null, authStore: userAuthStore(),
+            msalInstance: null, username: "", password: "", showPassword, account: null, authStore: userAuthStore(),
         }
     },
     methods: {
@@ -115,7 +115,7 @@ export default defineComponent({
         },
         async msoftLogin() {
             try {
-                const loginResponse: msal.AuthenticationResult = await this.$msalInstance.loginPopup(loginRequest);
+                const loginResponse: msal.AuthenticationResult = await this.msalInstance.loginPopup(loginRequest);
                 this.account = loginResponse.account;
                 const userData = { userid: this.account.idTokenClaims.oid, email: this.account.username, username: this.account.name }
                 await this.authStore.cloudLogin(userData)
@@ -125,10 +125,9 @@ export default defineComponent({
                 console.error(`error during authentication: ${error}`);
             }
 
-
         },
         async SignOut() {
-            await this.$msalInstance.logout({});
+            await this.msalInstance.logout({});
         },
         async onSubmitLogin() {
 
@@ -155,16 +154,16 @@ export default defineComponent({
         }
 
     },
-    created() {
-        this.$msalInstance = new msal.PublicClientApplication(this.authStore.msalConfig);
+    async created() {
+        this.msalInstance = _msalInstance;
     },
-    mounted() {
-        const accounts = this.$msalInstance.getAllAccounts();
+    async mounted() {
+        const accounts = this.msalInstance.getAllAccounts();
         if (accounts.length == 0) {
             return;
         }
         this.account = accounts[0];
-        
+
     },
 
 

@@ -13,14 +13,9 @@ import * as msal from "@azure/msal-browser";
  */
 
 
-
-
-
-
-
-export const msalConfig: msal.Configuration = {
+const msalConfig: msal.Configuration = {
     auth: {
-        clientId: process.env.VUE_APP_MSAL_CLIENT_ID,
+        clientId: import.meta.env.VITE_APP_MSAL_CLIENT_ID,
         authority: process.env.VUE_APP_MSAL_LOGIN_AUTHORITY,
         redirectUri: import.meta.env.BASE_URL,
         postLogoutRedirectUri: '/logout'
@@ -49,10 +44,23 @@ export const msalConfig: msal.Configuration = {
                         console.warn(message);
                         return;
                 }
-            }
+            },
+            piiLoggingEnabled: false
+        },
+        windowHashTimeout: 60000,
+        iframeHashTimeout: 6000,
+        loadFrameTimeout: 0,
+        asyncPopups: false
+    },
+    telemetry: {
+        application: {
+            appName: "My Application",
+            appVersion: "1.0.0"
         }
     }
 };
+
+export const _msalInstance = new msal.PublicClientApplication(msalConfig);
 
 /**
  * Scopes you add here will be prompted for user consent during sign-in.
@@ -63,6 +71,8 @@ export const msalConfig: msal.Configuration = {
 export const loginRequest: msal.PopupRequest = {
     scopes: ["User.Read.All"]
 };
+
+
 
 /**
  * Add here the scopes to request when obtaining an access token for MS Graph API. For more information, see:
