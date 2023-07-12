@@ -47,7 +47,7 @@ export const userAuthStore = defineStore({
 
                 localStorage.setItem('user', JSON.stringify(response.token_data));
 
-                return router.push(this.returnUrl);
+                return router.push(this.returnUrl || '/');
 
 
             } else {
