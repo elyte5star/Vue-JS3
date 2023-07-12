@@ -96,7 +96,7 @@ export default defineComponent({
     name: "LoginView",
     data() {
         return {
-            msalInstance: null, username: "", password: "", showPassword, account: null, authStore: userAuthStore(),
+            msalInstance: _msalInstance, username: "", password: "", showPassword, authStore: userAuthStore(),
         }
     },
     methods: {
@@ -115,11 +115,15 @@ export default defineComponent({
         },
         async msoftLogin() {
             try {
-                const loginResponse: msal.AuthenticationResult = await this.msalInstance.loginPopup(loginRequest);
-                this.account = loginResponse.account;
-                const userData = { userid: this.account.idTokenClaims.oid, email: this.account.username, username: this.account.name }
-                await this.authStore.cloudLogin(userData)
-                    ;
+                await this.msalInstance.loginPopup(loginRequest);
+                const accounts = this.msalInstance.getAllAccounts();
+                if (accounts.length === 0) {
+                    return ;
+                }
+                const account = accounts[0]
+                const userData = { userid: account.localAccountId, email: account.username, username: account.name }
+                await this.authStore.cloudLogin(userData);
+
             } catch (error) {
 
                 console.error(`error during authentication: ${error}`);
@@ -158,11 +162,7 @@ export default defineComponent({
         this.msalInstance = _msalInstance;
     },
     async mounted() {
-        const accounts = this.msalInstance.getAllAccounts();
-        if (accounts.length == 0) {
-            return;
-        }
-        this.account = accounts[0];
+        await this.msalInstance.handleRedirectPromise();
 
     },
 
