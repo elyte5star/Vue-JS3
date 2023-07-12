@@ -16,6 +16,13 @@
                                     class="btn btn-link btn-floating mx-1">
                                     <i class="fa fa-google"></i>
                                 </button>
+                                <button v-on:click.prevent="gitLogin" type="button" class="btn btn-link btn-floating mx-1">
+                                    <i class="fa fa-github"></i>
+                                </button>
+                                <button v-on:click.prevent="twitterLogin" type="button"
+                                    class="btn btn-link btn-floating mx-1">
+                                    <i class="fa fa-twitter"></i>
+                                </button>
                             </div>
 
                             <p class="text-center">or:</p>
@@ -86,7 +93,7 @@
 
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
-import * as msal from "@azure/msal-browser";
+import { storeToRefs } from 'pinia';
 import { googleOneTap, decodeCredential } from "vue3-google-login"
 import { isUserNameValid, showPassword } from "@/helpers/script";
 import { loginRequest, _msalInstance } from "@/helpers/msoftAuthConfig";
@@ -96,7 +103,14 @@ export default defineComponent({
     name: "LoginView",
     data() {
         return {
-            msalInstance: _msalInstance, username: "", password: "", showPassword, authStore: userAuthStore(),
+            user: null, msalInstance: _msalInstance, username: "", password: "", showPassword, authStore: userAuthStore(),
+        }
+    },
+    watch: {
+        async user(newVal) {
+           
+                console.log(newVal,"this changed");
+          
         }
     },
     methods: {
@@ -113,12 +127,22 @@ export default defineComponent({
             }
 
         },
+        async gitLogin() {
+
+            console.error('git error during authentication:');
+
+        },
+        async twitterLogin() {
+
+            console.error('twitter error during authentication:');
+
+        },
         async msoftLogin() {
             try {
                 await this.msalInstance.loginPopup(loginRequest);
                 const accounts = this.msalInstance.getAllAccounts();
                 if (accounts.length === 0) {
-                    return ;
+                    return;
                 }
                 const account = accounts[0]
                 const userData = { userid: account.localAccountId, email: account.username, username: account.name }
@@ -159,11 +183,11 @@ export default defineComponent({
 
     },
     async created() {
-        this.msalInstance = _msalInstance;
+        await this.msalInstance.handleRedirectPromise();
     },
     async mounted() {
-        await this.msalInstance.handleRedirectPromise();
-
+        const { user } = storeToRefs(this.authStore);
+        this.user = user
     },
 
 

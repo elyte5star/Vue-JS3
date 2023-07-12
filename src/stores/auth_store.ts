@@ -39,6 +39,7 @@ export const userAuthStore = defineStore({
         },
 
         async cloudLogin(userData: object) {
+
             const response = await fetchMethodWrapper.post(APIURL + '/get_token', userData);
             if (response.success && response.token_data !== undefined) {
 
@@ -46,11 +47,7 @@ export const userAuthStore = defineStore({
 
                 localStorage.setItem('user', JSON.stringify(response.token_data));
 
-                return router.push(this.returnUrl || {
-                    name: 'oneUser', params: {
-                        userid: this.user.userid
-                    }
-                });
+                return router.push(this.returnUrl);
 
 
             } else {
