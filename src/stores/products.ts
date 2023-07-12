@@ -4,14 +4,14 @@ import { userAlertStore } from './alert';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 import Swal from 'sweetalert2/dist/sweetalert2';
 
-
+import { Product, Review } from '@/helpers/my-types';
 const APIURL = process.env.VUE_API_URL + 'products';
 
 
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        products: Array(), product: {}, alertStore: userAlertStore(), key: "", reviews: Array(), quantity: 0, productRecommendations: Array()
+        products: [] as Product[], product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], quantity: 0 as number, productRecommendations: Array()
     }),
     actions: {
         async getProducts() {
@@ -23,7 +23,7 @@ export const productStore = defineStore({
             this.products = response.products;
 
         },
-        async submitReview(review: any) {
+        async submitReview(review: Review) {
             const response = await fetchMethodWrapper.post(APIURL + '/create/review', review);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');

@@ -11,6 +11,7 @@ import router from '@/router/index'
 import { postToTokenEndpoint } from "@/helpers/script";
 
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
+import { tokenData } from '@/helpers/my-types';
 
 const APIURL = process.env.VUE_API_URL + 'auth';
 let user = localStorage.getItem('user')
@@ -18,8 +19,8 @@ export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
-        user: user ? JSON.parse(user) : null,
-        returnUrl: '', alert: userAlertStore(), 
+        user: user ? JSON.parse(user) : null as tokenData | null,
+        returnUrl: '', alert: userAlertStore(),
     }),
     actions: {
 

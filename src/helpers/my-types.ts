@@ -1,8 +1,7 @@
 
 
-export interface tokenData {
+export type tokenData = {
     access_token: string;
-    refresh_token: string;
     token_type: string;
     host_url: string;
     userid: string;
@@ -10,12 +9,24 @@ export interface tokenData {
     admin: boolean
 
 }
+export type User = {
+    username: string;
+    email: string;
+    active: boolean;
+    discount: null;
+    created_at: Date;
+    userid: string;
+    admin: boolean,
+    telephone: string;
+    bookings: Array<Booking>
 
-export interface Alert {
+};
+
+export type Alert = {
     type: string;
     message: string;
 }
-export interface Booking {
+export type Booking = {
     total_price: number;
     cart: Array<Product>;
     owner_id: string;
@@ -23,7 +34,7 @@ export interface Booking {
     created_at: Date
 }
 
-export interface Review {
+export type Review = {
     rating: number;
     rid: string;
     created_at: Date;
@@ -33,13 +44,13 @@ export interface Review {
     product_id: string;
 
 }
-export interface Enquiry {
+export type Enquiry = {
     client_name: string;
     client_email: string;
     subject: string;
     message: string;
 }
-export interface Product {
+export type Product = {
     pid: string;
     details: string;
     description: string;
@@ -54,15 +65,3 @@ export interface Product {
 
 }
 
-export interface User {
-    username: string;
-    email: string;
-    active: boolean;
-    discount: null;
-    created_at: Date;
-    userid: string;
-    admin: boolean,
-    telephone: string;
-    bookings: Array<Booking>
-
-};

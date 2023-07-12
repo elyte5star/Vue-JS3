@@ -5,14 +5,14 @@ import Swal from 'sweetalert2/dist/sweetalert2';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 import { userAuthStore } from '@/stores/auth_store'
-
+import { User, Enquiry, Booking } from '@/helpers/my-types';
 
 const APIURL = process.env.VUE_API_URL + 'users';
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
     state: () => ({
-        users: [], user: {}, bookingsHistory: null, alertStore: userAlertStore()
+        users: [] as User[], user: null as User | null, bookingsHistory: null as Booking | null, alertStore: userAlertStore(), authStore: userAuthStore()
     }),
     actions: {
         async getUsers() {
@@ -23,7 +23,7 @@ export const userStore = defineStore({
             }
             this.users = response.users;
         },
-        async signUP(user: {}) {
+        async signUP(user: any) {
             const response = await fetchMethodWrapper.post(APIURL + '/signup', user);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Registration unsuccessful!');
@@ -32,7 +32,7 @@ export const userStore = defineStore({
             this.alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
 
         },
-        async customerEnquiry(enquiry) {
+        async customerEnquiry(enquiry: Enquiry) {
             const response = await fetchMethodWrapper.post(APIURL + '/customer/service', enquiry);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');
@@ -47,9 +47,9 @@ export const userStore = defineStore({
                 this.alertStore.error(response.message || 'Operation unsuccessful');
                 return;
             }
-            this.user = response.user;
+            this.user = response.user
             this.bookingsHistory = response.user.bookings
-
+            
         },
         async updateUserById(userid: string, new_data: any) {
             const response = await fetchMethodWrapper.put(APIURL + '/' + userid, new_data);
@@ -58,11 +58,11 @@ export const userStore = defineStore({
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
                 return;
             }
-            const authStore = userAuthStore();
-            if (userid === authStore.user.userid) {
-                const user = { ...authStore.user, ...new_data };
+
+            if (userid === this.authStore.user.userid) {
+                const user = { ...this.authStore.user, ...new_data };
                 localStorage.setItem('user', JSON.stringify(user));
-                authStore.user = user;
+                this.authStore.user = user;
             }
 
         },
@@ -85,8 +85,8 @@ export const userStore = defineStore({
                     }
                     // remove user from list after deleted
                     this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
-                    const authStore = userAuthStore();
-                    if (userid === authStore.user.userid) authStore.logout();
+
+                    if (userid === this.authStore.user.userid) this.authStore.logout();
                     this.alertStore.success('Your account has been deleted.')
 
                 }
