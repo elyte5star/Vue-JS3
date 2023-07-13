@@ -11,10 +11,13 @@ import router from '@/router/index'
 import { postToTokenEndpoint } from "@/helpers/script";
 
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
+
 import type { tokenData } from '@/helpers/my-types';
 
 const APIURL = process.env.VUE_API_URL + 'auth';
+
 let user = localStorage.getItem('user')
+
 export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
@@ -42,6 +45,7 @@ export const userAuthStore = defineStore({
         async cloudLogin(userData: object) {
 
             const response = await fetchMethodWrapper.post(APIURL + '/get_token', userData);
+            
             if (response.success && response.token_data !== undefined) {
 
                 this.user = response.token_data;

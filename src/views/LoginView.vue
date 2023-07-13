@@ -16,9 +16,6 @@
                                     class="btn btn-link btn-floating mx-1">
                                     <i class="fa fa-google"></i>
                                 </button>
-                                <button v-on:click.prevent="gitLogin" type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fa fa-github"></i>
-                                </button>
                                 <button v-on:click.prevent="twitterLogin" type="button"
                                     class="btn btn-link btn-floating mx-1">
                                     <i class="fa fa-twitter"></i>
@@ -128,11 +125,7 @@ export default defineComponent({
 
 
         },
-        async gitLogin() {
-
-            console.error('git error during authentication:');
-
-        },
+       
         async twitterLogin() {
 
             console.error('twitter error during authentication:');
