@@ -10,7 +10,7 @@ import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 const APIURL = process.env.VUE_API_URL;
 
-
+import type { Product} from '@/helpers/my-types';
 
 import { userAlertStore } from './alert';
 
@@ -21,25 +21,23 @@ export const userCartStore = defineStore({
         cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0, alertStore: userAlertStore()
     }),
     actions: {
-        addToCart(product, volume) {
+        addToCart(product: Product, volume: number) {
 
             for (let i = 0; i < volume; i++) {
                 this.cart.push(product);
             }
 
             localStorage.setItem('cart', JSON.stringify(this.cart));
-            const kart = JSON.parse(localStorage.getItem('cart'));
-            this.itemsInCart = kart.length;
+            this.itemsInCart = this.cart.length;
             localStorage.setItem('cartCount', JSON.stringify(this.itemsInCart));
 
 
         },
-        removeFromCart(product) {
+        removeFromCart(product: Product) {
             const itemToBeRemoved = product
             this.cart.splice(this.cart.findIndex(a => a.pid === itemToBeRemoved.pid), 1)
             localStorage.setItem('cart', JSON.stringify(this.cart));
-            const kart = JSON.parse(localStorage.getItem('cart'));
-            this.itemsInCart = kart.length;
+            this.itemsInCart = this.cart.length;
             localStorage.setItem('cartCount', JSON.stringify(this.itemsInCart));
         },
         clearCart() {
@@ -52,7 +50,7 @@ export const userCartStore = defineStore({
             localStorage.removeItem('cartCount');
 
         },
-        async checkOut(bookingDetails) {
+        async checkOut(bookingDetails: any) {
 
             const response = await fetchMethodWrapper.post(APIURL + 'booking/create', bookingDetails);
             if (!response.success) {
@@ -63,7 +61,7 @@ export const userCartStore = defineStore({
             this.clearCart();
 
         },
-        async checkOutQueue(bookingDetails) {
+        async checkOutQueue(bookingDetails: any) {
             const response = await fetchMethodWrapper.post(APIURL + 'q_booking/create', bookingDetails);
             if (response.success) {
                 this.alertStore.success("Booking with id " + response.oid + " created!")

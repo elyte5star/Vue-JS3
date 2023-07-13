@@ -33,9 +33,7 @@ const app = createApp(App);
 
 
 app.use(VueSweetalert2, options);
-app.use(vue3GoogleLogin, {
-    clientId: process.env.VUE_GOOGLE_CLIENT_ID
-})
+app.use(vue3GoogleLogin, { clientId: process.env.VUE_GOOGLE_CLIENT_ID })
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(createPinia());
 app.use(router);

@@ -1,6 +1,6 @@
 
 import { userAlertStore } from "@/stores/alert";
-
+import type { CallbackTypes } from "vue3-google-login";
 
 
 /* eslint-disable */
@@ -188,7 +188,11 @@ function mark_text() {
     });
 }
 
-
+export const googleLogin: CallbackTypes.CredentialCallback = (response) => {
+    // This callback will be triggered when the user selects or login to
+    // his Google account from the popup
+    console.log("Credential JWT string", response.credential);
+};
 
 export const filterEntries = () => {
     let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
@@ -210,3 +214,18 @@ export const filterEntries = () => {
 
 }
 /* End Search functions */
+
+export function getGitHubUrl(from: string) {
+    const rootURl = 'https://github.com/login/oauth/authorize';
+
+    const options = {
+        client_id: process.env.VUE_GITHUB_OAUTH_CLIENT_ID,
+        redirect_uri: process.env.VUE_GITHUB_OAUTH_REDIRECT_URL,
+        scope: 'user:email',
+        state: from,
+    };
+
+    const qs = new URLSearchParams(options);
+
+    return `${rootURl}?${qs.toString()}`;
+}

@@ -4,7 +4,7 @@ import { userAlertStore } from './alert';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 import Swal from 'sweetalert2/dist/sweetalert2';
 
-import { Product, Review } from '@/helpers/my-types';
+import type { Product, Review } from '@/helpers/my-types';
 const APIURL = process.env.VUE_API_URL + 'products';
 
 
@@ -67,14 +67,7 @@ export const productStore = defineStore({
         },
 
         async sortProductsBykey(key: string) {
-            try {
-                this.key = key;
-                this.products = await fetchMethodWrapper.get(APIURL + '/sort/' + key);
-
-            } catch (error) {
-                this.products = { error };
-            }
-
+           console.log(key);
         }
 
     }

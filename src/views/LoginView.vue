@@ -103,14 +103,14 @@ export default defineComponent({
     name: "LoginView",
     data() {
         return {
-            user: null, msalInstance: _msalInstance, username: "", password: "", showPassword, authStore: userAuthStore(),
+            user: {}, msalInstance: _msalInstance, username: "", password: "", showPassword, authStore: userAuthStore(),
         }
     },
     watch: {
         async user(newVal) {
-           
-                console.log(newVal,"this changed");
-          
+
+            console.log(newVal, "this changed");
+
         }
     },
     methods: {
@@ -125,6 +125,7 @@ export default defineComponent({
 
                 console.error(`error during authentication: ${error}`);
             }
+
 
         },
         async gitLogin() {
