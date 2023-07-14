@@ -159,7 +159,7 @@ export default defineComponent({
                 form.append("password", this.password);
                 const userData = new URLSearchParams();
                 for (const [key, value] of form) {
-                    userData.append(key, value);
+                    userData.append(key, value as string);
                 }
 
                 await this.authStore.login(userData);

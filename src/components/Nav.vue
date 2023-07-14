@@ -3,7 +3,7 @@
         <header>
             <nav>
                 <ul v-if="user" id="nav_items">
-                    
+
                     <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
                     <li v-show="user.admin"><router-link :to="{ name: 'Admin' }"><i class="fa fa-cogs"></i>Admin
                             page</router-link>
@@ -22,8 +22,8 @@
                     <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
                     </li>
                     <li><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments">Contact
-                        us</i></router-link>
-            </li>
+                                us</i></router-link>
+                    </li>
                 </ul>
                 <ul v-else>
 
@@ -53,9 +53,6 @@ import { userCartStore } from '@/stores/cart'
 import { userAuthStore } from '@/stores/auth_store';
 
 import { greet } from '@/helpers/script';
-
-
-
 
 
 export default {

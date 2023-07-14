@@ -32,11 +32,12 @@
 
 <script lang="ts">
 
+import type{ Product } from '@/helpers/my-types';
 export default {
     name: 'MainProducts',
     props: {
         products: {
-            type: Array,
+            type: Array<Product>,
         }
     },
     methods: {
