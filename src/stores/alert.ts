@@ -9,10 +9,10 @@ export const userAlertStore = defineStore({
     }),
     actions: {
         success(message: string) {
-            this.alert = { message, type: 'alert-success' };
+            this.alert = { message: message, type: 'alert-success' };
         },
         error(message: string) {
-            this.alert = { message, type: 'alert-danger' };
+            this.alert = { message: message, type: 'alert-danger' };
         },
         reset() {
             this.alert = null;

@@ -2,8 +2,8 @@
     <div v-if="alert" class="container">
         <div class="m-3" id="alert1">
             <div :class="'alert alert-dismissable  fade show ' + alert.type" role=alert>
-                <strong>{{ alert.message }}</strong>
-                <button @click="alertstore.clear()" class="btn btn-link close">
+                <strong>{{ alertstore.alert?.message }}</strong>
+                <button @click="alertstore.reset()" class="btn btn-link close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -19,15 +19,14 @@ import { userAlertStore } from '@/stores/alert'
 
 export default {
     name: 'AlertVue',
-    data() {
+    data(){
+        
         return {
-            alert: null, alertstore: null
+            alert: {}, alertstore: userAlertStore()
         }
     },
     mounted() {
-        const alertStore = userAlertStore();
-        this.alertstore = alertStore
-        const { alert } = storeToRefs(alertStore);
+        const { alert } = storeToRefs(this.alertstore);
         this.alert = alert;
 
     },

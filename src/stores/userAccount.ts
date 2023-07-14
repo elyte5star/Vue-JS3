@@ -5,6 +5,7 @@ import Swal from 'sweetalert2/dist/sweetalert2';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 import { userAuthStore } from '@/stores/auth_store'
+import router from '@/router/index'
 import type { User, Enquiry, Booking } from '@/helpers/my-types';
 
 const APIURL = process.env.VUE_API_URL + 'users';
@@ -29,6 +30,7 @@ export const userStore = defineStore({
                 this.alertStore.error(response.message || 'Registration unsuccessful!');
                 return;
             }
+            await router.push({ path: '/login', replace: true })
             this.alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
 
         },
@@ -49,7 +51,7 @@ export const userStore = defineStore({
             }
             this.user = response.user
             this.bookingsHistory = response.user.bookings
-            
+
         },
         async updateUserById(userid: string, new_data: any) {
             const response = await fetchMethodWrapper.put(APIURL + '/' + userid, new_data);

@@ -34,7 +34,7 @@ export type Booking = {
     created_at: Date
 }
 
-export type Review = {
+export type Review{
     rating: number;
     rid: string;
     created_at: Date;

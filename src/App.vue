@@ -3,10 +3,10 @@
     <div>
       <NavBar />
     </div>
-    <div>
-      <AlertVue />
-    </div>
-    <div><router-view /></div>
+    <router-view />
+  </div>
+  <div>
+    <AlertVue />
   </div>
 </template>
 

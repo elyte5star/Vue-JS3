@@ -5,18 +5,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <form @submit.prevent="registerUser">
-                            <div class="text-center mb-3">
-                                <p>Sign up with:</p>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fa fa-windows"></i>
-                                </button>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fa fa-google"></i>
-                                </button>
-
-                            </div>
-
-                            <p class="text-center">or:</p>
+                            
+                            <p class="text-center">Please Sign up:</p>
 
                             <!-- Username input -->
                             <div class="form-outline mb-4">

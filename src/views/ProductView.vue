@@ -205,6 +205,7 @@ import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
 
+
 import { storeToRefs } from 'pinia';
 
 import moment from 'moment'
@@ -253,7 +254,7 @@ export default {
         },
         async onSubmitReview() {
             if (this.rating) {
-                let productReview = {
+                let productReview: any = {
                     reviewer_name: this.reviewer_name,
                     email: this.reviewer_email,
                     rating: Number(this.rating),
@@ -276,6 +277,16 @@ export default {
         }
 
     },
+    watch: {
+        async productQuantity(newVal) {
+
+            console.log(newVal, "this changed");
+
+        }
+    },
+    mounted() {
+        document.getElementById('product')?.scrollIntoView();
+    },
     async created() {
         if (this.pid) {
             await this.pStore.getProductById(this.pid);
@@ -286,7 +297,7 @@ export default {
             const elem = (<HTMLInputElement>document.getElementById("add_to_cart"));
             if (!this.productQuantity) elem.innerHTML = "Out of Stock";
             else elem.innerHTML = "Add to Cart";
-            //document.getElementById('product').scrollIntoView();
+
 
 
         } else {
