@@ -7,7 +7,8 @@
                     params: {
                         pid: currentPid
                     }
-                }"><img v-if="currentImg !== null" :src="'src/assets/images/products/' + currentImg" v-bind:alt="currentImg" />
+                }"><img v-if="currentImg !== null" :src="'src/assets/images/products/' + currentImg"
+                        v-bind:alt="currentImg" />
                 </router-link>
             </div>
         </transition-group>
@@ -18,12 +19,14 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
+import type { Product } from '@/helpers/my-types';
 
-export default {
+export default defineComponent({
     name: 'ImageSlide',
     props: {
         products: {
-            type: Array,
+            type: Array<Product>,
         }
     },
 
@@ -75,6 +78,6 @@ export default {
     },
 
 
-}
+})
 
 </script>

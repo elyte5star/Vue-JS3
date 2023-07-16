@@ -1,5 +1,6 @@
 
 <template>
+    <AlertVue/>
     <div v-if="cart" id="basket" class="basket">
         <div class="container">
             <div class="wrapper wrapper-content animated fadeInRight">
@@ -128,14 +129,13 @@
 
                                         <div>
                                             <label class="credit-card-label">Name on card:</label><input type="text"
-                                                class="form-control credit-inputs" v-model="nameOnCard" placeholder="Name"
-                                                >
+                                                class="form-control credit-inputs" v-model="nameOnCard" placeholder="Name">
                                         </div>
                                         <div>
                                             <label class="credit-card-label">Card number:</label>
                                             <input type="tel" class="form-control credit-inputs" v-model.number="cardNumber"
                                                 pattern="[0-9]*" maxlength="16" placeholder="0000 0000 0000 0000"
-                                                minlength="16" >
+                                                minlength="16">
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6"><label class="credit-card-label">Card Expiry:
@@ -143,7 +143,7 @@
                                                     class="form-control credit-inputs" placeholder="12/24"></div>
                                             <div class="col-md-6"><label class="credit-card-label">CVV</label><input
                                                     type="tel" v-model.number="cardCvv" class="form-control credit-inputs"
-                                                    placeholder="342" pattern="[0-9]*" maxlength="3" ></div>
+                                                    placeholder="342" pattern="[0-9]*" maxlength="3"></div>
                                         </div>
                                         <hr class="line">
                                         <div class="d-flex justify-content-between information">
@@ -182,7 +182,7 @@
                             <div class="ibox-content text-center">
                                 <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
                                 <h3><a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
-                                    elyte5star@gmail.com</a></h3>
+                                        elyte5star@gmail.com</a></h3>
                                 <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a></h3>
                                 <span class="small">
                                     Please contact with us if you have any questions. We are avalible 24h.
@@ -234,11 +234,13 @@
 import { userCartStore } from '@/stores/cart'
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
-
+import AlertVue from '@/components/Alert.vue'
+import type { Product } from '@/helpers/my-types';
 
 import { storeToRefs } from 'pinia';
 export default {
     name: 'CartView',
+    components: { AlertVue },
     data() {
         return {
             cart: Array(), user: {}, recommendationList: [], itemsInCart: null,
@@ -248,7 +250,7 @@ export default {
         }
     },
     methods: {
-        removeFromCart(product: object) {
+        removeFromCart(product:Product) {
             this.cartStore.removeFromCart(product)
         },
         emptyCart() {

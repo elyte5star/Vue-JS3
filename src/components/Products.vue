@@ -31,22 +31,23 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
+import type { Product } from '@/helpers/my-types';
 
-import type{ Product } from '@/helpers/my-types';
-export default {
+export default defineComponent({
     name: 'MainProducts',
+
     props: {
         products: {
             type: Array<Product>,
         }
     },
     methods: {
-        getImage(image:string):string{
+        getImage(image: string): string {
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
         }
     },
-    
 
 
-}
+})
 </script>

@@ -2,42 +2,36 @@
     <div>
         <header>
             <nav>
-                <ul v-if="user" id="nav_items">
-
-                    <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
-                    <li v-show="user.admin"><router-link :to="{ name: 'Admin' }"><i class="fa fa-cogs"></i>Admin
-                            page</router-link>
+                <ul id="nav_items">
+                    <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
                     </li>
-                    <li><router-link :to="{
+                    <li><a href="javascript:void(0)"><i class="fa fa-code-fork"></i>Vue version {{ version }}</a></li>
+                    <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
+
+                    <li v-if="user"><router-link :to="{
                         name: 'oneUser', params: {
                             userid: user.userid
                         }
                     }"><i class="fa fa-user-circle" style="font-size: 25px"></i>Logged in as {{ user.username
 }}</router-link>
+                    <li v-if="user.admin"><router-link :to="{ name: 'Admin' }"><i class="fa fa-cogs"></i>Admin
+                            page</router-link>
                     </li>
-                    <li><a href="javascript:void(0)" v-on:click="logout()"><i class="fa fa-sign-out"></i>Logout</a></li>
+                    </li>
+
                     <li><router-link :to="{ name: 'Cart' }"><i class="fa fa-shopping-cart"
                                 style="font-size: 25px"></i>Cart<span id="items">{{
                                     itemsInCart }}</span></router-link></li>
-                    <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
-                    </li>
-                    <li><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments">Contact
-                                us</i></router-link>
-                    </li>
-                </ul>
-                <ul v-else>
 
-                    <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
-                    <li><router-link :to="{ name: 'Login' }"><i class="fa fa-sign-in"></i>Login</router-link></li>
-                    <li><router-link :to="{ name: 'Cart' }"><i class="fa fa-shopping-cart"
-                                style="font-size: 25px;color: white;"></i>Cart<span id="items">{{ itemsInCart
-                                }}</span></router-link></li>
-                    <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
-                    </li>
                     <li><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments">Contact
                                 us</i></router-link>
                     </li>
+                    <li v-if="user"><a href="javascript:void(0)" v-on:click="logout()"><i
+                                class="fa fa-sign-out"></i>Logout</a></li>
+                    <li v-if="!user"><router-link :to="{ name: 'Login' }"><i class="fa fa-sign-in"></i>Login</router-link>
+                    </li>
                 </ul>
+
             </nav>
         </header>
 
@@ -51,29 +45,33 @@ import { storeToRefs } from 'pinia';
 import { userCartStore } from '@/stores/cart'
 
 import { userAuthStore } from '@/stores/auth_store';
-
 import { greet } from '@/helpers/script';
+import { defineComponent } from 'vue'
 
 
-export default {
+export default defineComponent({
     name: 'NavBar',
-    data() {
-        return {
-            user: null, itemsInCart: 0, authStore: userAuthStore(), cartStore: userCartStore()
+    props: {
+        version: {
+            type: String
         }
     },
+    setup(props, ctx) {
+        const cartStore = userCartStore()
+        const authStore = userAuthStore()
+        const { user } = storeToRefs(authStore);
+        const { itemsInCart } = storeToRefs(cartStore);
+        return {
+            user, itemsInCart, authStore
+        }
+    },
+
     methods: {
         logout() {
             this.authStore.logout();
         },
     },
-    mounted() {
-        const { user } = storeToRefs(this.authStore);
-        const { itemsInCart } = storeToRefs(this.cartStore);
-        this.user = user
-        this.itemsInCart = itemsInCart
 
-    },
     computed: {
         greeting() {
             return greet();
@@ -82,6 +80,6 @@ export default {
     }
 
 
-}
+})
 
 </script>

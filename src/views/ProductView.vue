@@ -205,6 +205,7 @@ import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
 
+import { is_valid_Email } from '@/helpers/script';
 
 import { storeToRefs } from 'pinia';
 
@@ -253,7 +254,7 @@ export default {
 
         },
         async onSubmitReview() {
-            if (this.rating) {
+            if (this.rating && is_valid_Email(this.reviewer_email)) {
                 let productReview: any = {
                     reviewer_name: this.reviewer_name,
                     email: this.reviewer_email,
@@ -271,7 +272,8 @@ export default {
             } else {
 
                 if (!this.rating) this.alertStore.error("Product evaluation required!");
-
+                if (!is_valid_Email(this.reviewer_email)) this.alertStore.error("Error in email field!");
+              
             }
 
         }

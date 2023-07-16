@@ -2,6 +2,7 @@
   <div class="home">
     <BigIcons />
     <ImageSlide v-bind:products="products" />
+    <AlertVue />
     <MainProducts v-bind:products="products" />
   </div>
 </template>
@@ -11,18 +12,20 @@
 import BigIcons from '../components/BigIcons.vue'
 import ImageSlide from '../components/ImageSlide.vue';
 import MainProducts from '../components/Products.vue'
+import AlertVue from '@/components/Alert.vue'
 
 import { storeToRefs } from 'pinia';
 import { productStore } from '@/stores/products'
+import type { Product } from '@/helpers/my-types';
 
 export default {
   name: 'HomeView',
   components: {
-    BigIcons, ImageSlide, MainProducts
+    BigIcons, ImageSlide, MainProducts, AlertVue
   },
   data() {
     return {
-      products: Array(),
+      products: [] as Array<Product>,
 
     }
   },

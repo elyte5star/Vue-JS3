@@ -12,14 +12,14 @@ import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from "pinia";
 import EditUser from "@/components/EditUser.vue";
 import UserProfile from "@/components/UserProfile.vue";
-import { Booking,User } from "@/helpers/my-types";
+import type { Booking, User } from "@/helpers/my-types";
 
 export default {
   name: "UserView",
   components: { EditUser, UserProfile },
   props: {
     userid: {
-      type: String,required: true
+      type: String, required: true
     }
   },
   data() {
@@ -27,11 +27,11 @@ export default {
     return {
       activeComponent: UserProfile,
       user_image: '',
-      user: {},
+      user: {} as User,
       bookingsHistory: [] as Array<Booking>
     };
   },
-  async created() {
+  async created(): Promise<void> {
     const user_store = userStore();
     await user_store.getUserById(this.userid);
     const { user, bookingsHistory } = storeToRefs(user_store);
