@@ -37,7 +37,8 @@
                                     orders</span>
                                 <h5>Order History</h5>
                             </div>
-                            <div v-for="booking in bookingsHistory " v-bind:key="booking" class="ibox-content">
+                            <div v-if="bookingsHistory" v-for="booking in bookingsHistory " v-bind:key="booking"
+                                class="ibox-content">
                                 <div class="table-responsive">
                                     <table class="table shoping-cart-table order_history" id="order_history"
                                         @click="orderDetailsTable(booking.cart)">
@@ -48,8 +49,7 @@
                                                     <p>Order number: {{ booking.oid }}</p>
                                                 </td>
                                                 <td :style="{ width: '65px' }">
-                                                    <input type="text" :disabled="isDisabled" class="form-control"
-                                                        :placeholder="booking.cart.length" :value="booking.cart.length">
+                                                    <input type="text" :disabled="isDisabled" class="form-control" :value="booking.cart.length">
                                                 </td>
                                                 <td>
                                                     <h4 :style="{ width: '130px' }">
@@ -125,10 +125,12 @@
 /* eslint-disable */
 
 import moment from 'moment'
-
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
 import { userStore } from "@/stores/userAccount";
+import type { User, Booking, Product } from '@/helpers/my-types';
 
-export default {
+export default defineComponent({
     name: "UserProfile",
     data() {
         return {
@@ -138,7 +140,8 @@ export default {
     },
     props: {
         user_info: {
-            type: Object
+            type: Object as PropType<User>,
+            required: true
 
         },
         user_image: {
@@ -146,18 +149,18 @@ export default {
         },
 
         bookingsHistory: {
-            type: Array
+            type: Array<Booking>
 
         }
     },
     methods: {
-        orderDetailsTable(itemsArray: []) {
+        orderDetailsTable(itemsArray: Array<Product>) {
             let tableDiv = document.getElementById("items_order")!;
             tableDiv.innerHTML = "";
             tableDiv.innerHTML = '<table id=\"order_table\" class=\"table table-bordered table-sm\"><thead><tr><th>#</th><th>Name of product</th><th>Product number</th><th>Price</th></tr></thead><tfoot></tfoot><tbody></tbody></table>'
             for (let i = 0; i < itemsArray.length; i++) {
                 let htmltxt = "<tr>";
-                htmltxt += "<td>" + (parseInt(i) + 1) + "</td>";
+                htmltxt += "<td>" + (i as number + 1) + "</td>";
                 htmltxt += "<td>" + itemsArray[i].name + "</td>";
                 htmltxt += "<td>" + itemsArray[i].pid + "</td>";
                 htmltxt += "<td>" + "£" + itemsArray[i].price + "</td>";
@@ -187,7 +190,8 @@ export default {
     computed: {
         overallTotal() {
             let amount: number = 0;
-            for (let price of this.bookingsHistory) {
+            let myList: any = this.bookingsHistory;
+            for (let price of myList) {
                 amount += price.total_price;
             }
             return amount.toFixed(2);
@@ -196,11 +200,11 @@ export default {
             return new URL('../../src/assets/images/' + this.user_image, import.meta.url).href
 
         },
-        bookingsHistoryCount(): number {
-            return this.bookingsHistory.length
+        bookingsHistoryCount() {
+            return this.bookingsHistory?.length
         },
 
     }
 
-};
+});
 </script>
