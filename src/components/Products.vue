@@ -2,7 +2,7 @@
     <div class="products">
         <main id="container_" class="container">
             <h1 v-if="products">Products</h1>
-            <article class="framed column" :id="'' + product.pid" v-for="product in products" v-bind:key="product">
+            <article class="framed column" :id="'' + product.pid" v-for="product in products" v-bind:key="product.pid">
                 <div class="prod_left">
                     <img :src="getImage(product.image)" :alt="product.name">
                     <div class="category">{{ product['category'] }}</div>

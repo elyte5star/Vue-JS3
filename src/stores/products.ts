@@ -11,7 +11,7 @@ const APIURL = process.env.VUE_API_URL + 'products';
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        products: [] as Product[], product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], quantity: 0, productRecommendations: Array()
+        isRequestLoading: false, products: [] as Product[], product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], quantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts() {
@@ -67,7 +67,7 @@ export const productStore = defineStore({
         },
 
         async sortProductsBykey(key: string) {
-           console.log(key);
+            console.log(key);
         }
 
     }

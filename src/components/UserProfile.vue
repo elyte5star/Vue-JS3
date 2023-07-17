@@ -37,7 +37,7 @@
                                     orders</span>
                                 <h5>Order History</h5>
                             </div>
-                            <div v-if="bookingsHistory" v-for="booking in bookingsHistory " v-bind:key="booking"
+                            <div v-if="bookingsHistory" v-for="booking in bookingsHistory " v-bind:key="booking.oid"
                                 class="ibox-content">
                                 <div class="table-responsive">
                                     <table class="table shoping-cart-table order_history" id="order_history"
@@ -49,7 +49,8 @@
                                                     <p>Order number: {{ booking.oid }}</p>
                                                 </td>
                                                 <td :style="{ width: '65px' }">
-                                                    <input type="text" :disabled="isDisabled" class="form-control" :value="booking.cart.length">
+                                                    <input type="text" :disabled="isDisabled" class="form-control"
+                                                        :value="booking.cart.length">
                                                 </td>
                                                 <td>
                                                     <h4 :style="{ width: '130px' }">

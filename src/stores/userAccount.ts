@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 
-import Swal from 'sweetalert2/dist/sweetalert2';
 
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
@@ -8,12 +7,15 @@ import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
 import type { User, Enquiry, Booking } from '@/helpers/my-types';
 
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+
+
 const APIURL = process.env.VUE_API_URL + 'users';
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
     state: () => ({
-        users: [] as User[], user: {} as User | {}, bookingsHistory: null as Booking | null, alertStore: userAlertStore(), authStore: userAuthStore()
+        isRequestLoading: false, users: [] as User[], user: null as User | null, bookingsHistory: null as Booking | null, alertStore: userAlertStore(), authStore: userAuthStore()
     }),
     actions: {
         async getUsers() {

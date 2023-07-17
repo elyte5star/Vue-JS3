@@ -22,7 +22,7 @@ export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
-        user: user ? JSON.parse(user) : null as tokenData | null,
+        user: user ? JSON.parse(user) : null as tokenData | null, isRequestLoading: false,
         returnUrl: '', alert: userAlertStore(),
     }),
     actions: {
@@ -45,7 +45,7 @@ export const userAuthStore = defineStore({
         async cloudLogin(userData: object) {
 
             const response = await fetchMethodWrapper.post(APIURL + '/get_token', userData);
-            
+
             if (response.success && response.token_data !== undefined) {
 
                 this.user = response.token_data;

@@ -204,6 +204,7 @@
 import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
+import type { Product } from '@/helpers/my-types';
 
 import { is_valid_Email } from '@/helpers/script';
 
@@ -216,13 +217,13 @@ export default {
     name: "ProductView",
     props: {
         pid: {
-            type: String,
+            type: String, required: true
         }
     },
     data() {
         return {
             moment: moment,
-            product: Object,
+            product:{} as Product,
             productQuantity: 0,
             reviewer_name: '',
             reviewer_email: '',
@@ -273,7 +274,7 @@ export default {
 
                 if (!this.rating) this.alertStore.error("Product evaluation required!");
                 if (!is_valid_Email(this.reviewer_email)) this.alertStore.error("Error in email field!");
-              
+
             }
 
         }

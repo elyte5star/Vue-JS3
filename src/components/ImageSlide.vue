@@ -1,5 +1,5 @@
 <template>
-    <div id="slide_image">
+    <div id="slide_image" v-on:mouseover="stopSlide" v-on:mouseleave="startSlide">
         <transition-group name="fade" tag="div">
             <div v-for="i in [currentIndex]" :key="i">
                 <router-link v-if="currentPid" :to="{
@@ -24,20 +24,27 @@ import type { Product } from '@/helpers/my-types';
 
 export default defineComponent({
     name: 'ImageSlide',
+    setup(props, ctx) {
+        let timer: ReturnType<typeof setInterval> | undefined;
+        return {
+            timer
+        }
+    },
     props: {
         products: {
             type: Array<Product>,
+            required: true
         }
     },
 
     data() {
         return {
-            timer: null, currentIndex: 0
+            currentIndex: 0
         }
     },
     methods: {
         startSlide: function () {
-            this.timer = setInterval(this.next, 4000);
+            this.timer = setInterval(this.next, 2000);
         },
 
         next: function () {
@@ -45,6 +52,9 @@ export default defineComponent({
         },
         prev: function () {
             this.currentIndex -= 1;
+        },
+        stopSlide: function () {
+            clearInterval(this.timer);
         }
     },
     computed: {
@@ -56,7 +66,7 @@ export default defineComponent({
         },
         images: function () {
             let imgList = [];
-            for (let product of this.products) {
+            for (const product of this.products) {
                 imgList.push(product.image)
             }
             return imgList

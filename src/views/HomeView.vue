@@ -16,25 +16,23 @@ import AlertVue from '@/components/Alert.vue'
 
 import { storeToRefs } from 'pinia';
 import { productStore } from '@/stores/products'
-import type { Product } from '@/helpers/my-types';
+
 
 export default {
   name: 'HomeView',
   components: {
     BigIcons, ImageSlide, MainProducts, AlertVue
   },
-  data() {
+  setup(props, ctx) {
+    const pStore = productStore();
+    const { products, isRequestLoading } = storeToRefs(pStore);
     return {
-      products: [] as Array<Product>,
-
+      products, isRequestLoading, pStore
     }
   },
-
+  
   async created() {
-    const pStore = productStore();
-    await pStore.getProducts();
-    const { products } = storeToRefs(pStore);
-    this.products = products;
+    await this.pStore.getProducts();
 
   },
 

@@ -10,7 +10,7 @@ import { fetchMethodWrapper } from '@/helpers/methodWrapper';
 
 const APIURL = process.env.VUE_API_URL;
 
-import type { Product} from '@/helpers/my-types';
+import type { Product } from '@/helpers/my-types';
 
 import { userAlertStore } from './alert';
 
@@ -18,7 +18,7 @@ import { userAlertStore } from './alert';
 export const userCartStore = defineStore({
     id: 'cart',
     state: () => ({
-        cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0, alertStore: userAlertStore()
+        isRequestLoading: false, cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0, alertStore: userAlertStore()
     }),
     actions: {
         addToCart(product: Product, volume: number) {

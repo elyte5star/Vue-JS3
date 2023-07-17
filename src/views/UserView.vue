@@ -1,8 +1,9 @@
 <template>
   <div v-if="user" class="user">
-    <component :is="{...activeComponent}" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="user_image"
-      @changeActiveComponent="_changeActiveComponent" />
-
+    <keep-alive>
+      <component v-bind:is="{...currentTabComponent}" :bookingsHistory="bookingsHistory" :user_info="user"
+        :user_image="userImage" @changeActiveComponent="_changeActiveComponent" />
+    </keep-alive>
   </div>
 </template>
 
@@ -12,9 +13,9 @@ import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from "pinia";
 import EditUser from "@/components/EditUser.vue";
 import UserProfile from "@/components/UserProfile.vue";
-import type { Booking, User } from "@/helpers/my-types";
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   name: "UserView",
   components: { EditUser, UserProfile },
   props: {
@@ -22,36 +23,41 @@ export default {
       type: String, required: true
     }
   },
-  data() {
-
+  setup(props, ctx) {
+    const user_store = userStore();
+    const { user, bookingsHistory } = storeToRefs(user_store);
     return {
-      activeComponent: UserProfile,
-      user_image: '',
-      user: {} as User,
-      bookingsHistory: [] as Array<Booking>
+      user_store, user, bookingsHistory,
+    }
+  },
+  data() {
+    return {
+      currentTabComponent: UserProfile,
+
     };
   },
   async created(): Promise<void> {
-    const user_store = userStore();
-    await user_store.getUserById(this.userid);
-    const { user, bookingsHistory } = storeToRefs(user_store);
-    this.user = user;
-    this.bookingsHistory = bookingsHistory
-    this.user_image = this.user.admin ? "admin-icon.png" : "user-icon.png";
+    await this.user_store.getUserById(this.userid);
 
   },
-
+  computed: {
+    userImage(): string {
+      return this.user?.admin ? "admin-icon.png" : "user-icon.png";
+    },
+  },
   methods: {
     _changeActiveComponent(str: string) {
+
       if (str === 'update_details') {
-        this.activeComponent = EditUser;
+
+        this.currentTabComponent = EditUser;
 
       } else {
-        this.activeComponent = UserProfile;
+        this.currentTabComponent = UserProfile;
       }
 
     },
   },
-};
+});
 </script>
 
