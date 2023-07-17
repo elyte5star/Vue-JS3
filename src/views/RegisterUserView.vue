@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <form @submit.prevent="registerUser">
-                            
+
                             <p class="text-center">Please Sign up:</p>
 
                             <!-- Username input -->
@@ -47,7 +47,7 @@
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerRepeatPassword">Repeat password:</label>
                                 <input v-model="registerRepeatPassword" type="password" id="registerRepeatPassword"
-                                    class="form-control"  aria-describedby="passwordHelpBlock" autocomplete="on"/>
+                                    class="form-control" aria-describedby="passwordHelpBlock" autocomplete="on" />
                                 <a href="javascript:void(0)"
                                     @click="showPassword('registerRepeatPassword', 'toggleRegisterRepeatPassword')"><i
                                         class="bi bi-eye-slash" id="toggleRegisterRepeatPassword"></i></a>
@@ -75,7 +75,7 @@
                             <div class="ibox-content text-center">
                                 <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
                                 <h3><a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
-                                    elyte5star@gmail.com</a></h3>
+                                        elyte5star@gmail.com</a></h3>
                                 <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a></h3>
                                 <span class="small">
                                     Please contact with us if you have any questions. We are avalible 24h.
@@ -94,8 +94,8 @@
 
 import { is_Input_Error, showPassword } from '@/helpers/script';
 import { userStore } from "@/stores/userAccount";
-
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
     name: 'RegisterUser',
     data() {
         return {
@@ -120,6 +120,6 @@ export default {
         }
     },
 
-}
+})
 
 </script>

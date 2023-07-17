@@ -207,13 +207,13 @@ import { userAlertStore } from '@/stores/alert'
 import type { Product } from '@/helpers/my-types';
 
 import { is_valid_Email } from '@/helpers/script';
-
+import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia';
 
 import moment from 'moment'
 
 
-export default {
+export default defineComponent({
     name: "ProductView",
     props: {
         pid: {
@@ -223,7 +223,7 @@ export default {
     data() {
         return {
             moment: moment,
-            product:{} as Product,
+            product: {} as Product,
             productQuantity: 0,
             reviewer_name: '',
             reviewer_email: '',
@@ -318,7 +318,7 @@ export default {
 
     }
 
-}
+});
 
 </script>
 

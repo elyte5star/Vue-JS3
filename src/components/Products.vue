@@ -36,10 +36,10 @@ import type { Product } from '@/helpers/my-types';
 
 export default defineComponent({
     name: 'MainProducts',
-
     props: {
         products: {
             type: Array<Product>,
+            required: true
         }
     },
     methods: {

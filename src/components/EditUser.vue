@@ -107,7 +107,8 @@
 import { userStore } from "@/stores/userAccount";
 import { showPassword, is_Input_Error } from "@/helpers/script";
 import { defineComponent } from 'vue'
-
+import type{ PropType } from 'vue'
+import type { User } from "@/helpers/my-types";
 
 
 export default defineComponent({
