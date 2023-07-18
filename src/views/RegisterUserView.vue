@@ -103,7 +103,7 @@ export default defineComponent({
         }
     },
     methods: {
-        async registerUser() {
+        async registerUser(): Promise<void> {
             if (!is_Input_Error(this.registerUsername, this.registerEmail, this.registerPassword, this.registerRepeatPassword, this.registerTel)) {
                 const registerUser = { "username": this.registerUsername, "email": this.registerEmail, "password": this.registerPassword, "telephone": Number(this.registerTel) };
                 const user_store = userStore();

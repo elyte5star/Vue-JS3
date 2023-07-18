@@ -2,7 +2,6 @@
   <div class="home">
     <BigIcons />
     <ImageSlide v-bind:products="products" />
-    <AlertVue />
     <MainProducts v-bind:products="products" />
   </div>
 </template>
@@ -12,31 +11,31 @@
 import BigIcons from '../components/BigIcons.vue'
 import ImageSlide from '../components/ImageSlide.vue';
 import MainProducts from '../components/Products.vue'
-import AlertVue from '@/components/Alert.vue'
 
 import { storeToRefs } from 'pinia';
 import { productStore } from '@/stores/products'
+import { defineComponent } from 'vue'
 
 
-export default {
+export default defineComponent({
   name: 'HomeView',
   components: {
-    BigIcons, ImageSlide, MainProducts, AlertVue
+    BigIcons, ImageSlide, MainProducts
   },
-  setup(props, ctx) {
+  setup() {
     const pStore = productStore();
-    const { products, isRequestLoading } = storeToRefs(pStore);
+    const { products } = storeToRefs(pStore);
     return {
-      products, isRequestLoading, pStore
+      products, pStore
     }
   },
-  
+
   async created() {
     await this.pStore.getProducts();
 
   },
 
-}
+})
 
 </script>
 

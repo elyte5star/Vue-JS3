@@ -15,6 +15,4 @@ import { userAuthStore } from '@/stores/auth_store';
 const authStore = userAuthStore();
 const { user } = storeToRefs(authStore);
 
-
-
 </script>

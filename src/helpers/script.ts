@@ -153,8 +153,10 @@ export const is_Input_Error = (name: string , email: string, password: string , 
     }
     // no error
     else {
+        
         return false;
     }
+    
     return true;
 }
 

@@ -1,7 +1,7 @@
 <template>
     <div v-if="alert" class="container">
         <div class="m-3" id="alert1">
-            <div id="alert1" :class="'alert alert-dismissable  fade show ' + alertstore.alert?.type" role=alert>
+            <div id="alert1" :class="'alert alert-dismissable  fade show ' + alert.type" role=alert>
                 <strong>{{ alert.message }}</strong>
                 <button v-if="alert.loading" class="btn btn-outline-dark btn-block" disabled>
                     <span class="spinner-border spinner-border-lg"></span>
@@ -24,7 +24,7 @@ import { userAlertStore } from '@/stores/alert'
 
 export default defineComponent({
     name: 'AlertVue',
-    setup(props, ctx) {
+    setup() {
         const alertstore = userAlertStore()
         const { alert } = storeToRefs(alertstore);
         return {

@@ -1,6 +1,5 @@
 
 <template>
-    <AlertVue />
     <div v-if="cart" id="basket" class="basket">
         <div class="container">
             <div class="wrapper wrapper-content animated fadeInRight">
@@ -234,20 +233,27 @@
 import { userCartStore } from '@/stores/cart'
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
-import AlertVue from '@/components/Alert.vue'
 import type { Product } from '@/helpers/my-types';
-
+import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia';
-export default {
+export default defineComponent({
     name: 'CartView',
-    components: { AlertVue },
+    setup(props, ctx) {
+        const authStore = userAuthStore();
+        const { user } = storeToRefs(authStore);
+        const cartStore = userCartStore()
+        const { cart, itemsInCart } = storeToRefs(cartStore);
+        return {
+            user, authStore, cartStore, cart, itemsInCart
+        }
+    },
+
     data() {
         return {
             isRequestLoading: true,
-            cart: Array(), user: {}, recommendationList: [], itemsInCart: null,
+            recommendationList: [],
             isDisabled: true, card: null, expiryDate: null, cardCvv: null,
-            cardNumber: null, nameOnCard: null, cartStore: userCartStore(), authStore: userAuthStore()
-
+            cardNumber: null, nameOnCard: null,
         }
     },
     methods: {
@@ -288,18 +294,11 @@ export default {
         }
 
     },
-    mounted() {
-        const { user } = storeToRefs(this.authStore);
-        const { cart, itemsInCart, isRequestLoading } = storeToRefs(this.cartStore);
-        this.itemsInCart = itemsInCart;
-        this.cart = cart;
-        this.user = { ...user };
 
-
-    },
     computed: {
         totalPrice() {
             let amount = 0;
+
             for (let item of this.cart) {
 
                 amount += item.price;
@@ -311,6 +310,6 @@ export default {
         }
     }
 
-}
+})
 </script>
 

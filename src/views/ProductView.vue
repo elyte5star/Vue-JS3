@@ -19,7 +19,7 @@
                 <div class="prod_order">
                     <label id="lb4">Quantity(multiples of 1):
                         <input type="number" name="volume" id="num_items" placeholder="e.g 1,2" step="1"
-                            :min="inStock ? 1 : 0" :max="inStock ? productQuantity : 0" :value="inStock ? 1 : 0"></label>
+                            :min="inStock ? 1 : 0" :max="inStock ? quantity : 0" :value="inStock ? 1 : 0"></label>
                     <button class="form-btn" @click="addToCart()" :disabled="!inStock" type="button" id="add_to_cart">
                         Add to cart.
                     </button>
@@ -39,7 +39,7 @@
                                 <span class="pull-right">(<strong>{{ reviewCount }}</strong>) reviews</span>
                                 <h5>Product Review</h5>
                             </div>
-                            <div v-for="review in  product.reviews " v-bind:key="review" class="ibox-content">
+                            <div v-for="review in  product.reviews " v-bind:key="review.rid" class="ibox-content">
                                 <div class="table-responsive">
                                     <table class="table product-review-table">
                                         <tbody>
@@ -220,26 +220,30 @@ export default defineComponent({
             type: String, required: true
         }
     },
+    setup() {
+        const pStore = productStore()
+        const { product, quantity, reviews } = storeToRefs(pStore);
+        return {
+            product, quantity, reviews, pStore
+        }
+
+    },
     data() {
         return {
             moment: moment,
-            product: {} as Product,
-            productQuantity: 0,
             reviewer_name: '',
             reviewer_email: '',
             rating: 0,
             review: '',
-            pStore: productStore(),
             cartStore: userCartStore(),
-            reviews: [],
             alertStore: userAlertStore()
         }
     },
 
     methods: {
         addToCart() {
-            const volume = (<HTMLInputElement>document.getElementById("num_items")).value;
-            this.cartStore.addToCart(this.product, volume)
+            const volume = parseInt((<HTMLInputElement>document.getElementById("num_items")).value);
+            if (this.product) this.cartStore.addToCart(this.product, volume);
         },
         formatDate(value: Date) {
             if (value) {
@@ -261,7 +265,7 @@ export default defineComponent({
                     email: this.reviewer_email,
                     rating: Number(this.rating),
                     comment: this.review,
-                    product_id: this.product.pid,
+                    product_id: this.pid,
                 }
 
                 await this.pStore.submitReview(productReview)
@@ -281,7 +285,7 @@ export default defineComponent({
 
     },
     watch: {
-        async productQuantity(newVal) {
+        async quantity(newVal) {
 
             console.log(newVal, "this changed");
 
@@ -290,18 +294,12 @@ export default defineComponent({
     mounted() {
         document.getElementById('product')?.scrollIntoView();
     },
-    async created() {
+    async created(): Promise<void> {
         if (this.pid) {
             await this.pStore.getProductById(this.pid);
-            const { product, quantity, reviews } = storeToRefs(this.pStore);
-            this.product = product;
-            this.productQuantity = quantity;
-            this.reviews = reviews;
             const elem = (<HTMLInputElement>document.getElementById("add_to_cart"));
-            if (!this.productQuantity) elem.innerHTML = "Out of Stock";
+            if (!this.quantity) elem.innerHTML = "Out of Stock";
             else elem.innerHTML = "Add to Cart";
-
-
 
         } else {
             this.alertStore.error(" Supply a Product ID!");
@@ -310,7 +308,7 @@ export default defineComponent({
     },
     computed: {
         inStock() {
-            return Number(this.productQuantity);
+            return Number(this.quantity);
         },
         reviewCount() {
             return Number(this.reviews.length)

@@ -110,11 +110,10 @@ import { showPassword, is_Input_Error } from "@/helpers/script";
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import type { User } from "@/helpers/my-types";
-import AlertVue from '@/components/Alert.vue'
+
 
 export default defineComponent({
     name: 'EditUser',
-    components: { AlertVue },
     data() {
 
         return { editTel: " ", editRepeatPassword: " ", editPassword: " ", editEmail: " ", editUsername: " ", showPassword, userStore: userStore() }
