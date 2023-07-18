@@ -1,5 +1,5 @@
+
 <template>
-    <AlertVue />
     <div v-if="user_info">
         <div id="update_entry" class="update_entry">
             <div class="container">

@@ -1,9 +1,7 @@
 <template>
   <div v-if="user" class="user">
-    <keep-alive>
-      <component :is="{...currentTabComponent}" :bookingsHistory="bookingsHistory" :user_info="user"
-        :user_image="userImage" @changeActiveComponent="_changeActiveComponent"></component>
-    </keep-alive>
+    <component :is="{...currentTabComponent}" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="userImage"
+      @changeActiveComponent="_changeActiveComponent" />
   </div>
 </template>
 
@@ -13,9 +11,8 @@ import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from "pinia";
 import EditUser from "@/components/EditUser.vue";
 import UserProfile from "@/components/UserProfile.vue";
-import { defineComponent } from 'vue'
-import type { Booking } from "@/helpers/my-types";
-
+import { defineComponent, shallowRef } from 'vue'
+import type { User } from "@/helpers/my-types";
 export default defineComponent({
   name: "UserView",
   components: { EditUser, UserProfile },
@@ -28,14 +25,16 @@ export default defineComponent({
 
     const user_store = userStore();
     const { user, bookingsHistory } = storeToRefs(user_store);
-  
+
     return {
       user_store, user, bookingsHistory,
     }
   },
   data() {
+
+    let currentTabComponent: User | any = UserProfile
     return {
-      currentTabComponent: UserProfile,
+      currentTabComponent
 
     };
   },
@@ -49,7 +48,7 @@ export default defineComponent({
     },
   },
   methods: {
-    _changeActiveComponent(str: string){
+    _changeActiveComponent(str: string) {
 
       if (str === 'update_details') {
 
@@ -63,4 +62,3 @@ export default defineComponent({
   },
 });
 </script>
-
