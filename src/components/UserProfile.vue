@@ -146,11 +146,13 @@ export default defineComponent({
 
         },
         user_image: {
-            type: String
+            type: String,
+            required: true
         },
 
         bookingsHistory: {
-            type: Array<Booking>
+            type: Array<Booking>,
+            required: true
 
         }
     },
@@ -191,8 +193,8 @@ export default defineComponent({
     computed: {
         overallTotal() {
             let amount: number = 0;
-            let myList: any = this.bookingsHistory;
-            for (let price of myList) {
+
+            for (let price of this.bookingsHistory) {
                 amount += price.total_price;
             }
             return amount.toFixed(2);
@@ -202,7 +204,7 @@ export default defineComponent({
 
         },
         bookingsHistoryCount() {
-            return this.bookingsHistory?.length
+            return this.bookingsHistory.length
         },
 
     }

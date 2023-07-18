@@ -1,4 +1,5 @@
 <template>
+    <AlertVue />
     <div v-if="user_info">
         <div id="update_entry" class="update_entry">
             <div class="container">
@@ -107,19 +108,20 @@
 import { userStore } from "@/stores/userAccount";
 import { showPassword, is_Input_Error } from "@/helpers/script";
 import { defineComponent } from 'vue'
-import type{ PropType } from 'vue'
+import type { PropType } from 'vue'
 import type { User } from "@/helpers/my-types";
-
+import AlertVue from '@/components/Alert.vue'
 
 export default defineComponent({
     name: 'EditUser',
+    components: { AlertVue },
     data() {
 
-        return { editTel: null, editRepeatPassword: null, editPassword: null, editEmail: null, editUsername: null, showPassword, userStore: userStore() }
+        return { editTel: " ", editRepeatPassword: " ", editPassword: " ", editEmail: " ", editUsername: " ", showPassword, userStore: userStore() }
     },
     props: {
         user_info: {
-            type: Object, required: true
+            type: Object as PropType<User>, required: true
         }
     },
     methods: {
@@ -129,7 +131,7 @@ export default defineComponent({
         async updateDetails() {
             if (!is_Input_Error(this.editUsername, this.editEmail, this.editPassword, this.editRepeatPassword, this.editTel)) {
                 const updateUserData = { username: this.editUsername, email: this.editEmail, telephone: this.editTel, password: this.editPassword }
-                if (this.editPassword == 'default') updateUserData.password = null;
+                if (this.editPassword == 'default') updateUserData.password = 'default';
                 await this.userStore.updateUserById(this.user_info.userid, updateUserData);
             }
 

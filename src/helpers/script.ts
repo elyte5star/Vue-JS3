@@ -119,7 +119,7 @@ export function isValidTel(tel: string) {
     return re.test(tel);
 }
 
-export const is_Input_Error = (name: string | null, email: string | null, password: string | null, password_: string | null, tel: string | null) => {
+export const is_Input_Error = (name: string , email: string, password: string , password_: string, tel: string ) => {
     const alertStore = userAlertStore();
     if (name.length == 0) {
         alertStore.error("Empty username!");

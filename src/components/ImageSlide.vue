@@ -69,7 +69,7 @@ export default defineComponent({
             for (const product of this.products) {
                 imgList.push(product.image)
             }
-            return imgList
+            return imgList;
 
         },
         pids: function () {
@@ -77,7 +77,7 @@ export default defineComponent({
             for (let product of this.products) {
                 pidList.push(product.pid)
             }
-            return pidList
+            return pidList;
 
         },
 
