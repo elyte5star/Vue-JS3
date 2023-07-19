@@ -2,11 +2,11 @@
     <div v-if="alert" class="container">
         <div class="m-3" id="alert1">
             <div id="alert1" :class="'alert alert-dismissable  fade show ' + alert.type" role=alert>
-                <strong>{{ alert.message }}</strong>
+                <strong v-if="!alert.loading">{{ alert.message }}</strong>
                 <button v-if="alert.loading" class="btn btn-outline-dark btn-block" disabled>
                     <span class="spinner-border spinner-border-lg"></span>
                     <span class="spinner-grow spinner-grow-lg"></span>
-                    Loading..
+                    Loading.. {{ alert.message }}
                 </button>
                 <button v-else @click="alertstore.reset()" class="btn btn-link close">
                     <span aria-hidden="true">&times;</span>

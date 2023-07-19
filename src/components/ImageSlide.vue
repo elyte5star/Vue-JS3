@@ -24,7 +24,7 @@ import type { Product } from '@/helpers/my-types';
 
 export default defineComponent({
     name: 'ImageSlide',
-    setup(props, ctx) {
+    setup() {
         let timer: ReturnType<typeof setInterval> | undefined;
         return {
             timer

@@ -40,9 +40,9 @@
 <script lang="ts">
 
 import { filterEntries } from '@/helpers/script';
+import { defineComponent } from 'vue'
 
-
-export default {
+export default defineComponent({
   name: 'BigIcons',
   methods: {
     searchEntries() {
@@ -60,6 +60,6 @@ export default {
   }
 
 
-}
+})
 </script>
 

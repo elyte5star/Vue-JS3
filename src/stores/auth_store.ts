@@ -22,7 +22,7 @@ export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
-        user: user ? JSON.parse(user) : null as tokenData | null, isRequestLoading: false,
+        user: user ? JSON.parse(user) : null as tokenData | null,
         returnUrl: '', alert: userAlertStore(),
     }),
     actions: {

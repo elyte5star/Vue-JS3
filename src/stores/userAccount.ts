@@ -46,6 +46,7 @@ export const userStore = defineStore({
 
         },
         async getUserById(userid: string) {
+            //this.alertStore.loading('user',true);
             const response = await fetchMethodWrapper.get(APIURL + '/' + userid);
             if (!response.success) {
                 this.alertStore.error(response.message || 'Operation unsuccessful');

@@ -1,5 +1,6 @@
 import { userAuthStore } from "@/stores/auth_store";
-import Swal from 'sweetalert2/dist/sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import axios from 'axios';
 
 export const fetchMethodWrapper = {
     get: request('GET'),
@@ -7,6 +8,15 @@ export const fetchMethodWrapper = {
     put: request('PUT'),
     delete: request('DELETE')
 };
+
+// function request(url: string, body = {}) {
+//     axios.create({
+//         baseURL: process.env.VUE_API_URL,
+//         headers: {
+//             common: authHeader(process.env.VUE_API_URL)
+//         }
+//     })
+// };
 
 
 
@@ -28,7 +38,7 @@ function request(method: string) {
 
 
 
-function authHeader(url) {
+function authHeader(url: string | any) {
     // return auth header with jwt if user is logged in and request is to the api url
     const { user } = userAuthStore();
     const isLoggedIn = !!user?.access_token;

@@ -11,8 +11,7 @@ import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from "pinia";
 import EditUser from "@/components/EditUser.vue";
 import UserProfile from "@/components/UserProfile.vue";
-import { defineComponent, shallowRef } from 'vue'
-import type { User } from "@/helpers/my-types";
+import { defineComponent } from 'vue'
 export default defineComponent({
   name: "UserView",
   components: { EditUser, UserProfile },
@@ -32,7 +31,7 @@ export default defineComponent({
   },
   data() {
 
-    let currentTabComponent: User | any = UserProfile
+    let currentTabComponent: any = UserProfile
     return {
       currentTabComponent
 

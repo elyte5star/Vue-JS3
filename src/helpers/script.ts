@@ -1,7 +1,8 @@
 
 import { userAlertStore } from "@/stores/alert";
-import type { CallbackTypes } from "vue3-google-login";
 
+
+import Mark from 'mark.js';
 
 /* eslint-disable */
 
@@ -49,12 +50,12 @@ export const greet = () => {
         { cond: curHr < 18, icon: "sun-o", time: "Afternoon" },
         { cond: true, icon: "moon-o", time: "Evening" }
     ]
-    let { time, icon } = conds.find(x => x.cond);
+    let { time, icon }: any = conds.find(x => x.cond);
 
     return `Good ${time} <i class="fa fa-${icon}"></i>`
 
 }
-export function clone(obj) {
+export function clone(obj: any): object {
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
 
@@ -76,7 +77,7 @@ export function clone(obj) {
 
     // Handle Object
     if (obj instanceof Object) {
-        let copy = {};
+        let copy: any = {};
         for (let attr in obj) {
             if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
         }
@@ -87,7 +88,7 @@ export function clone(obj) {
 }
 
 export const postToTokenEndpoint = async (url = "", data = {}) => {
-    let options = {
+    let options: any = {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: data // JSON.stringify(data)
@@ -119,7 +120,7 @@ export function isValidTel(tel: string) {
     return re.test(tel);
 }
 
-export const is_Input_Error = (name: string , email: string, password: string , password_: string, tel: string ) => {
+export const is_Input_Error = (name: string, email: string, password: string, password_: string, tel: string) => {
     const alertStore = userAlertStore();
     if (name.length == 0) {
         alertStore.error("Empty username!");
@@ -153,10 +154,10 @@ export const is_Input_Error = (name: string , email: string, password: string , 
     }
     // no error
     else {
-        
+
         return false;
     }
-    
+
     return true;
 }
 
@@ -190,11 +191,7 @@ function mark_text() {
     });
 }
 
-export const googleLogin: CallbackTypes.CredentialCallback = (response) => {
-    // This callback will be triggered when the user selects or login to
-    // his Google account from the popup
-    console.log("Credential JWT string", response.credential);
-};
+
 
 export const filterEntries = () => {
     let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
@@ -204,7 +201,7 @@ export const filterEntries = () => {
             let h = article_ele.querySelectorAll("h3,h4");
             if (strSearch.length > 0 && !checkString(strSearch, h[0].innerHTML) && !checkString(strSearch, h[1].innerHTML)) {
                 art.style.display = "none";
-            } else if (strSearch.length == "") {
+            } else if (strSearch == "") {
                 let instance = new Mark(document.querySelectorAll(".prod_right"));
                 instance.unmark();
                 art.style.display = "";
@@ -220,7 +217,7 @@ export const filterEntries = () => {
 export function getGitHubUrl(from: string) {
     const rootURl = 'https://github.com/login/oauth/authorize';
 
-    const options = {
+    const options: any = {
         client_id: process.env.VUE_GITHUB_OAUTH_CLIENT_ID,
         redirect_uri: process.env.VUE_GITHUB_OAUTH_REDIRECT_URL,
         scope: 'user:email',
