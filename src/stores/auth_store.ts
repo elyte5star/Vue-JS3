@@ -10,7 +10,7 @@ import router from '@/router/index'
 
 import { postToTokenEndpoint } from "@/helpers/script";
 
-import { fetchMethodWrapper } from '@/helpers/methodWrapper';
+import { axiosInstance, updateHeader } from '@/helpers/axiosHttp';
 
 import type { tokenData } from '@/helpers/my-types';
 
@@ -21,7 +21,6 @@ let user = localStorage.getItem('user')
 export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
-        // initialize state from local storage to enable user to stay logged in
         user: user ? JSON.parse(user) : null as tokenData | null,
         returnUrl: '', alert: userAlertStore(),
     }),
@@ -30,11 +29,9 @@ export const userAuthStore = defineStore({
         async login(userData: object) {
             const response = await postToTokenEndpoint(APIURL + '/token', userData)
             if (response.success && response.token_data !== undefined) {
-
                 this.user = response.token_data;
-
                 localStorage.setItem('user', JSON.stringify(response.token_data));
-
+                updateHeader();
                 return router.push(this.returnUrl || '/');
 
             } else {
@@ -43,23 +40,25 @@ export const userAuthStore = defineStore({
         },
 
         async cloudLogin(userData: object) {
+            try {
+                const response = await axiosInstance.post(APIURL + '/get_token', userData);
 
-            const response = await fetchMethodWrapper.post(APIURL + '/get_token', userData);
+                if (response.data.success && response.data.token_data !== undefined) {
 
-            if (response.data.success && response.data.token_data !== undefined) {
+                    this.user = response.data.token_data;
 
-                this.user = response.data.token_data;
-
-                localStorage.setItem('user', JSON.stringify(response.data.token_data));
-
-                return router.push(this.returnUrl || '/');
+                    localStorage.setItem('user', JSON.stringify(response.data.token_data));
+                    updateHeader();
+                    return router.push(this.returnUrl || '/');
 
 
-            } else {
+                } else {
 
-                this.alert.error(response.data.message);
+                    this.alert.error(response.data.message);
+                }
+            } catch (error: any) {
+                this.alert.error(error);
             }
-
 
         },
 

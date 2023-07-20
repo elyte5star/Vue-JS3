@@ -6,9 +6,7 @@ import { defineStore } from 'pinia';
 let cart = localStorage.getItem('cart');
 let itemsInCart = window.localStorage.getItem('cartCount');
 
-import { fetchMethodWrapper } from '@/helpers/methodWrapper';
-
-const APIURL = process.env.VUE_API_URL;
+import { axiosInstance} from '@/helpers/axiosHttp';
 
 import type { Product } from '@/helpers/my-types';
 
@@ -52,7 +50,7 @@ export const userCartStore = defineStore({
         },
         async checkOut(bookingDetails: any) {
 
-            const response = await fetchMethodWrapper.post(APIURL + 'booking/create', bookingDetails);
+            const response = await axiosInstance.post('booking/create', bookingDetails);
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Couldnt make reservation');
                 return;
@@ -62,13 +60,13 @@ export const userCartStore = defineStore({
 
         },
         async checkOutQueue(bookingDetails: any) {
-            const response = await fetchMethodWrapper.post(APIURL + 'q_booking/create', bookingDetails);
+            const response = await axiosInstance.post('q_booking/create', bookingDetails);
             if (response.data.success) {
-                this.alertStore.success("Booking with id " + response.oid + " created!")
+                this.alertStore.success("Booking with id " + response.data.oid + " created!")
                 this.clearCart();
 
             } else {
-                this.alertStore.error(response.message);
+                this.alertStore.error(response.data.message);
             }
 
         }

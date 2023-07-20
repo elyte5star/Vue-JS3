@@ -120,7 +120,7 @@ export default defineComponent({
 
             } catch (error) {
 
-                console.error(`error during authentication: ${error}`);
+                this.authStore.alert.error(`error during authentication: ${error}`);
             }
 
 
@@ -144,7 +144,7 @@ export default defineComponent({
 
             } catch (error) {
 
-                console.error(`error during authentication: ${error}`);
+                this.authStore.alert.error(`error during authentication: ${error}`);
             }
 
         },

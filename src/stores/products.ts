@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
 
 import { userAlertStore } from './alert';
-import { fetchMethodWrapper } from '@/helpers/methodWrapper';
+import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 import type { Product, Review } from '@/helpers/my-types';
-const APIURL = process.env.VUE_API_URL + 'products';
 
 
 export const productStore = defineStore({
@@ -15,7 +14,7 @@ export const productStore = defineStore({
     }),
     actions: {
         async getProducts() {
-            const response = await fetchMethodWrapper.get(APIURL);
+            const response = await axiosInstance.get('products');
 
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Couldnt get products');
@@ -25,7 +24,7 @@ export const productStore = defineStore({
 
         },
         async submitReview(review: any) {
-            const response = await fetchMethodWrapper.post(APIURL + '/create/review', review);
+            const response = await axiosInstance.post('products/create/review', review);
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
@@ -34,7 +33,7 @@ export const productStore = defineStore({
 
         },
         async getProductById(pid: string) {
-            const response = await fetchMethodWrapper.get(APIURL + '/' + pid);
+            const response = await axiosInstance.get('products/' + pid);
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
@@ -55,7 +54,7 @@ export const productStore = defineStore({
                 confirmButtonText: 'Yes, delete it!'
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
-                    const response = await fetchMethodWrapper.delete(APIURL + '/' + pid);
+                    const response = await axiosInstance.delete('products/' + pid);
                     if (!response.data.success) {
                         this.alertStore.error(response.data.message || 'Operation unsuccessful');
                         return;

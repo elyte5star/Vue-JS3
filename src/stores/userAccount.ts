@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 
 
-import { fetchMethodWrapper } from '@/helpers/methodWrapper';
-
+import { axiosInstance } from '@/helpers/axiosHttp';
 import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
 import type { User, Enquiry, Booking } from '@/helpers/my-types';
@@ -19,7 +18,7 @@ export const userStore = defineStore({
     }),
     actions: {
         async getUsers() {
-            const response = await fetchMethodWrapper.get(APIURL);
+            const response = await axiosInstance.get('users');
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Couldnt get Users');
                 return;
@@ -27,7 +26,7 @@ export const userStore = defineStore({
             this.users = response.data.users;
         },
         async signUP(user: any) {
-            const response = await fetchMethodWrapper.post(APIURL + '/signup', user);
+            const response = await axiosInstance.post('users/signup', user);
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Registration unsuccessful!');
                 return;
@@ -37,7 +36,7 @@ export const userStore = defineStore({
 
         },
         async customerEnquiry(enquiry: any) {
-            const response = await fetchMethodWrapper.post(APIURL + '/customer/service', enquiry);
+            const response = await axiosInstance.post('users/customer/service', enquiry);
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
@@ -47,7 +46,7 @@ export const userStore = defineStore({
         },
         async getUserById(userid: string) {
             //this.alertStore.loading('user',true);
-            const response = await fetchMethodWrapper.get(APIURL + '/' + userid);
+            const response = await axiosInstance.get('users/' + userid);
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
@@ -57,7 +56,7 @@ export const userStore = defineStore({
 
         },
         async updateUserById(userid: string, new_data: any) {
-            const response = await fetchMethodWrapper.put(APIURL + '/' + userid, new_data);
+            const response = await axiosInstance.put('users/' + userid, new_data);
             if (!response.data.success) {
                 this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
@@ -83,7 +82,7 @@ export const userStore = defineStore({
                 confirmButtonText: 'Yes, delete it!'
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
-                    const response = await fetchMethodWrapper.delete(APIURL + '/' + userid);
+                    const response = await axiosInstance.delete('users/' + userid);
                     if (!response.data.success) {
                         this.alertStore.error(response.data.message || 'Operation unsuccessful');
                         return;

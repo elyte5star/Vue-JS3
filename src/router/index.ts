@@ -97,9 +97,9 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach(async (to) => {
-  
-  
+router.beforeEach(async (to: any) => {
+
+
   // clear alert on route change
   const alertStore = userAlertStore();
 
@@ -107,10 +107,10 @@ router.beforeEach(async (to) => {
   alertStore.reset();
 
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login', 'Home', 'oneProduct','Contact','Cart', 'Register'];
+  const publicPages = ['Login', 'Home', 'oneProduct', 'Contact', 'Cart', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
-
+  console.log(authRequired);
   const auth = userAuthStore();
 
   if (authRequired && !auth.user) {
