@@ -87,15 +87,15 @@ export function clone(obj: any): object {
     throw new Error("Unable to copy obj! Its type isn't supported.");
 }
 
-export const postToTokenEndpoint = async (url = "", data = {}) => {
-    let options: any = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: data // JSON.stringify(data)
-    }
-    const response = await fetch(url, options);
-    return response.json();
-}
+// export const postToTokenEndpoint = async (url = "", data = {}) => {
+//     let options: any = {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//         body: data // JSON.stringify(data)
+//     }
+//     const response = await fetch(url, options);
+//     return response.json();
+// }
 
 export const show_add_entry = (id: string) => {
     let element = (<HTMLInputElement>document.getElementById(id));

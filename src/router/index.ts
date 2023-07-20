@@ -110,7 +110,7 @@ router.beforeEach(async (to: any) => {
   const publicPages = ['Login', 'Home', 'oneProduct', 'Contact', 'Cart', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
-  console.log(authRequired);
+ 
   const auth = userAuthStore();
 
   if (authRequired && !auth.user) {

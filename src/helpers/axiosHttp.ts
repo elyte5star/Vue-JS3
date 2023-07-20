@@ -8,6 +8,7 @@ export const axiosInstance = axios.create({
     timeout: 5000,
     headers: { common: authHeader(process.env.VUE_API_URL || "") },
 
+
 });
 
 export function updateHeader() {
@@ -17,7 +18,7 @@ export function updateHeader() {
 
 
 function authHeader(url: string) {
-    let authStorage: any = localStorage.getItem('user')
+    let authStorage: any = localStorage.getItem('user');
     let user = JSON.parse(authStorage);
     const isLoggedIn = !!user?.access_token;
     const isApiUrl = url.startsWith(process.env.VUE_API_URL || "");
@@ -29,29 +30,55 @@ function authHeader(url: string) {
 }
 
 
-async function handleResponse(response: any) {
-    const isJson = response.headers?.get('content-type')?.includes('application/json');
-    const data = isJson ? await response.json() : null;
-    // check for error response
+axiosInstance.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+}, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    const { user, logout } = userAuthStore()
+    if ([401, 403].includes(error.response.status) && user) {
 
-    if (!response.ok) {
-        const { user, logout } = userAuthStore();
-        if ([401, 403].includes(response.status) && user) {
-            // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: "Session Expired",
-                footer: '<a href="/login">Please, log in again!.</a>'
-            })
-            logout();
-        }
-        // get error message from body or default to response status
-        const error = (data && data.message) || response.status;
-        return Promise.reject(error);
+        return logout();
+
     }
 
-    return data;
+    return Promise.reject(error);
+});
+
+
+
+
+
+
+
+
+function handleResponse(response: any) {
+    console.log(response)
+
+    // const isJson = response.headers?.get('content-type')?.includes('application/json');
+    // const data = isJson ? await response.json() : null;
+    // // check for error response
+
+    // if (!response.ok) {
+    //     const { user, logout } = userAuthStore();
+    //     if ([401, 403].includes(response.status) && user) {
+    //         // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Oops...',
+    //             text: "Session Expired",
+    //             footer: '<a href="/login">Please, log in again!.</a>'
+    //         })
+    //         logout();
+    //     }
+    //     // get error message from body or default to response status
+    //     const error = (data && data.message) || response.status;
+    //     return Promise.reject(error);
+    // }
+
+    // return data;
 }
 
 
