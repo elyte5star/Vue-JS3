@@ -18,55 +18,77 @@ export const userStore = defineStore({
     }),
     actions: {
         async getUsers() {
-            const response = await axiosInstance.get('users');
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Couldnt get Users');
-                return;
+            try {
+                const response = await axiosInstance.get('users');
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Couldnt get Users');
+                    return;
+                }
+                this.users = response.data.users;
+
+            } catch (error: any) {
+                this.alertStore.error(error);
             }
-            this.users = response.data.users;
         },
         async signUP(user: any) {
-            const response = await axiosInstance.post('users/signup', user);
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Registration unsuccessful!');
-                return;
+            try {
+                const response = await axiosInstance.post('users/signup', user);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Registration unsuccessful!');
+                    return;
+                }
+                await router.push({ path: '/login', replace: true })
+                this.alertStore.success('Good job!' + " User with ID " + response.data.userid + " has been created!");
+            } catch (error: any) {
+                this.alertStore.error(error);
             }
-            await router.push({ path: '/login', replace: true })
-            this.alertStore.success('Good job!' + " User with ID " + response.data.userid + " has been created!");
 
         },
         async customerEnquiry(enquiry: any) {
-            const response = await axiosInstance.post('users/customer/service', enquiry);
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                return;
+            try {
+                const response = await axiosInstance.post('users/customer/service', enquiry);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    return;
+                }
+                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.eid);
+            } catch (error: any) {
+                this.alertStore.error(error);
             }
-            this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.eid);
 
         },
         async getUserById(userid: string) {
             //this.alertStore.loading('user',true);
-            const response = await axiosInstance.get('users/' + userid);
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                return;
+            try {
+                const response = await axiosInstance.get('users/' + userid);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    return;
+                }
+                this.user = response.data.user
+                this.bookingsHistory = response.data.user.bookings
+
+            } catch (error: any) {
+                this.alertStore.error(error);
             }
-            this.user = response.data.user
-            this.bookingsHistory = response.data.user.bookings
 
         },
         async updateUserById(userid: string, new_data: any) {
-            const response = await axiosInstance.put('users/' + userid, new_data);
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
-                return;
-            }
+            try {
+                const response = await axiosInstance.put('users/' + userid, new_data);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+                    return;
+                }
 
-            if (userid === this.authStore.user.userid) {
-                const user = { ...this.authStore.user, ...new_data };
-                localStorage.setItem('user', JSON.stringify(user));
-                this.authStore.user = user;
+                if (userid === this.authStore.user.userid) {
+                    const user = { ...this.authStore.user, ...new_data };
+                    localStorage.setItem('user', JSON.stringify(user));
+                    this.authStore.user = user;
+                }
+            } catch (error: any) {
+                this.alertStore.error(error);
             }
 
         },
@@ -82,16 +104,20 @@ export const userStore = defineStore({
                 confirmButtonText: 'Yes, delete it!'
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
-                    const response = await axiosInstance.delete('users/' + userid);
-                    if (!response.data.success) {
-                        this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                        return;
-                    }
-                    // remove user from list after deleted
-                    this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
+                    try {
+                        const response = await axiosInstance.delete('users/' + userid);
+                        if (!response.data.success) {
+                            this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                            return;
+                        }
+                        // remove user from list after deleted
+                        this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
 
-                    if (userid === this.authStore.user.userid) this.authStore.logout();
-                    this.alertStore.success('Your account has been deleted.')
+                        if (userid === this.authStore.user.userid) this.authStore.logout();
+                        this.alertStore.success('Your account has been deleted.')
+                    } catch (error: any) {
+                        this.alertStore.error(error);
+                    }
 
                 }
             })

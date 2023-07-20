@@ -3,21 +3,16 @@
         <header>
             <nav>
                 <ul id="nav_items">
+                    <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
                     <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
                     </li>
                     <li><a href="javascript:void(0)"><i class="fa fa-code-fork"></i>Vue version {{ version }}</a></li>
-                    <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
 
-                    <li v-if="user"><router-link :to="{
-                        name: 'oneUser', params: {
-                            userid: user.userid
-                        }
-                    }"><i class="fa fa-user-circle" style="font-size: 25px"></i>Logged in as {{ user.username
-}}</router-link>
-                    <li v-if="user.admin"><router-link :to="{ name: 'Admin' }"><i class="fa fa-cogs"></i>Admin
-                            page</router-link>
-                    </li>
-                    </li>
+                    <li v-if="user"><a :href="'/user/' + user.userid"><i class="fa fa-user-circle"
+                                style="font-size: 25px"></i>Logged
+                            in as {{ user.username
+                            }}</a></li>
+                    <li v-if="!!user?.admin"><a href="/admin"><i class="fa fa-cogs"></i>Admin page</a></li>
 
                     <li><router-link :to="{ name: 'Cart' }"><i class="fa fa-shopping-cart"
                                 style="font-size: 25px"></i>Cart<span id="items">{{
@@ -71,7 +66,6 @@ export default defineComponent({
             this.authStore.logout();
         },
     },
-
     computed: {
         greeting() {
             return greet();

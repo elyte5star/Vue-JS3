@@ -106,8 +106,6 @@ export default defineComponent({
     watch: {
         async user(newVal) {
 
-            console.log(newVal, "this changed");
-
         }
     },
     methods: {
