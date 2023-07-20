@@ -46,18 +46,18 @@ export const userAuthStore = defineStore({
 
             const response = await fetchMethodWrapper.post(APIURL + '/get_token', userData);
 
-            if (response.success && response.token_data !== undefined) {
+            if (response.data.success && response.data.token_data !== undefined) {
 
-                this.user = response.token_data;
+                this.user = response.data.token_data;
 
-                localStorage.setItem('user', JSON.stringify(response.token_data));
+                localStorage.setItem('user', JSON.stringify(response.data.token_data));
 
                 return router.push(this.returnUrl || '/');
 
 
             } else {
 
-                this.alert.error(response.message);
+                this.alert.error(response.data.message);
             }
 
 

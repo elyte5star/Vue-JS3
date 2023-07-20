@@ -53,17 +53,17 @@ export const userCartStore = defineStore({
         async checkOut(bookingDetails: any) {
 
             const response = await fetchMethodWrapper.post(APIURL + 'booking/create', bookingDetails);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Couldnt make reservation');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Couldnt make reservation');
                 return;
             }
-            this.alertStore.success("Booking with id " + response.oid + " created!")
+            this.alertStore.success("Booking with id " + response.data.oid + " created!")
             this.clearCart();
 
         },
         async checkOutQueue(bookingDetails: any) {
             const response = await fetchMethodWrapper.post(APIURL + 'q_booking/create', bookingDetails);
-            if (response.success) {
+            if (response.data.success) {
                 this.alertStore.success("Booking with id " + response.oid + " created!")
                 this.clearCart();
 

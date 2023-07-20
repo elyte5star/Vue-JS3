@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import { userAlertStore } from './alert';
 import { fetchMethodWrapper } from '@/helpers/methodWrapper';
-import Swal from 'sweetalert2/dist/sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 import type { Product, Review } from '@/helpers/my-types';
 const APIURL = process.env.VUE_API_URL + 'products';
@@ -16,17 +16,18 @@ export const productStore = defineStore({
     actions: {
         async getProducts() {
             const response = await fetchMethodWrapper.get(APIURL);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Couldnt get products');
+
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Couldnt get products');
                 return;
             }
-            this.products = response.products;
+            this.products = response.data.products;
 
         },
-        async submitReview(review: Review) {
+        async submitReview(review: any) {
             const response = await fetchMethodWrapper.post(APIURL + '/create/review', review);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Operation unsuccessful');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
             }
             this.alertStore.success('Good job!' + " Yor review has been saved!");
@@ -34,13 +35,13 @@ export const productStore = defineStore({
         },
         async getProductById(pid: string) {
             const response = await fetchMethodWrapper.get(APIURL + '/' + pid);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Operation unsuccessful');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
             }
-            this.product = response.product;
-            this.quantity = response.product.stock_quantity;
-            this.reviews = response.product.reviews
+            this.product = response.data.product;
+            this.quantity = response.data.product.stock_quantity;
+            this.reviews = response.data.product.reviews
 
         },
         async deleteProductById(pid: string) {
@@ -55,8 +56,8 @@ export const productStore = defineStore({
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
                     const response = await fetchMethodWrapper.delete(APIURL + '/' + pid);
-                    if (!response.success) {
-                        this.alertStore.error(response.message || 'Operation unsuccessful');
+                    if (!response.data.success) {
+                        this.alertStore.error(response.data.message || 'Operation unsuccessful');
                         return;
                     }
                     this.products = this.products.filter(x => x.pid !== pid);//Shallow copy

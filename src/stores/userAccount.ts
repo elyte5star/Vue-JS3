@@ -20,46 +20,46 @@ export const userStore = defineStore({
     actions: {
         async getUsers() {
             const response = await fetchMethodWrapper.get(APIURL);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Couldnt get Users');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Couldnt get Users');
                 return;
             }
-            this.users = response.users;
+            this.users = response.data.users;
         },
         async signUP(user: any) {
             const response = await fetchMethodWrapper.post(APIURL + '/signup', user);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Registration unsuccessful!');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Registration unsuccessful!');
                 return;
             }
             await router.push({ path: '/login', replace: true })
-            this.alertStore.success('Good job!' + " User with ID " + response.userid + " has been created!");
+            this.alertStore.success('Good job!' + " User with ID " + response.data.userid + " has been created!");
 
         },
-        async customerEnquiry(enquiry: Enquiry) {
+        async customerEnquiry(enquiry: any) {
             const response = await fetchMethodWrapper.post(APIURL + '/customer/service', enquiry);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Operation unsuccessful');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
             }
-            this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.eid);
+            this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.eid);
 
         },
         async getUserById(userid: string) {
             //this.alertStore.loading('user',true);
             const response = await fetchMethodWrapper.get(APIURL + '/' + userid);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Operation unsuccessful');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 return;
             }
-            this.user = response.user
-            this.bookingsHistory = response.user.bookings
+            this.user = response.data.user
+            this.bookingsHistory = response.data.user.bookings
 
         },
         async updateUserById(userid: string, new_data: any) {
             const response = await fetchMethodWrapper.put(APIURL + '/' + userid, new_data);
-            if (!response.success) {
-                this.alertStore.error(response.message || 'Operation unsuccessful');
+            if (!response.data.success) {
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
                 return;
             }
@@ -84,8 +84,8 @@ export const userStore = defineStore({
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
                     const response = await fetchMethodWrapper.delete(APIURL + '/' + userid);
-                    if (!response.success) {
-                        this.alertStore.error(response.message || 'Operation unsuccessful');
+                    if (!response.data.success) {
+                        this.alertStore.error(response.data.message || 'Operation unsuccessful');
                         return;
                     }
                     // remove user from list after deleted

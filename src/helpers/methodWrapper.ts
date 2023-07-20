@@ -3,36 +3,39 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import axios from 'axios';
 
 export const fetchMethodWrapper = {
-    get: request('GET'),
-    post: request('POST'),
-    put: request('PUT'),
-    delete: request('DELETE')
+    get: request('get', ''),
+    post: request('post', ''),
+    put: request('put', ''),
+    delete: request('delete', '')
 };
 
-// function request(url: string, body = {}) {
-//     axios.create({
-//         baseURL: process.env.VUE_API_URL,
-//         headers: {
-//             common: authHeader(process.env.VUE_API_URL)
-//         }
-//     })
-// };
+function request(method: string, url: string, body = {}) {
+    return axios.create({
+        method: method,
+        baseURL: process.env.VUE_API_URL,
+        url: url,
+        timeout: 5000,
+        headers: { common: authHeader(process.env.VUE_API_URL) },
+        data: body
+    });
 
-
-
-function request(method: string) {
-    return (url: string, body) => {
-        const requestOptions = {
-            method,
-            headers: authHeader(url)
-        };
-        if (body) {
-            requestOptions.headers['Content-Type'] = 'application/json';
-            requestOptions.body = JSON.stringify(body);
-        }
-        return fetch(url, requestOptions).then(handleResponse);
-    }
 }
+
+
+
+// function request(method: string) {
+//     return (url: string, body) => {
+//         const requestOptions = {
+//             method,
+//             headers: authHeader(url)
+//         };
+//         if (body) {
+//             requestOptions.headers['Content-Type'] = 'application/json';
+//             requestOptions.body = JSON.stringify(body);
+//         }
+//         return fetch(url, requestOptions).then(handleResponse);
+//     }
+// }
 
 
 
@@ -40,11 +43,12 @@ function request(method: string) {
 
 function authHeader(url: string | any) {
     // return auth header with jwt if user is logged in and request is to the api url
-    const { user } = userAuthStore();
+    //const { user } = userAuthStore();
+    let user: any = JSON.parse(localStorage.getItem('user'));
     const isLoggedIn = !!user?.access_token;
     const isApiUrl = url.startsWith(process.env.VUE_API_URL);
     if (isLoggedIn && isApiUrl) {
-        return { Authorization: 'Bearer ' + user.access_token };
+        return { Authorization: 'Bearer ' + user.access_token, 'Content-Type': 'application/json' };
     } else {
         return {};
     }

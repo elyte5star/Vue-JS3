@@ -125,7 +125,7 @@ export default defineComponent({
 
 
         },
-       
+
         async twitterLogin() {
 
             console.error('twitter error during authentication:');
