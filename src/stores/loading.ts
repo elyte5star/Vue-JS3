@@ -8,7 +8,7 @@ export const loadingStore = defineStore({
         isLoading: false,
     }),
     actions: {
-        setLoading(val: any) {
+        setLoading(val: boolean) {
             this.isLoading = val;
         },
     }

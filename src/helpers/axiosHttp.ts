@@ -1,12 +1,14 @@
 import { userAuthStore } from "@/stores/auth_store";
+import { loadingStore } from "@/stores/loading";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import axios from 'axios';
 import type { AuthHeader } from "./my-types";
 
 
+
 export const axiosInstance = axios.create({
     baseURL: process.env.VUE_API_URL,
-    timeout: 5000,
+    timeout: 9000,
     //headers: authHeader(process.env.VUE_API_URL || "")
 
 
@@ -31,9 +33,11 @@ function authHeader(url: string): AuthHeader | {} {
 }
 
 axiosInstance.interceptors.request.use((request) => {
-    request.headers =  authHeader(process.env.VUE_API_URL || "") as AuthHeader;
+    const isloading = loadingStore();
+    isloading.setLoading(true);
+    request.headers = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
     return request;
-  });
+});
 
 
 
@@ -43,10 +47,14 @@ axiosInstance.interceptors.request.use((request) => {
 axiosInstance.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    const isloading = loadingStore();
+    isloading.setLoading(false);
     return response;
 }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    const isloading = loadingStore();
+    isloading.setLoading(false);
     const { user, logout } = userAuthStore()
     if ([401, 403].includes(error.response.status) && user) {
         Swal.fire({

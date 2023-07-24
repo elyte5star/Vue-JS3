@@ -5,7 +5,8 @@ FROM node:lts-alpine as build-stage
 WORKDIR /vue-ui
 
 # Copy the package.json and install dependencies
-COPY package*.json ./
+COPY ./package*.json ./
+
 RUN npm install
 
 # Copy rest of the files

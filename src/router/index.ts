@@ -97,14 +97,11 @@ const router = createRouter({
   routes
 })
 
-console.log(process.env.VUE_API_URL);
 router.beforeEach(async (to: any) => {
 
 
   // clear alert on route change
   const alertStore = userAlertStore();
-
-
   alertStore.reset();
 
   // redirect to login page if not logged in and trying to access a restricted page

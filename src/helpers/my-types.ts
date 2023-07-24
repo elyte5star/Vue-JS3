@@ -24,7 +24,6 @@ export type User = {
 };
 
 
-
 export interface AuthHeader extends AxiosRequestHeaders {
     Authorization: string;
     Accept: string;
@@ -33,7 +32,6 @@ export interface AuthHeader extends AxiosRequestHeaders {
 export type Alert = {
     type: string;
     message: string;
-    loading: boolean;
 }
 export type Booking = {
     total_price: number;

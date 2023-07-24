@@ -47,6 +47,7 @@ export default defineComponent({
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
         }
     },
+    
 
 
 })
