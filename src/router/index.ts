@@ -71,7 +71,7 @@ const routes = [
     path: "/checkout",
     name: "Checkout",
     component: {
-      beforeRouteEnter(to, from, next) {
+      beforeRouteEnter(to: any, from: any, next: any) {
         console.log({ from });
         const destination = {
           path: from.path || "/",
@@ -97,6 +97,7 @@ const router = createRouter({
   routes
 })
 
+console.log(process.env.VUE_API_URL);
 router.beforeEach(async (to: any) => {
 
 
@@ -110,7 +111,7 @@ router.beforeEach(async (to: any) => {
   const publicPages = ['Login', 'Home', 'oneProduct', 'Contact', 'Cart', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
- 
+
   const auth = userAuthStore();
 
   if (authRequired && !auth.user) {

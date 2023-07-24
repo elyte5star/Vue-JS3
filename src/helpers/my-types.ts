@@ -1,3 +1,4 @@
+import type { AxiosRequestHeaders } from 'axios'
 
 
 export type tokenData = {
@@ -22,6 +23,13 @@ export type User = {
 
 };
 
+
+
+export interface AuthHeader extends AxiosRequestHeaders {
+    Authorization: string;
+    Accept: string;
+    'Content-Type': string;
+}
 export type Alert = {
     type: string;
     message: string;

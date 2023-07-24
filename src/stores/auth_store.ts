@@ -8,7 +8,7 @@ import { userAlertStore } from './alert';
 
 import router from '@/router/index'
 
-import { axiosInstance, updateHeader } from '@/helpers/axiosHttp';
+import { axiosInstance} from '@/helpers/axiosHttp';
 
 import type { tokenData } from '@/helpers/my-types';
 
@@ -28,7 +28,7 @@ export const userAuthStore = defineStore({
             if (response.data.success && response.data.token_data !== undefined) {
                 this.user = response.data.token_data;
                 localStorage.setItem('user', JSON.stringify(response.data.token_data));
-                updateHeader();
+                //updateHeader();
                 return router.push(this.returnUrl || '/');
 
             } else {
@@ -45,7 +45,7 @@ export const userAuthStore = defineStore({
                     this.user = response.data.token_data;
 
                     localStorage.setItem('user', JSON.stringify(response.data.token_data));
-                    updateHeader();
+                    //updateHeader();
                     return router.push(this.returnUrl || '/');
 
 

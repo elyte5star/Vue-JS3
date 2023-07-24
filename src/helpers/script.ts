@@ -2,8 +2,6 @@
 import { userAlertStore } from "@/stores/alert";
 
 
-import Mark from 'mark.js';
-
 /* eslint-disable */
 
 export function showPassword(ele_id: string, ele2_id: string = 'toggleLoginPassword') {
@@ -168,31 +166,6 @@ function checkString(str: string, ele_txt: string) {
 }
 
 
-
-/* Mark terms functions */
-function mark_text() {
-    let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
-    let patt = /"(.*?)"/gi;
-    let matches = new Array();
-    let match = null;
-    while ((match = patt.exec(strSearch)) !== null) {
-        matches.push(match[1]);
-    }
-    let txt = strSearch.replace(patt, "");
-    matches = matches.concat(txt.trim().split(" "));
-    matches.forEach(function (term) {
-        let regex_text = new RegExp("\\b(" + term + ")\\b", "i"); // RegExp
-        let headings = document.querySelectorAll(".prod_right h3,h4");
-        headings.forEach(function (txt) {
-            let instance = new Mark(txt);
-            instance.markRegExp(regex_text, { className: "orange", accuracy: "exactly" });
-
-        })
-    });
-}
-
-
-
 export const filterEntries = () => {
     let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
     document.querySelectorAll("article.framed").forEach(
@@ -202,12 +175,10 @@ export const filterEntries = () => {
             if (strSearch.length > 0 && !checkString(strSearch, h[0].innerHTML) && !checkString(strSearch, h[1].innerHTML)) {
                 art.style.display = "none";
             } else if (strSearch == "") {
-                let instance = new Mark(document.querySelectorAll(".prod_right"));
-                instance.unmark();
                 art.style.display = "";
             } else {
                 art.style.display = "";
-                mark_text();
+
             }
         })
 

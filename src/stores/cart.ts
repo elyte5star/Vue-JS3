@@ -4,9 +4,10 @@ import { defineStore } from 'pinia';
 
 //Persisting the Cart and cart count
 let cart = localStorage.getItem('cart');
+
 let itemsInCart = window.localStorage.getItem('cartCount');
 
-import { axiosInstance} from '@/helpers/axiosHttp';
+import { axiosInstance } from '@/helpers/axiosHttp';
 
 import type { Product } from '@/helpers/my-types';
 
@@ -20,11 +21,9 @@ export const userCartStore = defineStore({
     }),
     actions: {
         addToCart(product: Product, volume: number) {
-
             for (let i = 0; i < volume; i++) {
                 this.cart.push(product);
             }
-
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.itemsInCart = this.cart.length;
             localStorage.setItem('cartCount', JSON.stringify(this.itemsInCart));
@@ -33,7 +32,7 @@ export const userCartStore = defineStore({
         },
         removeFromCart(product: Product) {
             const itemToBeRemoved = product
-            this.cart.splice(this.cart.findIndex(a => a.pid === itemToBeRemoved.pid), 1)
+            this.cart.splice(this.cart.findIndex((a: Product) => a.pid === itemToBeRemoved.pid), 1)
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.itemsInCart = this.cart.length;
             localStorage.setItem('cartCount', JSON.stringify(this.itemsInCart));

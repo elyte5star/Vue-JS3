@@ -1,33 +1,43 @@
 import { userAuthStore } from "@/stores/auth_store";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import axios from 'axios';
+import type { AuthHeader } from "./my-types";
 
 
 export const axiosInstance = axios.create({
     baseURL: process.env.VUE_API_URL,
     timeout: 5000,
-    headers: { common: authHeader(process.env.VUE_API_URL || "") },
+    //headers: authHeader(process.env.VUE_API_URL || "")
 
 
 });
 
 export function updateHeader() {
-    axiosInstance.defaults.headers.common = authHeader(process.env.VUE_API_URL || "");
+    axiosInstance.defaults.headers.common = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
 
 }
 
 
-function authHeader(url: string) {
+function authHeader(url: string): AuthHeader | {} {
     let authStorage: any = localStorage.getItem('user');
     let user = JSON.parse(authStorage);
     const isLoggedIn = !!user?.access_token;
     const isApiUrl = url.startsWith(process.env.VUE_API_URL || "");
     if (isLoggedIn && isApiUrl) {
-        return { Authorization: 'Bearer ' + user.access_token, 'Content-Type': 'application/json', 'Accept': 'application/json' };
+        return { Authorization: 'Bearer ' + user.access_token, 'Content-Type': 'application/json', Accept: 'application/json' };
     } else {
         return {};
     }
 }
+
+axiosInstance.interceptors.request.use((request) => {
+    request.headers =  authHeader(process.env.VUE_API_URL || "") as AuthHeader;
+    return request;
+  });
+
+
+
+
 
 
 axiosInstance.interceptors.response.use(function (response) {

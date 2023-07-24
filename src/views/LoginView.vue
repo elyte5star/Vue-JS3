@@ -159,6 +159,7 @@ export default defineComponent({
                 for (const [key, value] of form) {
                     userData.append(key, value as string);
                 }
+                
                 await this.authStore.login(userData);
                 this.username = "";
                 this.password = "";
