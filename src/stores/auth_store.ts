@@ -28,7 +28,6 @@ export const userAuthStore = defineStore({
             if (response.data.success && response.data.token_data !== undefined) {
                 this.user = response.data.token_data;
                 localStorage.setItem('user', JSON.stringify(response.data.token_data));
-                //updateHeader();
                 return router.push(this.returnUrl || '/');
 
             } else {
@@ -45,7 +44,6 @@ export const userAuthStore = defineStore({
                     this.user = response.data.token_data;
 
                     localStorage.setItem('user', JSON.stringify(response.data.token_data));
-                    //updateHeader();
                     return router.push(this.returnUrl || '/');
 
 

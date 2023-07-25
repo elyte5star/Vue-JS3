@@ -2,7 +2,7 @@
 FROM node:lts-alpine as build-stage
 
 # Set working directory
-WORKDIR /vue-ui
+WORKDIR /app
 
 # Copy the package.json and install dependencies
 COPY ./package*.json ./
@@ -18,9 +18,9 @@ RUN npm run build
 # production stage
 FROM nginx:stable-alpine as production-stage
 
-COPY --from=build-stage /vue-ui/dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-COPY --from=build-stage /vue-ui/nginx.conf /etc/nginx/templates/nginx.conf.template
+COPY --from=build-stage /app/nginx/nginx.conf /etc/nginx/templates/nginx.conf.template
 
 EXPOSE 8000
 

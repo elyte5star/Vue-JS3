@@ -9,15 +9,8 @@ import type { AuthHeader } from "./my-types";
 export const axiosInstance = axios.create({
     baseURL: process.env.VUE_API_URL,
     timeout: 9000,
-    //headers: authHeader(process.env.VUE_API_URL || "")
-
-
 });
 
-export function updateHeader() {
-    axiosInstance.defaults.headers.common = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
-
-}
 
 
 function authHeader(url: string): AuthHeader | {} {
@@ -41,9 +34,6 @@ axiosInstance.interceptors.request.use((request) => {
 
 
 
-
-
-
 axiosInstance.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
@@ -63,7 +53,7 @@ axiosInstance.interceptors.response.use(function (response) {
             text: "Session Expired",
             footer: '<a href="/login">Please, log in again!.</a>'
         })
-        return logout();
+        logout();
 
     }
 

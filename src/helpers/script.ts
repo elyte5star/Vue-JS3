@@ -1,7 +1,6 @@
 
 import { userAlertStore } from "@/stores/alert";
 
-
 /* eslint-disable */
 
 export function showPassword(ele_id: string, ele2_id: string = 'toggleLoginPassword') {
