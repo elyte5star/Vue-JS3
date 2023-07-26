@@ -6,7 +6,8 @@
                     <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
                     <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
                     </li>
-                    <li><a href="javascript:void(0)"><i class="fa fa-code-fork"></i>Vue version {{ version }}</a></li>
+                    <li v-if="version"><a href="javascript:void(0)"><i class="fa fa-code-fork"></i>Vue version {{ version
+                    }}</a></li>
 
                     <li v-if="user"><a :href="'/user/' + user.userid"><i class="fa fa-user-circle"
                                 style="font-size: 25px"></i>Logged

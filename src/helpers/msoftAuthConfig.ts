@@ -17,7 +17,7 @@ const msalConfig: msal.Configuration = {
     auth: {
         clientId: import.meta.env.VITE_APP_MSAL_CLIENT_ID,
         authority: process.env.VUE_APP_MSAL_LOGIN_AUTHORITY,
-        redirectUri: process.env.VUE_API_URL,
+        redirectUri: process.env.VUE_BASE_URL,
         postLogoutRedirectUri: '/logout'
     },
     cache: {

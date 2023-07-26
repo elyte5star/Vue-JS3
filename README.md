@@ -40,8 +40,8 @@ VUE_WAIT_TIME=100
 VITE_APP_MSAL_CLIENT_ID=xxxxxxxxxxx
 VUE_APP_MSAL_LOGIN_AUTHORITY=https://login.microsoftonline.com/xxxxxxxxxxxxxxxx
 VUE_GOOGLE_CLIENT_ID=xxxxxxxxxxxxx.apps.googleusercontent.com
-NGINX_PROXY_PASS=http://api:8000/
-NGINX_PORT=8000
+### NGINX_PROXY_PASS=http://api:8000/
+### NGINX_PORT=8000
   ```
 
 
