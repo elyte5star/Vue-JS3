@@ -23,6 +23,6 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 COPY --from=build-stage /app/nginx/nginx.conf /etc/nginx/templates/nginx.conf.template
 
-EXPOSE 80
+EXPOSE 8000
 
 CMD ["nginx", "-g", "daemon off;"]
