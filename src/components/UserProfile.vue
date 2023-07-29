@@ -40,6 +40,7 @@
                             <div v-if="bookingsHistory" v-for="booking in bookingsHistory " v-bind:key="booking.oid"
                                 class="ibox-content">
                                 <div class="table-responsive">
+                                    <h5 v-if="bookingsHistoryCount">Click order to view items per order</h5>
                                     <table class="table shoping-cart-table order_history" id="order_history"
                                         @click="orderDetailsTable(booking.cart)">
                                         <tbody>
@@ -70,7 +71,7 @@
 
                     <div class="col-md-5">
                         <div class="ibox-title">
-                            <h5 v-if="bookingsHistoryCount">Click order to view products per order</h5>
+                            <h5 v-if="bookingsHistoryCount">Items per order</h5>
                         </div>
                         <div class="table-responsive" id="items_order">
 
@@ -160,13 +161,13 @@ export default defineComponent({
         orderDetailsTable(itemsArray: Array<Item>) {
             let tableDiv = document.getElementById("items_order")!;
             tableDiv.innerHTML = "";
-            tableDiv.innerHTML = '<table id=\"order_table\" class=\"table table-bordered table-sm\"><thead><tr><th>#</th><th>Name of product</th><th>Product number</th><th>Price</th></tr></thead><tfoot></tfoot><tbody></tbody></table>'
+            tableDiv.innerHTML = '<table id=\"order_table\" class=\"table table-bordered table-sm\"><thead><tr><th>Qty</th><th>Name of product</th><th>Product number</th><th>Price</th></tr></thead><tfoot></tfoot><tbody></tbody></table>'
             for (let i = 0; i < itemsArray.length; i++) {
                 let htmltxt = "<tr>";
                 htmltxt += "<td>" + itemsArray[i].quantity + "</td>";
                 htmltxt += "<td>" + itemsArray[i].name + "</td>";
                 htmltxt += "<td>" + itemsArray[i].pid + "</td>";
-                htmltxt += "<td>" + "£" + itemsArray[i].price + "</td>";
+                htmltxt += "<td>" + "£" + itemsArray[i].price + " (" + itemsArray[i].calculated_price + ")" + "</td>";
                 htmltxt += "</tr>";
                 let tableRef = document.getElementById('order_table')!.getElementsByTagName('tbody')[0];
                 let newRow = tableRef.insertRow(tableRef.rows.length);
@@ -197,7 +198,7 @@ export default defineComponent({
             for (let price of this.bookingsHistory) {
                 amount += price.total_price;
             }
-            return amount.toFixed(2);
+            return Math.round((amount + Number.EPSILON) * 100) / 100;
         },
         userImage() {
             return new URL('../../src/assets/images/' + this.user_image, import.meta.url).href

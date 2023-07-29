@@ -35,7 +35,7 @@ export type Alert = {
 }
 export type Booking = {
     total_price: number;
-    cart: Array<Product>;
+    cart: Array<Item>;
     owner_id: string;
     oid: string;
     created_at: Date

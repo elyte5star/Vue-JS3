@@ -993,8 +993,12 @@ table.shoping-cart-table tr td:first-child {
     background-color: lightgoldenrodyellow;
 }
 
+
+
 #order_history tr td:hover {
     cursor: pointer;
+    background-color: #3299BB;
+
 }
 
 article h3 {
