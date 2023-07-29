@@ -129,7 +129,7 @@ import moment from 'moment'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { userStore } from "@/stores/userAccount";
-import type { User, Booking, Product } from '@/helpers/my-types';
+import type { User, Booking, Product, Item } from '@/helpers/my-types';
 
 export default defineComponent({
     name: "UserProfile",
@@ -157,13 +157,13 @@ export default defineComponent({
         }
     },
     methods: {
-        orderDetailsTable(itemsArray: Array<Product>) {
+        orderDetailsTable(itemsArray: Array<Item>) {
             let tableDiv = document.getElementById("items_order")!;
             tableDiv.innerHTML = "";
             tableDiv.innerHTML = '<table id=\"order_table\" class=\"table table-bordered table-sm\"><thead><tr><th>#</th><th>Name of product</th><th>Product number</th><th>Price</th></tr></thead><tfoot></tfoot><tbody></tbody></table>'
             for (let i = 0; i < itemsArray.length; i++) {
                 let htmltxt = "<tr>";
-                htmltxt += "<td>" + (i as number + 1) + "</td>";
+                htmltxt += "<td>" + itemsArray[i].quantity + "</td>";
                 htmltxt += "<td>" + itemsArray[i].name + "</td>";
                 htmltxt += "<td>" + itemsArray[i].pid + "</td>";
                 htmltxt += "<td>" + "£" + itemsArray[i].price + "</td>";

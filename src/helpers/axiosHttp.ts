@@ -47,14 +47,14 @@ axiosInstance.interceptors.response.use(function (response) {
     isloading.setLoading(false);
     const { user, logout } = userAuthStore()
     if ([401, 403].includes(error.response.status) && user) {
-        
+
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: "Session Expired",
             footer: '<a href="/login">Please, log in again!.</a>'
         })
-            logout();
+        return logout();
 
     }
 
