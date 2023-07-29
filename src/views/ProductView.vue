@@ -19,7 +19,7 @@
                 <div class="prod_order">
                     <label id="lb4">Quantity(multiples of 1):
                         <input type="number" name="volume" id="num_items" placeholder="e.g 1,2" step="1"
-                            :min="inStock ? 1 : 0" :max="inStock ? quantity : 0" :value="inStock ? 1 : 0"></label>
+                            :min="inStock ? 1 : 0" :max="inStock ? stockQuantity : 0" :value="inStock ? 1 : 0"></label>
                     <button class="form-btn" @click="addToCart()" :disabled="!inStock" type="button" id="add_to_cart">
                         Add to cart.
                     </button>
@@ -204,7 +204,7 @@
 import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
-import type { Product } from '@/helpers/my-types';
+import type { Product, Item } from '@/helpers/my-types';
 
 import { is_valid_Email } from '@/helpers/script';
 import { defineComponent } from 'vue'
@@ -222,9 +222,9 @@ export default defineComponent({
     },
     setup() {
         const pStore = productStore()
-        const { product, quantity, reviews } = storeToRefs(pStore);
+        const { product, stockQuantity, reviews } = storeToRefs(pStore);
         return {
-            product, quantity, reviews, pStore
+            product, stockQuantity, reviews, pStore
         }
 
     },
@@ -243,7 +243,7 @@ export default defineComponent({
     methods: {
         addToCart() {
             const volume = parseInt((<HTMLInputElement>document.getElementById("num_items")).value);
-            if (this.product) this.cartStore.addToCart(this.product, volume);
+            if (this.product) this.cartStore.addToCart(this.product as Item, volume);
         },
         formatDate(value: Date) {
             if (value) {
@@ -285,7 +285,7 @@ export default defineComponent({
 
     },
     watch: {
-        async quantity(newVal) {
+        async stockQuantity(newVal) {
 
             console.log(newVal, "this changed");
 
@@ -298,7 +298,7 @@ export default defineComponent({
         if (this.pid) {
             await this.pStore.getProductById(this.pid);
             const elem = (<HTMLInputElement>document.getElementById("add_to_cart"));
-            if (!this.quantity) elem.innerHTML = "Out of Stock";
+            if (!this.stockQuantity) elem.innerHTML = "Out of Stock";
             else elem.innerHTML = "Add to Cart";
 
         } else {
@@ -308,7 +308,7 @@ export default defineComponent({
     },
     computed: {
         inStock() {
-            return Number(this.quantity);
+            return Number(this.stockQuantity);
         },
         reviewCount() {
             return Number(this.reviews.length)

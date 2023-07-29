@@ -10,7 +10,7 @@ import type { Product, Review } from '@/helpers/my-types';
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        isRequestLoading: false, products: [] as Product[], product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], quantity: 0, productRecommendations: Array()
+        isRequestLoading: false, products: [] as Product[], product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts() {
@@ -39,7 +39,7 @@ export const productStore = defineStore({
                 return;
             }
             this.product = response.data.product;
-            this.quantity = response.data.product.stock_quantity;
+            this.stockQuantity = response.data.product.stock_quantity;
             this.reviews = response.data.product.reviews
 
         },

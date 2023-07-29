@@ -72,3 +72,7 @@ export type Product = {
 
 }
 
+export interface Item extends Product {
+    quantity: number
+    calculated_price: number
+}

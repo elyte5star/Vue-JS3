@@ -10,54 +10,54 @@
                                 <span class="pull-right">(<strong>{{ itemsInCart }}</strong>) items</span>
                                 <h5>Items in your cart</h5>
                             </div>
-                            <div v-for="product in  cart " v-bind:key="product" class="ibox-content">
+                            <div v-for="item in  cart " v-bind:key="item.pid" class="ibox-content">
                                 <div class="table-responsive">
                                     <table class="table shoping-cart-table">
                                         <tbody>
                                             <tr>
                                                 <td :style="{ width: '90px' }">
                                                     <div class="cart-product-imitation">
-                                                        <img :src="'src/assets/images/products/' + product.image"
-                                                            v-bind:alt="product.name">
+                                                        <img :src="'src/assets/images/products/' + item.image"
+                                                            v-bind:alt="item.name">
                                                     </div>
                                                 </td>
                                                 <td class="desc">
                                                     <h3>
                                                         <router-link
-                                                            :to="{ name: 'oneProduct', params: { pid: product.pid } }"
+                                                            :to="{ name: 'oneProduct', params: { pid: item.pid } }"
                                                             class="text-navy">
-                                                            {{ product.name }}
+                                                            {{ item.name }}
                                                         </router-link>
                                                     </h3>
                                                     <p class="small">
-                                                        {{ product.details }}
+                                                        {{ item.details }}
                                                     </p>
                                                     <dl class="small m-b-none">
                                                         <dt>Description</dt>
-                                                        <dd>{{ product.description }}</dd>
+                                                        <dd>{{ item.description }}</dd>
                                                     </dl>
 
                                                     <div class="m-t-sm">
                                                         <a href="#" class="text-muted"><i class="fa fa-gift"></i> Add gift
                                                             package</a>
                                                         |
-                                                        <a href="javascript:void(0)" v-on:click="removeFromCart(product)"
+                                                        <a href="javascript:void(0)" v-on:click="removeFromCart(item)"
                                                             class="text-muted"><i class="fa fa-trash"></i> Remove
                                                             item</a>
                                                     </div>
                                                 </td>
 
-                                                <td v-if="product.discount.length > 0">
-                                                    £{{ product.price }}
+                                                <td v-if="item.discount.length > 0">
+                                                    £{{ item.price }}
                                                     <s class="small text-muted">$230,00</s>
                                                 </td>
                                                 <td :style="{ width: '65px' }">
                                                     <input type="text" :disabled="isDisabled" class="form-control"
-                                                        placeholder="1">
+                                                        :placeholder="item.quantity">
                                                 </td>
                                                 <td>
                                                     <h4 :style="{ width: '130px' }">
-                                                        £{{ product.price }}
+                                                        £{{ item.calculated_price }}
                                                     </h4>
                                                 </td>
                                             </tr>
@@ -233,7 +233,7 @@
 import { userCartStore } from '@/stores/cart'
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
-import type { Product } from '@/helpers/my-types';
+import type { Item } from '@/helpers/my-types';
 import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia';
 export default defineComponent({
@@ -250,15 +250,14 @@ export default defineComponent({
 
     data() {
         return {
-            isRequestLoading: true,
             recommendationList: [],
             isDisabled: true, card: null, expiryDate: null, cardCvv: null,
             cardNumber: null, nameOnCard: null,
         }
     },
     methods: {
-        removeFromCart(product: Product) {
-            this.cartStore.removeFromCart(product)
+        removeFromCart(item: Item) {
+            this.cartStore.removeFromCart(item);
         },
         emptyCart() {
             this.cartStore.clearCart();
@@ -294,14 +293,11 @@ export default defineComponent({
         }
 
     },
-
     computed: {
         totalPrice() {
             let amount = 0;
-
             for (let item of this.cart) {
-
-                amount += item.price;
+                amount += item.calculated_price;
             }
             return amount.toFixed(2);
         },
