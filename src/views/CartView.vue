@@ -158,10 +158,10 @@
                                         </div>
                                         <hr>
                                         <div class="m-t-sm">
-                                            <div class="btn-group">
+                                            <div class="btn-group cart-action">
                                                 <button :disabled="!itemsInCart" class="btn btn-primary pull-right"
                                                     type="submit" id="submit_payment"><i class="fa fa fa-shopping-cart"></i>
-                                                    Checkout</button> |
+                                                    Checkout</button>
                                                 <button :disabled="!itemsInCart" @click="emptyCart()" id="empty_cart"
                                                     class="btn btn-warning pull-right"><i class="fa fa-cart-arrow-down"></i>
                                                     Empty
@@ -299,7 +299,7 @@ export default defineComponent({
             for (let item of this.cart) {
                 amount += item.calculated_price;
             }
-            return amount.toFixed(2);
+            return Math.round((amount + Number.EPSILON) * 100) / 100;
         },
         userImage() {
             return this.user.admin ? "admin-icon.png" : "user-icon.png";

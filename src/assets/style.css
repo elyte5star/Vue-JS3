@@ -836,6 +836,10 @@ article:hover {
     color: #3299BB;
 }
 
+.cart-action .btn {
+    margin-right: 10px;
+}
+
 .cart-product-imitation {
     text-align: center;
     padding-top: 10px;
@@ -1096,6 +1100,20 @@ article h3 {
     font-size: 1.2em;
     margin-top: 5px;
     text-align: center;
+}
+
+.error-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.error-actions {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.error-actions .btn {
+    margin-right: 10px;
 }
 
 /** END LOST AND FOUND **/

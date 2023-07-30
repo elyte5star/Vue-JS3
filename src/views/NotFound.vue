@@ -1,6 +1,20 @@
 <template>
     <div id="lost" class="lost container">
-        <h1>Oops, it looks like the page you're looking for doesn't exist.</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="error-template">
+                    <h1>Oops!</h1>
+                    <h2>404 Not Found</h2>
+                    <div class="error-details">
+                        Sorry, an error has occured, Requested page not found!
+                    </div>
+                    <div class="error-actions">
+                        <a href="/" class="btn btn-primary btn-lg"><i class="fa fa-fw fa-home" style="color: white;"></i>Take Me Home </a>
+                        <a href="/contact" class="btn btn-info btn-lg"><i class="fa fa-envelope-o"></i> Contact Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script lang="ts">
