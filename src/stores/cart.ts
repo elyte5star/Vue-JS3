@@ -82,14 +82,18 @@ export const userCartStore = defineStore({
 
         },
         async checkOut(bookingDetails: any) {
+            try {
+                const response = await axiosInstance.post('booking/create', bookingDetails);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Couldnt make reservation');
+                    return;
+                }
+                this.alertStore.success("Thank You! Booking with id " + response.data.oid + " created!")
+                this.clearCart();
 
-            const response = await axiosInstance.post('booking/create', bookingDetails);
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Couldnt make reservation');
-                return;
+            } catch (error: any) {
+                this.alertStore.error(error);
             }
-            this.alertStore.success("Booking with id " + response.data.oid + " created!")
-            this.clearCart();
 
         },
         async checkOutQueue(bookingDetails: any) {

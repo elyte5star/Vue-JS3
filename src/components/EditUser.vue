@@ -7,7 +7,7 @@
                     <div class="col-md-6">
                         <form @submit.prevent="updateDetails">
                             <div class="text-center mb-3">
-                                <div class="btn-group">
+                                <div class="btn-group user-action">
                                     <button @click.prevent="deleteUser(user_info.userid)" class="btn btn-danger"
                                         type="submit" id="delete_account"><i class="fa fa-trash-o"></i>
                                         Delete account</button>
@@ -43,7 +43,7 @@
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editPassword">Password: <em>(Leave default to
                                         keep the same password)</em></label>
-                                <input v-model="editPassword" type="password" id="editPassword" class="form-control"
+                                <input v-model.lazy="editPassword" type="password" id="editPassword" class="form-control"
                                     aria-describedby="passwordHelpBlock" autocomplete="on" />
                                 <a href="javascript:void(0)" @click="showPassword('editPassword', 'toggleEditPassword')"><i
                                         class="bi bi-eye-slash" id="toggleEditPassword"></i></a>
@@ -58,7 +58,7 @@
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editRepeatPassword">Repeat password: <em>(Leave default to
                                         keep the same password)</em></label>
-                                <input v-model="editRepeatPassword" type="password" id="editRepeatPassword"
+                                <input v-model.lazy="editRepeatPassword" type="password" id="editRepeatPassword"
                                     class="form-control" aria-describedby="passwordHelpBlock" autocomplete="on" />
                                 <a href="javascript:void(0)"
                                     @click="showPassword('editRepeatPassword', 'toggleEditRepeatPassword')"><i

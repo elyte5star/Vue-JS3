@@ -80,8 +80,10 @@ const routes = [
         };
         if (!from) {
           console.log("no from");
+
         }
         console.log("running before hook");
+        console.log({ to });
 
         next(destination);
       }
@@ -94,6 +96,15 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+
+  scrollBehavior(to, from, savedPosition) {
+    
+    if (savedPosition) {
+      return savedPosition
+    }
+
+    return { top: 0, left: 0 }
+  },
   routes
 })
 

@@ -715,6 +715,9 @@ article:hover {
 /* Login Modify Register*/
 
 
+.user-action .btn {
+    margin-right: 10px;
+}
 .login_access form .fa {
     font-size: 30px;
     color: #3299BB;

@@ -41,7 +41,7 @@
                             <!-- Password input -->
                             <div class="form-outline">
                                 <label class="form-label" for="loginPassword">Password:</label>
-                                <input type="password" name="password" id="password" v-model="password" class="form-control"
+                                <input type="password" name="password" id="password" v-model.lazy="password" class="form-control"
                                     aria-describedby="passwordHelpBlock" autocomplete="on" maxlength="20" />
                                 <a href="javascript:void(0)" @click="showPassword('password')"><i class="bi bi-eye-slash"
                                         id="toggleLoginPassword"></i></a>

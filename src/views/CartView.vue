@@ -23,8 +23,7 @@
                                                 </td>
                                                 <td class="desc">
                                                     <h3>
-                                                        <router-link
-                                                            :to="{ name: 'oneProduct', params: { pid: item.pid } }"
+                                                        <router-link :to="{ name: 'oneProduct', params: { pid: item.pid } }"
                                                             class="text-navy">
                                                             {{ item.name }}
                                                         </router-link>
@@ -65,8 +64,16 @@
                                     </table>
                                 </div>
                             </div>
+                            <div v-if="!itemsInCart" class="col-sm-12 empty-cart-cls text-center">
+                                <img src="src/assets/images/emptyCart.png" width="130" height="130"
+                                    class="img-fluid mb-4 mr-3" alt="empty_cart_icon">
+                                <h3><strong>Your Cart is Empty</strong></h3>
+                                <h4>Add something to make me happy :)</h4>
+                                <a href="/" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue
+                                    shopping</a>
+                            </div>
 
-                            <div class="ibox-content">
+                            <div v-if="itemsInCart" class="ibox-content">
                                 <router-link id="cont_shopping" :to="{ name: 'Home' }"><i class="fa fa-arrow-left"></i>
                                     Continue
                                     shopping</router-link>
@@ -93,7 +100,7 @@
                                 </span>
                                 <hr>
                                 <div class="payment-info">
-                                    <form @submit.prevent="makeReservation" class="payment-form">
+                                    <form @submit.prevent="makeReservation" class="payment-form" action="/checkout">
                                         <div class="d-flex justify-content-between"><span>Card
                                                 details</span><img v-if="user" class="rounded"
                                                 :src="'src/assets/images/' + userImage" v-bind:alt="user.username"
@@ -293,6 +300,7 @@ export default defineComponent({
         }
 
     },
+
     computed: {
         totalPrice() {
             let amount = 0;
