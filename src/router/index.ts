@@ -8,6 +8,7 @@ import ProductView from '@/views/ProductView.vue'
 import AdminView from '@/views/AdminView.vue'
 import RegisterUser from '@/views/RegisterUserView.vue'
 import ContactUs from '@/views/ContactView.vue'
+import CheckOut from '@/components/CheckOut.vue'
 
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
@@ -70,25 +71,7 @@ const routes = [
   {
     path: "/checkout",
     name: "Checkout",
-    component: {
-      beforeRouteEnter(to: any, from: any, next: any) {
-        console.log({ from });
-        const destination = {
-          path: from.path || "/",
-          query: from.query,
-          params: from.params
-        };
-        if (!from) {
-          console.log("no from");
-
-        }
-        console.log("running before hook");
-        console.log({ to });
-
-        next(destination);
-      }
-
-    },
+    component: CheckOut
 
   }
 
@@ -98,7 +81,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
   scrollBehavior(to, from, savedPosition) {
-    
+
     if (savedPosition) {
       return savedPosition
     }

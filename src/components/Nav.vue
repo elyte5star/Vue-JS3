@@ -15,8 +15,8 @@
                             }}</a></li>
                     <li v-if="!!user?.admin"><a href="/admin"><i class="fa fa-cogs"></i>Admin page</a></li>
 
-                    <li><router-link :to="{ name: 'Cart' }"><i class="fa fa-shopping-cart"
-                                style="font-size: 25px"></i>Cart<span id="items">{{
+                    <li><router-link to="/cart"><i class="fa fa-shopping-cart" style="font-size: 25px"></i>Cart<span
+                                id="items">{{
                                     itemsInCart }}</span></router-link></li>
 
                     <li><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments">Contact

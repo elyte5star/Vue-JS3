@@ -233,15 +233,16 @@
             </div>
         </div>
     </div>
+    <router-view></router-view>
 </template>
 
 <script lang="ts">
 
-import { userCartStore } from '@/stores/cart'
-import { userAuthStore } from '@/stores/auth_store'
-import { userAlertStore } from '@/stores/alert'
+import { userCartStore } from '@/stores/cart';
+import { userAuthStore } from '@/stores/auth_store';
+import { userAlertStore } from '@/stores/alert';
 import type { Item } from '@/helpers/my-types';
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 export default defineComponent({
     name: 'CartView',
@@ -280,6 +281,7 @@ export default defineComponent({
                     "cart": this.cart,
                     "total_price": this.totalPrice
                 }
+
                 await this.cartStore.checkOut(bookingDetails)
                 this.cardNumber = null
                 this.expiryDate = null

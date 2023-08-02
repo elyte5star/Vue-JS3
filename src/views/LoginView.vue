@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!user">
         <!-- Login panel -->
         <div id="login_access" class="login_access">
             <div class="container">
@@ -41,8 +41,9 @@
                             <!-- Password input -->
                             <div class="form-outline">
                                 <label class="form-label" for="loginPassword">Password:</label>
-                                <input type="password" name="password" id="password" v-model.lazy="password" class="form-control"
-                                    aria-describedby="passwordHelpBlock" autocomplete="on" maxlength="20" />
+                                <input type="password" name="password" id="password" v-model.lazy="password"
+                                    class="form-control" aria-describedby="passwordHelpBlock" autocomplete="on"
+                                    maxlength="20" />
                                 <a href="javascript:void(0)" @click="showPassword('password')"><i class="bi bi-eye-slash"
                                         id="toggleLoginPassword"></i></a>
                                 <div id="passwordHelpBlock" class="form-text">
@@ -94,18 +95,13 @@ import { storeToRefs } from 'pinia';
 import { googleOneTap, decodeCredential } from "vue3-google-login"
 import { isUserNameValid, showPassword } from "@/helpers/script";
 import { loginRequest, _msalInstance } from "@/helpers/msoftAuthConfig";
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "LoginView",
     data() {
         return {
             user: {}, msalInstance: _msalInstance, username: "", password: "", showPassword, authStore: userAuthStore(),
-        }
-    },
-    watch: {
-        async user(newVal) {
-
         }
     },
     methods: {
@@ -159,7 +155,7 @@ export default defineComponent({
                 for (const [key, value] of form) {
                     userData.append(key, value as string);
                 }
-                
+
                 await this.authStore.login(userData);
                 this.username = "";
                 this.password = "";
@@ -180,6 +176,10 @@ export default defineComponent({
     async mounted() {
         const { user } = storeToRefs(this.authStore);
         this.user = user
+        if (this.user) {
+            this.$router.push({ name: 'Home' });
+        }
+
     },
 
 
