@@ -17,7 +17,8 @@ import { userAlertStore } from './alert';
 export const userCartStore = defineStore({
     id: 'cart',
     state: () => ({
-        cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0, alertStore: userAlertStore()
+        cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0,
+        alertStore: userAlertStore(), countTime: import.meta.env.VITE_APP_WAIT_TIME
     }),
     actions: {
         addToCart(item: Item, volume: number) {
@@ -97,15 +98,39 @@ export const userCartStore = defineStore({
 
         },
         async checkOutQueue(bookingDetails: any) {
-            const response = await axiosInstance.post('q_booking/create', bookingDetails);
-            if (response.data.success) {
-                this.alertStore.success("Booking with id " + response.data.oid + " created!")
-                this.clearCart();
+            try {
+                const response = await axiosInstance.post('q_booking/create', bookingDetails);
+                let job_id = response.data.job_id;
+                let finished = false;
 
-            } else {
-                this.alertStore.error(response.data.message);
+                for (let i = 0; i < 100; i++) {
+                    let job_response = await axiosInstance.get("job/" + job_id);
+                    
+                    if (job_response.data.job.job_status.is_finished) {
+                        finished = true;
+                        break;
+                    }
+                    await new Promise(r => setTimeout(r, this.countTime));
+                }
+                if (!finished) {
+                    this.alertStore.error("Timeout! check the worker server!.");
+                    return null;
+                }
+                let getBookingResponse = await axiosInstance.get("q_booking/" + job_id);
+
+                if (getBookingResponse.data.success) {
+                    this.alertStore.success("Booking with id " + getBookingResponse.data.oid + " created!")
+                    this.clearCart();
+
+                } else {
+                    this.alertStore.error(response.data.message);
+                }
+
+            } catch (error: any) {
+                this.alertStore.error(error);
             }
 
         }
+
     }
 });

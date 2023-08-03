@@ -8,7 +8,7 @@ import type { AuthHeader } from "./my-types";
 
 export const axiosInstance = axios.create({
     baseURL: process.env.VUE_API_URL,
-    timeout: 9000,
+
 });
 
 
@@ -25,11 +25,12 @@ function authHeader(url: string): AuthHeader | {} {
     }
 }
 
-axiosInstance.interceptors.request.use((request) => {
+axiosInstance.interceptors.request.use((config) => {
+    config.timeout = import.meta.env.VITE_APP_WAIT_TIME;
     const isloading = loadingStore();
     isloading.setLoading(true);
-    request.headers = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
-    return request;
+    config.headers = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
+    return config;
 });
 
 
@@ -42,19 +43,30 @@ axiosInstance.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
     const isloading = loadingStore();
+
     isloading.setLoading(false);
     const { user, logout } = userAuthStore()
-    if ([401, 403].includes(error.response.status) && user) {
+
+    if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {
 
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: "Session Expired",
-            footer: '<a href="/login">Please, log in again!.</a>'
+            text: "Request timed out",
+            footer: '<a href="/">Please, return to home page.</a>',
+            allowOutsideClick: false,
+            showConfirmButton: false
         })
-        return logout();
+
+    } else if ([401, 403].includes(error.response.status) && user) {
+        Swal.fire({
+            icon: 'info',
+            title: '<strong>Oops...</strong>',
+            text: 'Session Expired',
+            footer: '<a href="/login">Please,log in again!.</a>',
+            allowOutsideClick: false
+        }).then(logout)
 
     }
 

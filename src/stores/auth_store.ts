@@ -8,7 +8,7 @@ import { userAlertStore } from './alert';
 
 import router from '@/router/index'
 
-import { axiosInstance} from '@/helpers/axiosHttp';
+import { axiosInstance } from '@/helpers/axiosHttp';
 
 import type { tokenData } from '@/helpers/my-types';
 
@@ -61,6 +61,7 @@ export const userAuthStore = defineStore({
             this.user = null;
             localStorage.removeItem('user');
             router.push('/');
+            return true;
         }
 
     }

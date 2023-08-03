@@ -282,12 +282,12 @@ export default defineComponent({
                     "total_price": this.totalPrice
                 }
 
-                await this.cartStore.checkOut(bookingDetails)
-                this.cardNumber = null
-                this.expiryDate = null
-                this.cardCvv = null
-                this.card = null
-                this.nameOnCard = null
+                // await this.cartStore.checkOut(bookingDetails)
+                // this.cardNumber = null
+                // this.expiryDate = null
+                // this.cardCvv = null
+                // this.card = null
+                // this.nameOnCard = null
             } else {
                 const alertStore = userAlertStore();
                 if (!this.cardNumber) alertStore.error("Card number required");

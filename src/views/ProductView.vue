@@ -291,9 +291,6 @@ export default defineComponent({
 
         }
     },
-    mounted() {
-        document.getElementById('product')?.scrollIntoView();
-    },
     async created(): Promise<void> {
         if (this.pid) {
             await this.pStore.getProductById(this.pid);

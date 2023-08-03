@@ -58,7 +58,7 @@ export const userStore = defineStore({
 
         },
         async getUserById(userid: string) {
-            //this.alertStore.loading('user',true);
+            
             try {
                 const response = await axiosInstance.get('users/' + userid);
                 if (!response.data.success) {
