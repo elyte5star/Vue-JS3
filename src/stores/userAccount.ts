@@ -5,11 +5,8 @@ import { axiosInstance } from '@/helpers/axiosHttp';
 import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
 import type { User, Enquiry, Booking } from '@/helpers/my-types';
-
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
-
-const APIURL = process.env.VUE_API_URL + 'users';
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
@@ -27,7 +24,7 @@ export const userStore = defineStore({
                 this.users = response.data.users;
 
             } catch (error: any) {
-                this.alertStore.error(error);
+                console.log(error);
             }
         },
         async signUP(user: any) {
@@ -40,11 +37,11 @@ export const userStore = defineStore({
                 await router.push({ path: '/login', replace: true })
                 this.alertStore.success('Good job!' + " User with ID " + response.data.userid + " has been created!");
             } catch (error: any) {
-                this.alertStore.error(error);
+                console.log(error);
             }
 
         },
-        async customerEnquiry(enquiry: any) {
+        async customerEnquiry(enquiry: Enquiry) {
             try {
                 const response = await axiosInstance.post('users/customer/service', enquiry);
                 if (!response.data.success) {
@@ -53,12 +50,12 @@ export const userStore = defineStore({
                 }
                 this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.eid);
             } catch (error: any) {
-                this.alertStore.error(error);
+                console.log(error);
             }
 
         },
         async getUserById(userid: string) {
-            
+
             try {
                 const response = await axiosInstance.get('users/' + userid);
                 if (!response.data.success) {
@@ -69,7 +66,7 @@ export const userStore = defineStore({
                 this.bookingsHistory = response.data.user.bookings
 
             } catch (error: any) {
-                this.alertStore.error(error);
+                console.log(error);
             }
 
         },
@@ -88,7 +85,7 @@ export const userStore = defineStore({
                     this.authStore.user = user;
                 }
             } catch (error: any) {
-                this.alertStore.error(error);
+                console.log(error);
             }
 
         },
@@ -98,10 +95,15 @@ export const userStore = defineStore({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
                 icon: 'warning',
+                allowOutsideClick: false,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes, delete it!',
+                imageUrl: new URL('../../src/assets/images/ai.jpg', import.meta.url).href,
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image',
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
                     try {
@@ -112,11 +114,11 @@ export const userStore = defineStore({
                         }
                         // remove user from list after deleted
                         this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
-
                         if (userid === this.authStore.user.userid) this.authStore.logout();
-                        this.alertStore.success('Your account has been deleted.')
+                        Swal.fire('Deleted!', 'Your account has been deleted.', 'success');
+
                     } catch (error: any) {
-                        this.alertStore.error(error);
+                        console.log(error);
                     }
 
                 }

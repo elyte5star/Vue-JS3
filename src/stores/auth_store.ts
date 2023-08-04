@@ -24,14 +24,19 @@ export const userAuthStore = defineStore({
     actions: {
 
         async login(userData: object) {
-            const response = await axiosInstance.post('auth/token', userData);
-            if (response.data.success && response.data.token_data !== undefined) {
-                this.user = response.data.token_data;
-                localStorage.setItem('user', JSON.stringify(response.data.token_data));
-                return router.push(this.returnUrl || '/');
+            try {
+                const response = await axiosInstance.post('auth/token', userData);
+                if (response.data.success && response.data.token_data !== undefined) {
+                    this.user = response.data.token_data;
+                    localStorage.setItem('user', JSON.stringify(response.data.token_data));
+                    return router.push(this.returnUrl || '/');
 
-            } else {
-                this.alert.error(response.data.message);
+                } else {
+                    this.alert.error(response.data.message);
+                }
+
+            } catch (error: any) {
+                console.log(error);
             }
         },
 
@@ -52,7 +57,7 @@ export const userAuthStore = defineStore({
                     this.alert.error(response.data.message);
                 }
             } catch (error: any) {
-                this.alert.error(error);
+                console.log(error);
             }
 
         },

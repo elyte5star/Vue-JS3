@@ -14,6 +14,7 @@ import type { Item } from '@/helpers/my-types';
 import { userAlertStore } from './alert';
 
 
+
 export const userCartStore = defineStore({
     id: 'cart',
     state: () => ({
@@ -93,7 +94,7 @@ export const userCartStore = defineStore({
                 this.clearCart();
 
             } catch (error: any) {
-                this.alertStore.error(error);
+                console.log(error);
             }
 
         },
@@ -127,7 +128,7 @@ export const userCartStore = defineStore({
                 }
 
             } catch (error: any) {
-                this.alertStore.error(error);
+                console.log(error);
             }
 
         }

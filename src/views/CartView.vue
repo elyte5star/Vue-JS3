@@ -272,14 +272,16 @@ export default defineComponent({
         },
         async makeReservation() {
             if (this.cardNumber && this.expiryDate && this.card && this.cardCvv && this.nameOnCard) {
+
                 let bookingDetails = {
-                    "cardNumber": Number(this.cardNumber),
-                    "expiryDate": this.expiryDate,
-                    "cardCvv": Number(this.cardCvv),
-                    "cardType": this.card,
-                    "nameOnCard": this.nameOnCard,
-                    "cart": this.cart,
-                    "total_price": this.totalPrice
+                    cart: this.cart,
+                    total_price: this.totalPrice,
+                    paymentDetails: {
+                        cardNumber: Number(this.cardNumber),
+                        expiryDate: this.expiryDate,
+                        cardCvv: Number(this.cardCvv),
+                        nameOnCard: this.nameOnCard,
+                    }
                 }
 
                 // await this.cartStore.checkOut(bookingDetails)

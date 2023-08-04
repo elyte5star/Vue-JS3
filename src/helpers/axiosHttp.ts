@@ -31,7 +31,13 @@ axiosInstance.interceptors.request.use((config) => {
     isloading.setLoading(true);
     config.headers = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
     return config;
-});
+},
+    function (error) {
+        console.log('Request Error');
+        return Promise.reject(error);
+
+    }
+);
 
 
 
@@ -48,30 +54,48 @@ axiosInstance.interceptors.response.use(function (response) {
     isloading.setLoading(false);
     const { user, logout } = userAuthStore()
 
-    if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {
+    if (!error.response) {
 
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: "Request timed out",
-            footer: '<a href="/">Please, return to home page.</a>',
-            allowOutsideClick: false,
-            showConfirmButton: false
-        })
+        console.log('Error: Network Error, Server is down');
+        return Promise.reject(error)
 
-    } else if ([401, 403].includes(error.response.status) && user) {
+    } else {
 
-        Swal.fire({
-            icon: 'info',
-            title: '<strong>Oops...</strong>',
-            text: 'Session Expired',
-            footer: '<a href="/login">Please,log in again!.</a>',
-            allowOutsideClick: false
-        }).then(logout)
 
+        if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: "Request timed out",
+                footer: '<a href="/">Please, return to home page.</a>',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                imageUrl: new URL('../../src/assets/images/ai.jpg', import.meta.url).href,
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image'
+
+            })
+            console.log(error);
+
+        } else if ([401, 403].includes(error.response.status) && user) {
+
+            Swal.fire({
+                icon: 'warning',
+                title: '<strong>Oops...</strong>',
+                text: 'Session Expired',
+                allowOutsideClick: false,
+                imageUrl: new URL('../../src/assets/images/ai.jpg', import.meta.url).href,
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image'
+            }).then(logout)
+
+        }
+
+        return Promise.reject(error);
     }
 
-    return Promise.reject(error);
 });
 
 

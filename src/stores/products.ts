@@ -10,38 +10,53 @@ import type { Product, Review } from '@/helpers/my-types';
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        isRequestLoading: false, products: [] as Product[], product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
+        products: [] as Product[], product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts() {
-            const response = await axiosInstance.get('products');
+            try {
+                const response = await axiosInstance.get('products');
 
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Couldnt get products');
-                return;
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Couldnt get products');
+                    return;
+                }
+
+                this.products = response.data.products;
+
+            } catch (error: any) {
+                console.log(error);
             }
-            this.products = response.data.products;
 
         },
-        async submitReview(review: any) {
-            const response = await axiosInstance.post('products/create/review', review);
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                return;
+        async submitReview(review: object) {
+            try {
+                const response = await axiosInstance.post('products/create/review', review);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    return;
+                }
+                this.alertStore.success('Good job!' + " Yor review has been saved!");
+
+            } catch (error: any) {
+                console.log(error);
             }
-            this.alertStore.success('Good job!' + " Yor review has been saved!");
 
         },
         async getProductById(pid: string) {
-            const response = await axiosInstance.get('products/' + pid);
-            if (!response.data.success) {
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                return;
-            }
-            this.product = response.data.product;
-            this.stockQuantity = response.data.product.stock_quantity;
-            this.reviews = response.data.product.reviews
+            try {
+                const response = await axiosInstance.get('products/' + pid);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    return;
+                }
+                this.product = response.data.product;
+                this.stockQuantity = response.data.product.stock_quantity;
+                this.reviews = response.data.product.reviews
 
+            } catch (error: any) {
+                console.log(error);
+            }
         },
         async deleteProductById(pid: string) {
             Swal.fire({
@@ -51,16 +66,24 @@ export const productStore = defineStore({
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Yes, delete it!',
+                showLoaderOnConfirm: true,
             }).then(async (result: any) => {
                 if (result.isConfirmed) {
-                    const response = await axiosInstance.delete('products/' + pid);
-                    if (!response.data.success) {
-                        this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                        return;
+                    try {
+                        const response = await axiosInstance.delete('products/' + pid);
+                        if (!response.data.success) {
+                            this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                            return;
+                        }
+                        this.products = this.products.filter(x => x.pid !== pid);//Shallow copy
+                        this.alertStore.success('The product has been deleted.');
+
+
+                    } catch (error: any) {
+                        console.log(error);
                     }
-                    this.products = this.products.filter(x => x.pid !== pid);//Shallow copy
-                    this.alertStore.success('The product has been deleted.');
+
                 }
 
             })
