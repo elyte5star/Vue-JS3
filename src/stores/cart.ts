@@ -105,12 +105,12 @@ export const userCartStore = defineStore({
 
                 for (let i = 0; i < 100; i++) {
                     let job_response = await axiosInstance.get("job/" + job_id);
-                    
+
                     if (job_response.data.job.job_status.is_finished) {
                         finished = true;
                         break;
                     }
-                    await new Promise(r => setTimeout(r, this.countTime));
+                    await new Promise(r => setTimeout(r, this.countTime || 0));
                 }
                 if (!finished) {
                     this.alertStore.error("Timeout! check the worker server!.");

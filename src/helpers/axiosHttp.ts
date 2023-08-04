@@ -26,7 +26,7 @@ function authHeader(url: string): AuthHeader | {} {
 }
 
 axiosInstance.interceptors.request.use((config) => {
-    config.timeout = import.meta.env.VITE_APP_WAIT_TIME;
+    config.timeout = import.meta.env.VITE_APP_WAIT_TIME || 0;
     const isloading = loadingStore();
     isloading.setLoading(true);
     config.headers = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
@@ -60,6 +60,7 @@ axiosInstance.interceptors.response.use(function (response) {
         })
 
     } else if ([401, 403].includes(error.response.status) && user) {
+
         Swal.fire({
             icon: 'info',
             title: '<strong>Oops...</strong>',

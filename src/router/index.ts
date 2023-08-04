@@ -79,6 +79,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  strict: true,
 
   scrollBehavior(to, from, savedPosition) {
 
@@ -91,7 +92,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach(async (to: any) => {
+router.beforeEach(async (to: any, from, next) => {
 
 
   // clear alert on route change
@@ -106,8 +107,14 @@ router.beforeEach(async (to: any) => {
   const auth = userAuthStore();
 
   if (authRequired && !auth.user) {
+
     auth.returnUrl = to.fullPath;
-    return { name: 'Login' }
+    next({ name: 'Login' });
+
+  } else {
+
+    next();
+
   }
 
 
