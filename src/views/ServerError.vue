@@ -1,5 +1,5 @@
 <template>
-    <div id="server" class="container">
+    <div v-if="countDay" id="server" class="container">
         <article>
             <h1>We&rsquo;ll be back soon!</h1>
             <div>
@@ -20,17 +20,21 @@
 </template>
 <script lang="ts">
 
-
-import type { Item } from '@/helpers/my-types';
-import type { unitOfTime } from 'moment';
 import { defineComponent } from 'vue'
 export default defineComponent({
     name: "ServerError",
+    data() {
+        let countDay = new Date(0);
+        return {
+            countDay
+        }
+
+    },
     methods: {
         countDown() {
-            const countDay = new Date('August 28, 2023 00:00:00');
+            this.countDay = new Date('August 15, 2023 00:00:00');
             const now = new Date();
-            const counter: number = Number(countDay) - Number(now);
+            const counter: number = Number(this.countDay) - Number(now);
             const second = 1000;
             const minute = second * 60;
             const hour = minute * 60;
@@ -45,7 +49,7 @@ export default defineComponent({
             (<HTMLInputElement>document.querySelector(".second")).innerText = textSecond + ' Seconds';
 
         },
-        
+
         startCounter: function () {
             setInterval(this.countDown, 1000);
         },
