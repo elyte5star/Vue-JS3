@@ -8,7 +8,8 @@ import ProductView from '@/views/ProductView.vue'
 import AdminView from '@/views/AdminView.vue'
 import RegisterUser from '@/views/RegisterUserView.vue'
 import ContactUs from '@/views/ContactView.vue'
-import CheckOut from '@/components/CheckOut.vue'
+import CheckOut from '@/views/CheckOut.vue'
+import ServerError from '@/views/ServerError.vue';
 
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
@@ -52,6 +53,11 @@ const routes = [
     component: CartView
   },
   {
+    path: '/errorpage',
+    name: 'ServerError',
+    component: ServerError
+  },
+  {
     path: '/product/:pid',
     name: 'oneProduct',
     component: ProductView,
@@ -71,7 +77,7 @@ const routes = [
   {
     path: "/checkout",
     name: "Checkout",
-    component: CheckOut
+    component: CheckOut,
 
   }
 
@@ -97,10 +103,12 @@ router.beforeEach(async (to: any, from, next) => {
 
   // clear alert on route change
   const alertStore = userAlertStore();
+
   alertStore.reset();
 
+
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login', 'Home', 'oneProduct', 'Contact', 'Cart', 'Register'];
+  const publicPages = ['Login', 'Home', 'oneProduct', 'ServerError', 'Contact', 'Cart', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
 
@@ -116,7 +124,6 @@ router.beforeEach(async (to: any, from, next) => {
     next();
 
   }
-
 
 
 });

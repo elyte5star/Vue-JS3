@@ -4,6 +4,8 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import axios from 'axios';
 import type { AuthHeader } from "./my-types";
 
+import router from "@/router/index";
+
 
 
 export const axiosInstance = axios.create({
@@ -52,11 +54,13 @@ axiosInstance.interceptors.response.use(function (response) {
     const isloading = loadingStore();
 
     isloading.setLoading(false);
+
     const { user, logout } = userAuthStore()
 
     if (!error.response) {
 
         console.log('Error: Network Error, Server is down');
+        router.push('/contact');
         return Promise.reject(error)
 
     } else {

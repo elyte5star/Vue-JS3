@@ -244,6 +244,8 @@ import { userAlertStore } from '@/stores/alert';
 import type { Item } from '@/helpers/my-types';
 import { defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
+import router from '@/router/index';
+
 export default defineComponent({
     name: 'CartView',
     setup(props, ctx) {
@@ -283,7 +285,7 @@ export default defineComponent({
                         nameOnCard: this.nameOnCard,
                     }
                 }
-
+                router.push({ path: '/checkout', query: { bookingDetails: JSON.stringify(bookingDetails) } })
                 // await this.cartStore.checkOut(bookingDetails)
                 // this.cardNumber = null
                 // this.expiryDate = null
