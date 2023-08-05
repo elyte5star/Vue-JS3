@@ -59,14 +59,14 @@ axiosInstance.interceptors.response.use(function (response) {
 
     if (!error.response) {
 
-        console.log('Error: Network Error, Server is down');
-        router.push('/contact');
-        return Promise.reject(error)
+        if (error.code === 'ERR_NETWORK' && error.message.includes('Network Error')) {
 
-    } else {
+            console.log('Error: Network Error, Server is down');
+            router.push({ name: 'ServerError' });
 
+            return Promise.reject(error)
 
-        if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {
+        } else if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
@@ -80,9 +80,19 @@ axiosInstance.interceptors.response.use(function (response) {
                 imageAlt: 'Custom image'
 
             })
-            console.log(error);
 
-        } else if ([401, 403].includes(error.response.status) && user) {
+            return Promise.reject(error);
+
+        } else {
+
+            console.log(error);
+            return Promise.reject(error);
+
+        }
+
+    } else {
+
+        if ([401, 403].includes(error.response.status) && user) {
 
             Swal.fire({
                 icon: 'warning',
@@ -96,7 +106,7 @@ axiosInstance.interceptors.response.use(function (response) {
             }).then(logout)
 
         }
-
+        
         return Promise.reject(error);
     }
 
