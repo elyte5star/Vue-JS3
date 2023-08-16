@@ -13,6 +13,7 @@ import type { Item } from '@/helpers/my-types';
 
 import { userAlertStore } from './alert';
 
+import router from '@/router/index'
 
 
 export const userCartStore = defineStore({
@@ -90,8 +91,10 @@ export const userCartStore = defineStore({
                     this.alertStore.error(response.data.message || 'Couldnt make reservation');
                     return;
                 }
-                this.alertStore.success("Thank You! Booking with id " + response.data.oid + " created!")
+                
                 this.clearCart();
+                router.push({ name: 'Confirm', params: { oid: response.data.oid } })
+
 
             } catch (error: any) {
                 console.log(error);

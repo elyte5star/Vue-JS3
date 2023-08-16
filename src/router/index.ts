@@ -75,9 +75,10 @@ const routes = [
     name: 'NotFound'
   },
   {
-    path: "/confirm",
+    path: "/confirm/:oid",
     name: "Confirm",
     component: Confirm,
+    props: true
 
   }
 

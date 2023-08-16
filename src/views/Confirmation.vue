@@ -1,14 +1,13 @@
 <template>
-    <div id="confirm" class="container">
+    <div v-if="oid" id="confirm" class="container">
         <div class=content>
             <div class="wrapper-1">
                 <div class="wrapper-2">
                     <h1>Thank you !</h1>
-                    <p>Thanks for subscribing to our news letter. </p>
-                    <p>you should receive a confirmation email soon </p>
-                    <button class="go-home">
-                        go home
-                    </button>
+                    <p> Thank you for shopping with us!</p>
+                    <p>Your reservation ID is: {{ oid }}. </p>
+                    <p>You should receive a confirmation email soon </p>
+                    <router-link :to="{ name: 'Home' }" class="go-home btn btn-lg">go home</router-link> 
                 </div>
                 <div class="footer-like">
                     <p>Email not received?
@@ -22,20 +21,18 @@
 <script lang="ts">
 
 
-import { userCartStore } from '@/stores/cart';
-import { useRoute } from 'vue-router';
+
 import { defineComponent } from 'vue';
-import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     name: "Confirm",
-    setup(props, ctx) {
-        const route = useRoute();
-        const c: any = route.params;
-        console.log(c)
-        return { c }
-
-
+    props: {
+        oid: {
+            type: String, required: true
+        }
+    },
+    mounted() {
+        console.log(this.oid)
     },
 
 })
@@ -43,7 +40,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 * {
     box-sizing: border-box;
     /* outline:1px solid ;*/
