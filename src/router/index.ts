@@ -8,7 +8,7 @@ import ProductView from '@/views/ProductView.vue'
 import AdminView from '@/views/AdminView.vue'
 import RegisterUser from '@/views/RegisterUserView.vue'
 import ContactUs from '@/views/ContactView.vue'
-import CheckOut from '@/views/CheckOut.vue'
+import Confirm from '@/views/Confirmation.vue'
 import ServerError from '@/views/ServerError.vue';
 
 import { userAuthStore } from '@/stores/auth_store'
@@ -75,9 +75,9 @@ const routes = [
     name: 'NotFound'
   },
   {
-    path: "/checkout",
-    name: "Checkout",
-    component: CheckOut,
+    path: "/confirm",
+    name: "Confirm",
+    component: Confirm,
 
   }
 

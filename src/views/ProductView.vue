@@ -204,7 +204,7 @@
 import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
-import type { Product, Item } from '@/helpers/my-types';
+import type { Item } from '@/helpers/my-types';
 
 import { is_valid_Email } from '@/helpers/script';
 import { defineComponent } from 'vue'

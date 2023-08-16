@@ -115,7 +115,11 @@ export default defineComponent({
     name: 'ContactUs',
     data() {
         return {
-            name_contact: '', message: '', subject: '', email_contact: '', user_store: userStore()
+            name_contact: null,
+            message: null,
+            subject: null,
+            email_contact: null,
+            user_store: userStore()
 
         }
     },
@@ -123,12 +127,16 @@ export default defineComponent({
         async onSubmitEnquiry() {
             const alertStore = userAlertStore();
             if (this.name_contact && this.email_contact && is_valid_Email(this.email_contact) && this.subject && this.message) {
-                const enquiry: Enquiry = { 'client_name': this.name_contact, 'client_email': this.email_contact, 'subject': this.subject, 'message': this.message }
+                const enquiry: Enquiry = {
+                    client_name: this.name_contact,
+                    client_email: this.email_contact,
+                    subject: this.subject, message: this.message
+                }
                 await this.user_store.customerEnquiry(enquiry);
-                this.name_contact = '';
-                this.email_contact = '';
-                this.subject = '';
-                this.message = '';
+                this.name_contact = null;
+                this.email_contact = null;
+                this.subject = null;
+                this.message = null;
             }
             else {
                 if (!this.name_contact) alertStore.error("Name field is empty!");

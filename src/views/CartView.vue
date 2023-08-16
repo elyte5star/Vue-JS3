@@ -100,57 +100,110 @@
                                 </span>
                                 <hr>
                                 <div class="payment-info">
-                                    <form @submit.prevent="makeReservation" class="payment-form" action="/checkout">
-                                        <div class="d-flex justify-content-between"><span>Card
+                                    <form @submit.prevent="makeReservation" class="payment-form">
+                                        <div class="d-flex justify-content-between"><span>Payment
                                                 details</span><img v-if="user" class="rounded"
                                                 :src="'src/assets/images/' + userImage" v-bind:alt="user.username"
                                                 width="30">
                                         </div>
-                                        <span class="type d-block mt-3 mb-1">Card type</span>
-                                        <div id="card_type" class="card_type">
-                                            <label class="radio"><input v-model="card" type="radio" name="card"
-                                                    value="mastercard">
-                                                <span><img width="30" :src="'src/assets/images/credit_cards/mastercard.png'"
-                                                        alt="mastercard" /></span>
-                                            </label>
+                                        <div id="part-1">
+                                            <span class="type d-block mt-3 mb-1">Card type</span>
+                                            <div id="card_type" class="card_type">
+                                                <label class="radio"><input v-model="card" type="radio" name="card"
+                                                        value="mastercard">
+                                                    <span><img width="30"
+                                                            :src="'src/assets/images/credit_cards/mastercard.png'"
+                                                            alt="mastercard" /></span>
+                                                </label>
 
-                                            <label class="radio"> <input v-model="card" type="radio" name="card"
-                                                    value="visa">
-                                                <span><img width="30" :src="'src/assets/images/credit_cards/visa.png'"
-                                                        alt="visarcard" /></span> </label>
+                                                <label class="radio"> <input v-model="card" type="radio" name="card"
+                                                        value="visa">
+                                                    <span><img width="30" :src="'src/assets/images/credit_cards/visa.png'"
+                                                            alt="visarcard" /></span> </label>
 
-                                            <label class="radio"> <input v-model="card" type="radio" name="card"
-                                                    value="amex">
-                                                <span><img width="30" :src="'src/assets/images/credit_cards/amex.png'"
-                                                        alt="amex" /></span>
-                                            </label>
+                                                <label class="radio"> <input v-model="card" type="radio" name="card"
+                                                        value="amex">
+                                                    <span><img width="30" :src="'src/assets/images/credit_cards/amex.png'"
+                                                            alt="amex" /></span>
+                                                </label>
 
 
-                                            <label class="radio"><input v-model="card" type="radio" name="card"
-                                                    value="paypal"><span><img width="30"
-                                                        :src="'src/assets/images/credit_cards/paypal.png'"
-                                                        alt="paypal" /></span>
-                                            </label>
+                                                <label class="radio"><input v-model="card" type="radio" name="card"
+                                                        value="paypal"><span><img width="30"
+                                                            :src="'src/assets/images/credit_cards/paypal.png'"
+                                                            alt="paypal" /></span>
+                                                </label>
+                                            </div>
+
+                                            <div>
+                                                <label class="credit-card-label">Name on card:</label><input type="text"
+                                                    id="nameCard" class="form-control credit-inputs" v-model="nameOnCard"
+                                                    placeholder="Ese Niccolio">
+                                            </div>
+                                            <div>
+                                                <label for="cardNum" class="credit-card-label">Card number:</label>
+                                                <input type="tel" class="form-control credit-inputs" v-model="cardNumber"
+                                                    pattern="[0-9]*" id="cardNum" maxlength="16"
+                                                    placeholder="0000000000000000" minlength="16">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="credit-card-label" for="expiryDate">Card Expiry:
+                                                    </label><input id="expiryDate" type="month" v-model="expiryDate"
+                                                        class="form-control credit-inputs" placeholder="12/24">
+                                                </div>
+                                                <div class="col-md-6"><label for="cvv-num"
+                                                        class="credit-card-label">CVV</label><input type="tel" id="cvv-num"
+                                                        v-model="cardCvv" class="form-control credit-inputs"
+                                                        placeholder="342" minlength="3" pattern="[0-9]*" maxlength="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="line">
+                                        <span>Shipping Address</span>
+                                        <div>
+                                            <label class="billing-label" for="fname"><i class="fa fa-user"></i> Full
+                                                Name:</label>
+                                            <input v-model="bfname" class="form-control billing-inputs" type="text"
+                                                id="fname" name="fullname" placeholder="Ese Niccolio">
+                                        </div>
+                                        <div>
+                                            <label class="billing-label" for="email"><i class="fa fa-envelope"></i>
+                                                Email:</label>
+                                            <input v-model="bemail" class="form-control billing-inputs" type="email"
+                                                id="email" name="email" placeholder="elyte5star@example.com">
                                         </div>
 
                                         <div>
-                                            <label class="credit-card-label">Name on card:</label><input type="text"
-                                                class="form-control credit-inputs" v-model="nameOnCard" placeholder="Name">
+                                            <label class="billing-label" for="adr"> <i class="fa fa-address-card-o"></i>
+                                                Address:</label>
+                                            <input v-model="baddress" class="form-control billing-inputs" type="text"
+                                                id="adr" name="address" placeholder="542 W. 15th Street" maxlength="20">
                                         </div>
                                         <div>
-                                            <label class="credit-card-label">Card number:</label>
-                                            <input type="tel" class="form-control credit-inputs" v-model.number="cardNumber"
-                                                pattern="[0-9]*" maxlength="16" placeholder="0000 0000 0000 0000"
-                                                minlength="16">
+                                            <label class="billing-label" for="city"><i class="fa fa-institution"></i>
+                                                City:</label>
+                                            <input v-model="bcity" class="form-control billing-inputs" type="text" id="city"
+                                                name="city" placeholder="Lagos or St. Laos" maxlength="16">
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6"><label class="credit-card-label">Card Expiry:
-                                                </label><input type="month" v-model="expiryDate"
-                                                    class="form-control credit-inputs" placeholder="12/24"></div>
-                                            <div class="col-md-6"><label class="credit-card-label">CVV</label><input
-                                                    type="tel" v-model.number="cardCvv" class="form-control credit-inputs"
-                                                    placeholder="342" pattern="[0-9]*" maxlength="3"></div>
-                                        </div>
+                                            <div class="col-md-6"><label class="billing-label" for="state"> Country:</label>
+                                                <select v-model="bcountry" class="form-select" id="country" name="country">
+                                                    <option v-if="countries" v-for="country in countries"
+                                                        :key="country.text" :value=country.value>{{ country.text }}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6"> <label class="billing-label" for="zip"> Zip:</label>
+                                                <input v-model="bzip" class="form-control billing-inputs" type="text"
+                                                    id="zip" name="zip" placeholder="10001">
+                                            </div>
+                                        </div><br>
+                                        <div class="row billing-checkbox">
+                                            <label class="billing-label">
+                                                <input v-model="bsameadr" type="checkbox" name="sameadr"> Shipping address
+                                                same as billing
+                                            </label>
+                                        </div><br>
                                         <hr class="line">
                                         <div class="d-flex justify-content-between information">
                                             <span>Subtotal</span><span>£{{
@@ -236,15 +289,17 @@
     <router-view></router-view>
 </template>
 
+
 <script lang="ts">
 
 import { userCartStore } from '@/stores/cart';
 import { userAuthStore } from '@/stores/auth_store';
 import { userAlertStore } from '@/stores/alert';
-import type { Item } from '@/helpers/my-types';
+import { countries, validateFullName, hasOnlyDigits, is_valid_Email, isObjEmpty, clone } from '@/helpers/script';
+import type { Item, CreditCard, ShippingAdress, userReservation } from '@/helpers/my-types';
+import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator';
 import { defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
-import router from '@/router/index';
 
 export default defineComponent({
     name: 'CartView',
@@ -260,11 +315,13 @@ export default defineComponent({
 
     data() {
         return {
-            recommendationList: [],
+            recommendationList: [], bfname: null, bsameadr: null, bemail: null,
+            bcountry: null, bzip: null, bcity: null, baddress: null,
             isDisabled: true, card: null, expiryDate: null, cardCvv: null,
-            cardNumber: null, nameOnCard: null,
+            cardNumber: null, nameOnCard: null, countries: countries, alertStore: userAlertStore()
         }
     },
+
     methods: {
         removeFromCart(item: Item) {
             this.cartStore.removeFromCart(item);
@@ -272,36 +329,161 @@ export default defineComponent({
         emptyCart() {
             this.cartStore.clearCart();
         },
-        async makeReservation() {
-            if (this.cardNumber && this.expiryDate && this.card && this.cardCvv && this.nameOnCard) {
+        expirationValidation(yearMonth: string | null) {
+            if (!yearMonth) {
+                (<HTMLInputElement>document.getElementById('expiryDate')).focus();
+                return this.alertStore.error("Empty expiry date");
+            }
+            const [exYear, exMonth]: any = yearMonth.split("-");
+            let today = new Date();
+            let expireday = new Date();
+            expireday.setFullYear(exYear, exMonth, 1);
+            if (expireday < today) {
+                this.alertStore.error("Please select a valid expiry date");
+                (<HTMLInputElement>document.getElementById('expiryDate')).focus();
+                console.log(yearMonth)
+                return false;
+            }
+            return true;
 
-                let bookingDetails = {
-                    cart: this.cart,
-                    total_price: this.totalPrice,
-                    paymentDetails: {
-                        cardNumber: Number(this.cardNumber),
-                        expiryDate: this.expiryDate,
-                        cardCvv: Number(this.cardCvv),
-                        nameOnCard: this.nameOnCard,
-                    }
+        },
+        checkShippingAddress(): ShippingAdress | {} {
+            if (validateFullName(this.bfname)
+                && is_valid_Email(this.bemail)
+                && this.baddress && this.bcity
+                && this.checkPostCodeAndCountry(this.bcountry, this.bzip)
+            ) {
+                const shippingAddress = {
+                    bfname: this.bfname,
+                    bemail: this.bemail,
+                    baddress: this.baddress,
+                    bcountry: this.bcountry,
+                    bzip: this.bzip,
+                    bcity: this.bcity
                 }
-                router.push({ path: '/checkout', query: { bookingDetails: JSON.stringify(bookingDetails) } })
-                // await this.cartStore.checkOut(bookingDetails)
-                // this.cardNumber = null
-                // this.expiryDate = null
-                // this.cardCvv = null
-                // this.card = null
-                // this.nameOnCard = null
-            } else {
-                const alertStore = userAlertStore();
-                if (!this.cardNumber) alertStore.error("Card number required");
-                if (!this.card) alertStore.error("Card type required");
-                if (!this.nameOnCard) alertStore.error("Card Holder name required");
-                if (!this.expiryDate) alertStore.error("Expiry Date required");
-                if (!this.cardCvv) alertStore.error("CVV number required");
 
+                return shippingAddress;
             }
 
+            return {};
+        },
+        checkCreditCardDetails(): CreditCard | {} {
+            if (this.card && validateFullName(this.nameOnCard)
+                && hasOnlyDigits(this.cardNumber)
+                && this.expirationValidation(this.expiryDate)
+                && hasOnlyDigits(this.cardCvv)) {
+                const creditCardDetails = {
+                    cardNumber: this.cardNumber,
+                    expiryDate: this.expiryDate,
+                    cardCvv: this.cardCvv,
+                    nameOnCard: this.nameOnCard,
+                }
+
+                return creditCardDetails;
+
+            }
+            return {}
+
+
+        },
+        checkPostCodeAndCountry(countryCode: string | null, zip: string | null): boolean {
+            if (!postcodeValidatorExistsForCountry(countryCode as string)) {
+                this.alertStore.error("No valid postcode for the selected country!");
+                (<HTMLInputElement>document.getElementById('country')).focus();
+                return false;
+
+            } else if (!postcodeValidator(zip as string, countryCode as string)) {
+                this.alertStore.error("Invalid postcode for the selected country!");
+                (<HTMLInputElement>document.getElementById('zip')).focus();
+                return false;
+
+            } else {
+                return true;
+            }
+
+        },
+        invalidFeedback() {
+            if (!this.card) {
+                (<HTMLInputElement>document.getElementById('card_type')).focus();
+                return this.alertStore.error("Card type required");
+
+            } else if (!validateFullName(this.nameOnCard)) {
+                (<HTMLInputElement>document.getElementById('nameCard')).focus();
+                this.alertStore.error('Enter card holder full name (first & last name).');
+                return;
+
+            } else if (!hasOnlyDigits(this.cardNumber)) {
+                (<HTMLInputElement>document.getElementById('cardNum')).focus();
+                this.alertStore.error("Card number required");
+                return;
+
+            } else if (!this.expirationValidation(this.expiryDate)) {
+
+                return;
+
+            } else if (!hasOnlyDigits(this.cardCvv)) {
+                (<HTMLInputElement>document.getElementById('cvv-num')).focus();
+                this.alertStore.error("CVV number required");
+                return;
+
+                //Shipping Address;
+
+            } else if (!validateFullName(this.bfname) && !this.bsameadr) {
+                (<HTMLInputElement>document.getElementById('fname')).focus();
+                this.alertStore.error('Enter full name (first & last name).');
+                return;
+
+            } else if (!is_valid_Email(this.bemail) && !this.bsameadr) {
+                (<HTMLInputElement>document.getElementById('email')).focus();
+                this.alertStore.error('Enter valid email.');
+                return;
+            } else if (!this.baddress && !this.bsameadr) {
+                (<HTMLInputElement>document.getElementById('adr')).focus();
+                return this.alertStore.error("Shipping Address required");
+
+            } else if (!this.bcity && !this.bsameadr) {
+                (<HTMLInputElement>document.getElementById('city')).focus();
+                return this.alertStore.error("City required");
+
+            } else if (!this.checkPostCodeAndCountry(this.bcountry, this.bzip)) {
+
+                return;
+            }
+            else {
+                return;
+
+            }
+        },
+        async makeReservation(){
+            this.alertStore.reset();
+            if (!this.user) return await this.$router.push({ name: 'Login' });
+            const paymentDetails = this.checkCreditCardDetails();
+            const shippingDetails = this.checkShippingAddress();
+            let reservation: userReservation = {} as userReservation;
+            if (!isObjEmpty(paymentDetails) && this.bsameadr) {
+                reservation = {
+                    cart: this.cart,
+                    total_price: this.totalPrice,
+                    paymentDetails: paymentDetails as CreditCard,
+
+                }
+                await this.cartStore.checkOut(reservation);
+            } else if (!this.bsameadr && !isObjEmpty(shippingDetails) && !isObjEmpty(paymentDetails)) {
+                reservation = {
+                    cart: this.cart,
+                    total_price: this.totalPrice,
+                    paymentDetails: paymentDetails as CreditCard,
+                    shippingDetails: shippingDetails as ShippingAdress
+
+                }
+                await this.cartStore.checkOut(reservation);
+            }
+
+            else {
+
+                this.invalidFeedback();
+
+            }
 
         }
 
@@ -317,7 +499,8 @@ export default defineComponent({
         },
         userImage() {
             return this.user.admin ? "admin-icon.png" : "user-icon.png";
-        }
+        },
+
     }
 
 })

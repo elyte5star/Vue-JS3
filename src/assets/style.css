@@ -7,6 +7,10 @@
     font-family: Tangerine;
     src: url(./google-fonts/Tangerine/Tangerine-Bold.ttf);
 }
+@font-face {
+    font-family: Kaushan Script;
+    src: url(./google-fonts/Kaushan/KaushanScript-Regular.ttf);
+}
 
 /** Common **/
 
@@ -957,6 +961,41 @@ table.shoping-cart-table tr td:first-child {
     left: 10px;
 }
 
+.billing-label {
+    font-size: 10px;
+    font-weight: bold;
+    position: relative;
+    right: 120px;
+}
+
+.billing-label i {
+    padding: 2px 3px 0px 0px;
+}
+
+
+.billing-inputs::placeholder {
+    font-size: 15px;
+}
+
+.form-control.billing-inputs {
+    border-color: orange;
+}
+
+.billing-checkbox input {
+    margin-right: 5px;
+
+}
+
+@media (max-width: 800px) {
+
+    .row {
+        flex-direction: column-reverse;
+    }
+    .col-md-6 {
+        margin-bottom: 20px;
+    }
+}
+
 /** END CART **/
 
 /** USER CARD **/
@@ -1169,4 +1208,5 @@ article h3 {
         transform: rotate(360deg);
     }
 }
+
 /** END LOADING SPINNER **/

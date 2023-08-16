@@ -2,13 +2,14 @@ import { userAuthStore } from "@/stores/auth_store";
 import { loadingStore } from "@/stores/loading";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 import type { AuthHeader } from "./my-types";
 
 import router from "@/router/index";
 
 
 
-export const axiosInstance = axios.create({
+export const axiosInstance: AxiosInstance = axios.create({
     baseURL: process.env.VUE_API_URL,
 
 });
@@ -106,7 +107,7 @@ axiosInstance.interceptors.response.use(function (response) {
             }).then(logout)
 
         }
-        
+
         return Promise.reject(error);
     }
 

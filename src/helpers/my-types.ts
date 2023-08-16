@@ -22,13 +22,42 @@ export type User = {
     bookings: Array<Booking>
 
 };
+export type CreditCard = {
+    cardNumber: null,
+    expiryDate: null,
+    cardCvv: null,
+    nameOnCard: null,
 
+}
+
+export type ShippingAdress = {
+    bfname: null,
+    baddress: null,
+    bemail: null,
+    bcountry: null,
+    bzip: null,
+    bcity: null,
+
+}
 
 export interface AuthHeader extends AxiosRequestHeaders {
     Authorization: string;
     Accept: string;
     'Content-Type': string;
 }
+
+export type userReservation = {
+    total_price: number;
+    cart: Array<Item>;
+    paymentDetails: CreditCard;
+    shippingDetails?: ShippingAdress
+
+}
+
+
+
+
+
 export type Alert = {
     type: string;
     message: string;

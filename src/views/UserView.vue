@@ -37,7 +37,7 @@ export default defineComponent({
 
     };
   },
-  async created(): Promise<void> {
+  async created() {
     await this.user_store.getUserById(this.userid);
 
   },
