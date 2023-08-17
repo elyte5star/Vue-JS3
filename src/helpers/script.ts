@@ -127,9 +127,9 @@ export function hasOnlyDigits(str: string | null,) {
     return regName.test(str as string);
 }
 
-export const is_Input_Error = (name: string, email: string, password: string, password_: string, tel: string) => {
+export const is_Input_Error = (name: string | null, email: string | null, password: string | null, password_: string | null, tel: string | null) => {
     const alertStore = userAlertStore();
-    if (name.length == 0) {
+    if (!name) {
         alertStore.error("Empty username!");
 
     }
@@ -137,26 +137,25 @@ export const is_Input_Error = (name: string, email: string, password: string, pa
     else if (name.length < 5 || !isUserNameValid(name)) {
         alertStore.error(" Invalid Username!");
     }
-    else if (email.length == 0) {
+    else if (!email) {
         alertStore.error("Empty email field!");
-
     }
     // check for valid email
-    else if (email.length > 0 && !is_valid_Email(email)) {
+    else if (!is_valid_Email(email)) {
 
         alertStore.error("Invalid email address!");
     }
-    else if (password.length == 0) {
+    else if (!password) {
         alertStore.error("Empty Password Field!");
     }
     else if (password.length < 5 || password !== password_) {
         alertStore.error("Invalid Credentials or Password mismatch!");
     }
-    else if (tel.length == 0) {
+    else if (!tel) {
         alertStore.error("Empty Telephone field!");
     }
     // check for valid telephone
-    else if (tel.length > 0 && !isValidTel(tel)) {
+    else if (!isValidTel(tel)) {
         alertStore.error("Invalid letters for telephone!");
     }
     // no error

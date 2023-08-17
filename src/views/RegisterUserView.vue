@@ -99,20 +99,20 @@ export default defineComponent({
     name: 'RegisterUser',
     data() {
         return {
-            registerTel: '', registerRepeatPassword: '', registerPassword: '', registerEmail: '', registerUsername: '', showPassword
+            registerTel: null, registerRepeatPassword: null, registerPassword: null, registerEmail: null, registerUsername: null, showPassword
         }
     },
     methods: {
         async registerUser(): Promise<void> {
             if (!is_Input_Error(this.registerUsername, this.registerEmail, this.registerPassword, this.registerRepeatPassword, this.registerTel)) {
-                const registerUser = { "username": this.registerUsername, "email": this.registerEmail, "password": this.registerPassword, "telephone": Number(this.registerTel) };
+                const registerUser = { "username": this.registerUsername, "email": this.registerEmail, "password": this.registerPassword, "telephone": this.registerTel };
                 const user_store = userStore();
                 await user_store.signUP(registerUser);
-                this.registerUsername = '';
-                this.registerEmail = '';
-                this.registerPassword = '';
-                this.registerRepeatPassword = '';
-                this.registerTel = '';
+                this.registerUsername = null;
+                this.registerEmail = null;
+                this.registerPassword = null;
+                this.registerRepeatPassword = null;
+                this.registerTel = null;
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
 
             }

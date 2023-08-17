@@ -341,7 +341,7 @@ export default defineComponent({
             if (expireday < today) {
                 this.alertStore.error("Please select a valid expiry date");
                 (<HTMLInputElement>document.getElementById('expiryDate')).focus();
-                console.log(yearMonth)
+                
                 return false;
             }
             return true;
