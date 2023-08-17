@@ -63,7 +63,7 @@ axiosInstance.interceptors.response.use(function (response) {
         if (error.code === 'ERR_NETWORK' && error.message.includes('Network Error')) {
 
             console.log('Error: Network Error, Server is down');
-            router.push({ name: 'ServerError' });
+            router.replace({ name: 'ServerError' });
 
             return Promise.reject(error)
 
