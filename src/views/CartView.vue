@@ -309,7 +309,7 @@ export default defineComponent({
         const cartStore = userCartStore()
         const { cart, itemsInCart } = storeToRefs(cartStore);
         return {
-            user, authStore, cartStore, cart, itemsInCart
+            user, cartStore, cart, itemsInCart
         }
     },
 
@@ -488,7 +488,9 @@ export default defineComponent({
         }
 
     },
-
+    mounted() {
+        console.log(this.user);
+    },
     computed: {
         totalPrice() {
             let amount = 0;

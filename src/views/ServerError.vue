@@ -32,7 +32,7 @@ export default defineComponent({
     },
     methods: {
         countDown() {
-            this.countDay = new Date('August 15, 2023 00:00:00');
+            this.countDay = new Date('December 15, 2023 00:00:00');
             const now = new Date();
             const counter: number = Number(this.countDay) - Number(now);
             const second = 1000;

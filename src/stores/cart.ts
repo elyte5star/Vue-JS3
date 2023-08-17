@@ -93,7 +93,7 @@ export const userCartStore = defineStore({
                 }
                 
                 this.clearCart();
-                router.push({ name: 'Confirm', params: { oid: response.data.oid } })
+                router.push({ name: 'Confirm', params: { oid: response.data.oid } });
 
 
             } catch (error: any) {
