@@ -7,7 +7,7 @@
                     <p> Thank you for shopping with us!</p>
                     <p>Your reservation ID is: {{ oid }}. </p>
                     <p>You should receive a confirmation email soon </p>
-                    <router-link :to="{ name: 'Home' }" class="go-home btn btn-lg">go home</router-link> 
+                    <router-link :to="{ name: 'Home' }" class="go-home btn btn-lg">go home</router-link>
                 </div>
                 <div class="footer-like">
                     <p>Email not received?
@@ -19,10 +19,8 @@
     </div>
 </template>
 <script lang="ts">
-
-
-
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
     name: "Confirm",
@@ -31,9 +29,11 @@ export default defineComponent({
             type: String, required: true
         }
     },
-    mounted() {
-        console.log(this.oid)
+    setup(props, ctx) {
+        const oid = props.oid
+        return { oid }
     },
+
 
 })
 

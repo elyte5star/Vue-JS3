@@ -101,7 +101,7 @@ export default defineComponent({
     name: "LoginView",
     data() {
         return {
-            user: {}, msalInstance: _msalInstance, username: "", password: "", showPassword, authStore: userAuthStore(),
+            user: {}, msalInstance: _msalInstance, username: null, password: null, showPassword, authStore: userAuthStore(),
         }
     },
     methods: {
@@ -149,7 +149,7 @@ export default defineComponent({
 
             if (isUserNameValid(this.username) && this.password) {
                 let form = new FormData();
-                form.append("username", this.username);
+                form.append("username", String(this.username));
                 form.append("password", this.password);
                 const userData = new URLSearchParams();
                 for (const [key, value] of form) {
@@ -157,8 +157,8 @@ export default defineComponent({
                 }
 
                 await this.authStore.login(userData);
-                this.username = "";
-                this.password = "";
+                this.username = null;
+                this.password = null;
 
             } else {
 

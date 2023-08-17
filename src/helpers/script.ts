@@ -29,7 +29,7 @@ export const decodeJwtResponse = (token: string) => {
     return JSON.parse(jsonPayload);
 }
 
-export const isUserNameValid = (username: string) => {
+export const isUserNameValid = (username: string | null) => {
     /* 
       Usernames can only have: 
       - Lowercase Letters (a-z) 
@@ -37,7 +37,7 @@ export const isUserNameValid = (username: string) => {
       - Dots (.)
       - Underscores (_)
     */
-    const res = /^[a-z0-9_\.]+$/.exec(username);
+    const res = /^[a-z0-9_\.]+$/.exec(username as string);
     const valid = !!res;
     return valid;
 }
@@ -135,7 +135,7 @@ export const is_Input_Error = (name: string | null, email: string | null, passwo
     }
     // check for valid letters
     else if (name.length < 5 || !isUserNameValid(name)) {
-        alertStore.error(" Invalid Username!");
+        alertStore.error("Invalid Username!");
     }
     else if (!email) {
         alertStore.error("Empty email field!");
@@ -148,8 +148,11 @@ export const is_Input_Error = (name: string | null, email: string | null, passwo
     else if (!password) {
         alertStore.error("Empty Password Field!");
     }
-    else if (password.length < 5 || password !== password_) {
-        alertStore.error("Invalid Credentials or Password mismatch!");
+    else if (password.length < 5) {
+        alertStore.error("Invalid password, must be more 5 or more characters!");
+    }
+    else if (password !== password_) {
+        alertStore.error("Password mismatch!");
     }
     else if (!tel) {
         alertStore.error("Empty Telephone field!");
