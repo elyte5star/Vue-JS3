@@ -21,10 +21,8 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-
     const user_store = userStore();
     const { user, bookingsHistory } = storeToRefs(user_store);
-
     return {
       user_store, user, bookingsHistory,
     }
@@ -37,9 +35,8 @@ export default defineComponent({
 
     };
   },
-  async created() {
-    await this.user_store.getUserById(this.userid);
-
+  created() {
+    this.getAUser();
   },
   computed: {
     userImage(): string {
@@ -58,6 +55,9 @@ export default defineComponent({
       }
 
     },
+    async getAUser(): Promise<void> {
+      await this.user_store.getUserById(this.userid);
+    }
   },
 });
 </script>

@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div v-if="!itemsInCart" class="col-sm-12 empty-cart-cls text-center">
-                                <img src="src/assets/images/emptyCart.png" width="130" height="130"
+                                <img :src="'src/assets/images/emptyCart.png'" width="130" height="130"
                                     class="img-fluid mb-4 mr-3" alt="empty_cart_icon">
                                 <h3><strong>Your Cart is Empty</strong></h3>
                                 <h4>Add something to make me happy :)</h4>
@@ -110,7 +110,7 @@
                                             <span class="type d-block mt-3 mb-1">Card type</span>
                                             <div id="card_type" class="card_type">
                                                 <label class="radio"><input v-model="card" type="radio" name="card"
-                                                        value="mastercard">
+                                                        value="mastercard" id="mc">
                                                     <span><img width="30"
                                                             :src="'src/assets/images/credit_cards/mastercard.png'"
                                                             alt="mastercard" /></span>
@@ -295,7 +295,7 @@
 import { userCartStore } from '@/stores/cart';
 import { userAuthStore } from '@/stores/auth_store';
 import { userAlertStore } from '@/stores/alert';
-import { countries, validateFullName, hasOnlyDigits, is_valid_Email, isObjEmpty, clone } from '@/helpers/script';
+import { countries, validateFullName, hasOnlyDigits, is_valid_Email, isObjEmpty } from '@/helpers/script';
 import type { Item, CreditCard, ShippingAdress, userReservation } from '@/helpers/my-types';
 import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator';
 import { defineComponent } from 'vue';
@@ -330,18 +330,12 @@ export default defineComponent({
             this.cartStore.clearCart();
         },
         expirationValidation(yearMonth: string | null) {
-            if (!yearMonth) {
-                (<HTMLInputElement>document.getElementById('expiryDate')).focus();
-                return this.alertStore.error("Empty expiry date");
-            }
+            if (!yearMonth) return false;
             const [exYear, exMonth]: any = yearMonth.split("-");
             let today = new Date();
             let expireday = new Date();
             expireday.setFullYear(exYear, exMonth, 1);
             if (expireday < today) {
-                this.alertStore.error("Please select a valid expiry date");
-                (<HTMLInputElement>document.getElementById('expiryDate')).focus();
-                
                 return false;
             }
             return true;
@@ -404,22 +398,19 @@ export default defineComponent({
         },
         invalidFeedback() {
             if (!this.card) {
-                (<HTMLInputElement>document.getElementById('card_type')).focus();
-                return this.alertStore.error("Card type required");
+                this.alertStore.error("Card type required");
 
             } else if (!validateFullName(this.nameOnCard)) {
                 (<HTMLInputElement>document.getElementById('nameCard')).focus();
                 this.alertStore.error('Enter card holder full name (first & last name).');
-                return;
 
             } else if (!hasOnlyDigits(this.cardNumber)) {
                 (<HTMLInputElement>document.getElementById('cardNum')).focus();
                 this.alertStore.error("Card number required");
-                return;
 
             } else if (!this.expirationValidation(this.expiryDate)) {
-
-                return;
+                this.alertStore.error("Please select a valid expiry date");
+                (<HTMLInputElement>document.getElementById('expiryDate')).focus();
 
             } else if (!hasOnlyDigits(this.cardCvv)) {
                 (<HTMLInputElement>document.getElementById('cvv-num')).focus();
@@ -431,30 +422,32 @@ export default defineComponent({
             } else if (!validateFullName(this.bfname) && !this.bsameadr) {
                 (<HTMLInputElement>document.getElementById('fname')).focus();
                 this.alertStore.error('Enter full name (first & last name).');
-                return;
+
 
             } else if (!is_valid_Email(this.bemail) && !this.bsameadr) {
                 (<HTMLInputElement>document.getElementById('email')).focus();
                 this.alertStore.error('Enter valid email.');
-                return;
+
             } else if (!this.baddress && !this.bsameadr) {
                 (<HTMLInputElement>document.getElementById('adr')).focus();
-                return this.alertStore.error("Shipping Address required");
+                this.alertStore.error("Shipping Address required");
 
             } else if (!this.bcity && !this.bsameadr) {
                 (<HTMLInputElement>document.getElementById('city')).focus();
-                return this.alertStore.error("City required");
+                this.alertStore.error("City required");
 
             } else if (!this.checkPostCodeAndCountry(this.bcountry, this.bzip)) {
 
-                return;
+                return true;
             }
+            // no error  
             else {
-                return;
+                return false;
 
             }
+            return true
         },
-        async makeReservation(){
+        async makeReservation() {
             this.alertStore.reset();
             if (!this.user) return await this.$router.push({ name: 'Login' });
             const paymentDetails = this.checkCreditCardDetails();
@@ -502,6 +495,10 @@ export default defineComponent({
         userImage() {
             return this.user.admin ? "admin-icon.png" : "user-icon.png";
         },
+        emptyCartImage() {
+            return new URL('../../src/images/emptyCart.png', import.meta.url).href
+
+        }
 
     }
 

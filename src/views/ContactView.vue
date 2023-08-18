@@ -59,7 +59,7 @@
                                     <div class="md-form">
                                         <textarea v-model="message" type="text" id="message" name="message" rows="2"
                                             class="form-control md-textarea"></textarea>
-                                        <label for="message">Your message</label>
+                                        <label for="">Your message</label>
                                     </div>
 
                                 </div>
@@ -116,16 +116,16 @@ export default defineComponent({
     data() {
         return {
             name_contact: null,
-            message: null,
+            message: '',
             subject: null,
             email_contact: null,
-            user_store: userStore()
+            user_store: userStore(),
+            alertStore: userAlertStore()
 
         }
     },
     methods: {
         async onSubmitEnquiry() {
-            const alertStore = userAlertStore();
             if (this.name_contact && this.email_contact && is_valid_Email(this.email_contact) && this.subject && this.message) {
                 const enquiry: Enquiry = {
                     client_name: this.name_contact,
@@ -136,16 +136,34 @@ export default defineComponent({
                 this.name_contact = null;
                 this.email_contact = null;
                 this.subject = null;
-                this.message = null;
+                this.message = '';
             }
             else {
-                if (!this.name_contact) alertStore.error("Name field is empty!");
-                if (!this.email_contact || !is_valid_Email(this.email_contact)) alertStore.error("Email field is empty or invalid email!");
-                if (!this.subject) alertStore.error("Subject field is empty!");
-                if (!this.message) alertStore.error("Message field is empty");
-
+                this.invalidFeedback();
             }
 
+        },
+        invalidFeedback() {
+            if (!this.name_contact) {
+                this.alertStore.error("Name field is empty!");
+                (<HTMLInputElement>document.getElementById('name_contact')).focus();
+
+            } else if (!is_valid_Email(this.email_contact)) {
+                this.alertStore.error("Invalid email field!");
+                (<HTMLInputElement>document.getElementById('email_contact')).focus();
+
+            } else if (!this.subject) {
+                this.alertStore.error("Subject field is empty!");
+                (<HTMLInputElement>document.getElementById('subject')).focus();
+            } else if (!this.message) {
+                this.alertStore.error("Message field is empty");
+                (<HTMLInputElement>document.getElementById('message')).focus();
+
+                // no error       
+            } else {
+                return false
+            }
+            return true
         }
 
     },

@@ -231,8 +231,8 @@ export default defineComponent({
     data() {
         return {
             moment: moment,
-            reviewer_name: '',
-            reviewer_email: '',
+            reviewer_name: null,
+            reviewer_email: null,
             rating: 0,
             review: '',
             cartStore: userCartStore(),
@@ -258,6 +258,19 @@ export default defineComponent({
             return new URL('../../src/assets/images/' + image, import.meta.url).href
 
         },
+        async getAProduct(): Promise<void> {
+            if (this.pid) {
+                await this.pStore.getProductById(this.pid);
+                const elem = (<HTMLInputElement>document.getElementById("add_to_cart"));
+                if (!this.stockQuantity) elem.innerHTML = "Out of Stock";
+                else elem.innerHTML = "Add to Cart";
+
+            } else {
+                this.alertStore.error(" Supply a Product ID!");
+            }
+
+
+        },
         async onSubmitReview() {
             if (this.rating && is_valid_Email(this.reviewer_email)) {
                 let productReview: any = {
@@ -269,10 +282,10 @@ export default defineComponent({
                 }
 
                 await this.pStore.submitReview(productReview)
-                this.reviewer_name = '';
+                this.reviewer_name = null;
                 this.rating = 0;
                 this.review = '';
-                this.reviewer_email = '';
+                this.reviewer_email = null;
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
             } else {
 
@@ -291,17 +304,8 @@ export default defineComponent({
 
         }
     },
-    async created(): Promise<void> {
-        if (this.pid) {
-            await this.pStore.getProductById(this.pid);
-            const elem = (<HTMLInputElement>document.getElementById("add_to_cart"));
-            if (!this.stockQuantity) elem.innerHTML = "Out of Stock";
-            else elem.innerHTML = "Add to Cart";
-
-        } else {
-            this.alertStore.error(" Supply a Product ID!");
-        }
-
+    created() {
+        this.getAProduct();
     },
     computed: {
         inStock() {
