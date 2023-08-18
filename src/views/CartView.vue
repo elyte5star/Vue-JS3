@@ -415,8 +415,7 @@ export default defineComponent({
             } else if (!hasOnlyDigits(this.cardCvv)) {
                 (<HTMLInputElement>document.getElementById('cvv-num')).focus();
                 this.alertStore.error("CVV number required");
-                return;
-
+               
                 //Shipping Address;
 
             } else if (!validateFullName(this.bfname) && !this.bsameadr) {
