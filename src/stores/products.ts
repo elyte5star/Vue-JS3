@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { userAlertStore } from './alert';
 import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { loadingStore } from "@/stores/loading";
 
 import type { Product, Review } from '@/helpers/my-types';
 
@@ -16,9 +17,10 @@ export const productStore = defineStore({
         async getProducts() {
             try {
                 const response = await axiosInstance.get('products');
-
+                const isloading = loadingStore();
                 if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Couldnt get products');
+                    console.error(response.data.message);
+                    isloading.setLoading(true);
                     return;
                 }
 

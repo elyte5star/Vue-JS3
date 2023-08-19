@@ -7,6 +7,7 @@
     font-family: Tangerine;
     src: url(./google-fonts/Tangerine/Tangerine-Bold.ttf);
 }
+
 @font-face {
     font-family: Kaushan Script;
     src: url(./google-fonts/Kaushan/KaushanScript-Regular.ttf);
@@ -991,6 +992,7 @@ table.shoping-cart-table tr td:first-child {
     .row {
         flex-direction: column-reverse;
     }
+
     .col-md-6 {
         margin-bottom: 20px;
     }
@@ -1120,7 +1122,8 @@ article h3 {
 
 #email_contact,
 #name_contact,
-#subject {
+#subject,
+#country {
     border-radius: 4px;
     background-color: #f8f8f8;
     border: 1px solid #ccc;

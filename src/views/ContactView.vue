@@ -21,7 +21,7 @@
                                     <div class="md-form mb-0">
                                         <input v-model="name_contact" type="text" id="name_contact" name="name"
                                             class="form-control">
-                                        <label for="name" class="">Your name</label>
+                                        <label for="name" class="">Your name ( or nickname..example superman)</label>
                                     </div>
                                 </div>
                                 <!--Grid column-->
@@ -38,6 +38,17 @@
 
                             </div>
                             <!--Grid row-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="md-form mb-0">
+                                        <select v-model="country_contact" class="form-select" id="country" name="country">
+                                            <option v-if="countries" v-for="country in countries" :key="country.text"
+                                                :value=country.value>{{ country.text }}</option>
+                                        </select>
+                                        <label class="" for="country"> Country </label>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!--Grid row-->
                             <div class="row">
@@ -49,6 +60,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!--Grid row-->
 
                             <!--Grid row-->
@@ -108,7 +120,7 @@
 <script lang="ts">
 import { userAlertStore } from '@/stores/alert';
 import { userStore } from '@/stores/userAccount';
-import { is_valid_Email } from '@/helpers/script';
+import { is_valid_Email, countries } from '@/helpers/script';
 import type { Enquiry } from '@/helpers/my-types';
 import { defineComponent } from 'vue'
 export default defineComponent({
@@ -120,21 +132,26 @@ export default defineComponent({
             subject: null,
             email_contact: null,
             user_store: userStore(),
-            alertStore: userAlertStore()
+            alertStore: userAlertStore(),
+            countries: countries,
+            country_contact: null
 
         }
     },
     methods: {
         async onSubmitEnquiry() {
-            if (this.name_contact && this.email_contact && is_valid_Email(this.email_contact) && this.subject && this.message) {
+            this.alertStore.reset();
+            if (this.name_contact && this.email_contact && is_valid_Email(this.email_contact) && this.country_contact && this.subject && this.message) {
                 const enquiry: Enquiry = {
                     client_name: this.name_contact,
                     client_email: this.email_contact,
+                    country: this.country_contact,
                     subject: this.subject, message: this.message
                 }
                 await this.user_store.customerEnquiry(enquiry);
                 this.name_contact = null;
                 this.email_contact = null;
+                this.country_contact = null;
                 this.subject = null;
                 this.message = '';
             }
@@ -151,6 +168,10 @@ export default defineComponent({
             } else if (!is_valid_Email(this.email_contact)) {
                 this.alertStore.error("Invalid email field!");
                 (<HTMLInputElement>document.getElementById('email_contact')).focus();
+
+            } else if (!this.country_contact) {
+                this.alertStore.error("Country field is empty!");
+                (<HTMLInputElement>document.getElementById('country')).focus();
 
             } else if (!this.subject) {
                 this.alertStore.error("Subject field is empty!");
