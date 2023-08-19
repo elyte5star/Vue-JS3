@@ -39,7 +39,14 @@
                             </div>
                             <!--Grid row-->
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="md-form mb-0">
+                                        <input v-model="subject" type="text" id="subject" name="subject"
+                                            class="form-control">
+                                        <label for="subject" class="">Subject</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="md-form mb-0">
                                         <select v-model="country_contact" class="form-select" id="country" name="country">
                                             <option v-if="countries" v-for="country in countries" :key="country.text"
@@ -49,20 +56,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!--Grid row-->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="md-form mb-0">
-                                        <input v-model="subject" type="text" id="subject" name="subject"
-                                            class="form-control">
-                                        <label for="subject" class="">Subject</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--Grid row-->
-
                             <!--Grid row-->
                             <div class="row">
 
