@@ -130,7 +130,7 @@ import moment from 'moment'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { userStore } from "@/stores/userAccount";
-import type { User, Booking, Product, Item } from '@/helpers/my-types';
+import type { User, Booking,Item } from '@/helpers/my-types';
 
 export default defineComponent({
     name: "UserProfile",
@@ -161,13 +161,13 @@ export default defineComponent({
         orderDetailsTable(itemsArray: Array<Item>) {
             let tableDiv = document.getElementById("items_order")!;
             tableDiv.innerHTML = "";
-            tableDiv.innerHTML = '<table id=\"order_table\" class=\"table table-bordered table-sm\"><thead><tr><th>Qty</th><th>Name of product</th><th>Product number</th><th>Price</th></tr></thead><tfoot></tfoot><tbody></tbody></table>'
-            for (let i = 0; i < itemsArray.length; i++) {
+            tableDiv.innerHTML = '<table id="order_table" class="table table-bordered table-sm"><thead><tr><th>Qty</th><th>Name of product</th><th>Product number</th><th>Price</th></tr></thead><tfoot></tfoot><tbody></tbody></table>'
+            for (const item of itemsArray) {
                 let htmltxt = "<tr>";
-                htmltxt += "<td>" + itemsArray[i].quantity + "</td>";
-                htmltxt += "<td>" + itemsArray[i].name + "</td>";
-                htmltxt += "<td>" + itemsArray[i].pid + "</td>";
-                htmltxt += "<td>" + "£" + itemsArray[i].price + " (" + itemsArray[i].calculated_price + ")" + "</td>";
+                htmltxt += "<td>" + item.quantity + "</td>";
+                htmltxt += "<td>" + item.name + "</td>";
+                htmltxt += "<td>" + item.pid + "</td>";
+                htmltxt += "<td>" + "£" + item.price + " (" + item.calculated_price + ")" + "</td>";
                 htmltxt += "</tr>";
                 let tableRef = document.getElementById('order_table')!.getElementsByTagName('tbody')[0];
                 let newRow = tableRef.insertRow(tableRef.rows.length);

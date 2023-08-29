@@ -7,7 +7,6 @@
                         <form @submit.prevent="registerUser">
 
                             <p class="text-center">Please Sign up:</p>
-
                             <!-- Username input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerUsername">Username:</label>
@@ -65,6 +64,10 @@
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-block mb-3">Create account</button>
+                            <!-- Login button -->
+                            <div class="text-center">
+                                <p>Already a member? <router-link :to="{ name: 'Login' }">Login</router-link></p>
+                            </div>
                         </form>
                     </div>
                     <div class="col-md-6">

@@ -29,10 +29,15 @@ export default defineComponent({
       products, pStore
     }
   },
+  methods: {
+    async getAllProducts(){
+      await this.pStore.getProducts();
 
-  async created() {
-    await this.pStore.getProducts();
+    }
+  },
 
+  created() {
+    this.getAllProducts();
   },
 
 })

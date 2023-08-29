@@ -13,7 +13,8 @@ import type { Item } from '@/helpers/my-types';
 
 import { userAlertStore } from './alert';
 
-import router from '@/router/index'
+import router from '@/router/index';
+
 
 
 export const userCartStore = defineStore({
@@ -88,11 +89,11 @@ export const userCartStore = defineStore({
             try {
                 const response = await axiosInstance.post('booking/create', bookingDetails);
                 if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Couldnt make reservation');
+                    this.alertStore.error(response.data.message);
                     return;
                 }
                 
-                router.push({ name: 'Confirm', params: { oid: response.data.oid } });
+                router.push({ name: 'Confirm',  query: { oid: response.data.oid } });
                 this.clearCart();
 
             } catch (error: any) {
@@ -102,7 +103,7 @@ export const userCartStore = defineStore({
         },
         async checkOutQueue(bookingDetails: any) {
             try {
-                const response = await axiosInstance.post('q_booking/create', bookingDetails);
+                const response = await axiosInstance.post('qbooking/create', bookingDetails);
                 let job_id = response.data.job_id;
                 let finished = false;
 
@@ -119,7 +120,7 @@ export const userCartStore = defineStore({
                     this.alertStore.error("Timeout! check the worker server!.");
                     return null;
                 }
-                let getBookingResponse = await axiosInstance.get("q_booking/" + job_id);
+                let getBookingResponse = await axiosInstance.get("qbooking/" + job_id);
 
                 if (getBookingResponse.data.success) {
                     this.alertStore.success("Booking with id " + getBookingResponse.data.oid + " created!")

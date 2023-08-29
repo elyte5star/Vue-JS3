@@ -160,7 +160,7 @@
                                             </div>
                                         </div>
                                         <hr class="line">
-                                        <span>Shipping Address</span>
+                                        <span>Billing Address</span>
                                         <div>
                                             <label class="billing-label" for="fname"><i class="fa fa-user"></i> Full
                                                 Name:</label>
@@ -198,12 +198,61 @@
                                                     id="zip" name="zip" placeholder="10001">
                                             </div>
                                         </div><br>
+
                                         <div class="row billing-checkbox">
                                             <label class="billing-label">
-                                                <input v-model="bsameadr" type="checkbox" name="sameadr"> Shipping address
-                                                same as billing
+                                                <input v-model="bsameadr" type="checkbox" @click="showShippingAddress"
+                                                    name="sameadr"> Billing address
+                                                same as shipping
                                             </label>
                                         </div><br>
+
+                                        <div id="part-2">
+                                            <hr class="line">
+                                            <span>Shipping Address</span>
+                                            <div>
+                                                <label class="billing-label" for="sfname"><i class="fa fa-user"></i> Full
+                                                    Name:</label>
+                                                <input v-model="sfname" class="form-control billing-inputs" type="text"
+                                                    id="sfname" name="fullname" placeholder="Ese Niccolio">
+                                            </div>
+                                            <div>
+                                                <label class="billing-label" for="email"><i class="fa fa-envelope"></i>
+                                                    Email:</label>
+                                                <input v-model="semail" class="form-control billing-inputs" type="email"
+                                                    id="semail" name="email" placeholder="elyte5star@example.com">
+                                            </div>
+
+                                            <div>
+                                                <label class="billing-label" for="sadr"> <i
+                                                        class="fa fa-address-card-o"></i>
+                                                    Address:</label>
+                                                <input v-model="saddress" class="form-control billing-inputs" type="text"
+                                                    id="sadr" name="address" placeholder="542 W. 15th Street"
+                                                    maxlength="20">
+                                            </div>
+                                            <div>
+                                                <label class="billing-label" for="scity"><i class="fa fa-institution"></i>
+                                                    City:</label>
+                                                <input v-model="scity" class="form-control billing-inputs" type="text"
+                                                    id="scity" name="scity" placeholder="Warri or St. Laos" maxlength="16">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6"><label class="billing-label" for="state">
+                                                        Country:</label>
+                                                    <select v-model="scountry" class="form-select" id="scountry"
+                                                        name="country">
+                                                        <option v-if="countries" v-for="country in countries"
+                                                            :key="country.text" :value=country.value>{{ country.text }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6"> <label class="billing-label" for="szip"> Zip:</label>
+                                                    <input v-model="szip" class="form-control billing-inputs" type="text"
+                                                        id="szip" name="zip" placeholder="10001">
+                                                </div>
+                                            </div><br>
+                                        </div>
                                         <hr class="line">
                                         <div class="d-flex justify-content-between information">
                                             <span>Subtotal</span><span>£{{
@@ -296,17 +345,17 @@ import { userCartStore } from '@/stores/cart';
 import { userAuthStore } from '@/stores/auth_store';
 import { userAlertStore } from '@/stores/alert';
 import { countries, validateFullName, hasOnlyDigits, is_valid_Email, isObjEmpty } from '@/helpers/script';
-import type { Item, CreditCard, ShippingAdress, userReservation } from '@/helpers/my-types';
+import type { Item, CreditCard, ShippingAddress, userReservation, BillingAddress } from '@/helpers/my-types';
 import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator';
 import { defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     name: 'CartView',
-    setup(props, ctx) {
+    setup() {
         const authStore = userAuthStore();
         const { user } = storeToRefs(authStore);
-        const cartStore = userCartStore()
+        const cartStore = userCartStore();
         const { cart, itemsInCart } = storeToRefs(cartStore);
         return {
             user, cartStore, cart, itemsInCart
@@ -315,16 +364,30 @@ export default defineComponent({
 
     data() {
         return {
-            recommendationList: [], bfname: null, bsameadr: null, bemail: null,
+            recommendationList: [], bfname: null, bsameadr: false, bemail: null,
             bcountry: null, bzip: null, bcity: null, baddress: null,
             isDisabled: true, card: null, expiryDate: null, cardCvv: null,
-            cardNumber: null, nameOnCard: null, countries: countries, alertStore: userAlertStore()
+            cardNumber: null, nameOnCard: null, countries: countries, alertStore: userAlertStore(),
+            sfname: null, semail: null,
+            scountry: null, szip: null, scity: null, saddress: null,
         }
     },
-
+    mounted() {
+        console.log(this.user);
+    },
     methods: {
         removeFromCart(item: Item) {
             this.cartStore.removeFromCart(item);
+        },
+        showShippingAddress() {
+            const shipDiv = (<HTMLInputElement>document.getElementById('part-2'));
+            if (this.bsameadr) {
+                shipDiv.style.display = '';
+
+            } else {
+                shipDiv.style.display = 'none';
+
+            }
         },
         emptyCart() {
             this.cartStore.clearCart();
@@ -341,7 +404,27 @@ export default defineComponent({
             return true;
 
         },
-        checkShippingAddress(): ShippingAdress | {} {
+        checkShippingAddress(): ShippingAddress | {} {
+            if (validateFullName(this.sfname)
+                && is_valid_Email(this.semail)
+                && this.saddress && this.scity
+                && this.checkPostCodeAndCountry(this.scountry, this.szip)
+            ) {
+                const billingAddress = {
+                    sfname: this.sfname,
+                    semail: this.semail,
+                    saddress: this.saddress,
+                    scountry: this.scountry,
+                    szip: this.szip,
+                    scity: this.scity
+                }
+
+                return billingAddress;
+            }
+
+            return {};
+        },
+        checkBillingAddress(): BillingAddress | {} {
             if (validateFullName(this.bfname)
                 && is_valid_Email(this.bemail)
                 && this.baddress && this.bcity
@@ -377,8 +460,6 @@ export default defineComponent({
 
             }
             return {}
-
-
         },
         checkPostCodeAndCountry(countryCode: string | null, zip: string | null): boolean {
             if (!postcodeValidatorExistsForCountry(countryCode as string)) {
@@ -415,30 +496,53 @@ export default defineComponent({
             } else if (!hasOnlyDigits(this.cardCvv)) {
                 (<HTMLInputElement>document.getElementById('cvv-num')).focus();
                 this.alertStore.error("CVV number required");
-               
-                //Shipping Address;
 
-            } else if (!validateFullName(this.bfname) && !this.bsameadr) {
+                //Billing Address;
+
+            } else if (!validateFullName(this.bfname)) {
                 (<HTMLInputElement>document.getElementById('fname')).focus();
-                this.alertStore.error('Enter full name (first & last name).');
+                this.alertStore.error('Enter full name (first & last name)(Billing).');
 
 
-            } else if (!is_valid_Email(this.bemail) && !this.bsameadr) {
+            } else if (!is_valid_Email(this.bemail)) {
                 (<HTMLInputElement>document.getElementById('email')).focus();
-                this.alertStore.error('Enter valid email.');
+                this.alertStore.error('Enter valid email (Billing).');
 
-            } else if (!this.baddress && !this.bsameadr) {
+            } else if (!this.baddress) {
                 (<HTMLInputElement>document.getElementById('adr')).focus();
-                this.alertStore.error("Shipping Address required");
+                this.alertStore.error("Billing Address required");
 
-            } else if (!this.bcity && !this.bsameadr) {
+            } else if (!this.bcity) {
                 (<HTMLInputElement>document.getElementById('city')).focus();
-                this.alertStore.error("City required");
+                this.alertStore.error("City required (Billing)");
 
             } else if (!this.checkPostCodeAndCountry(this.bcountry, this.bzip)) {
 
                 return true;
             }
+            //Shipping Address;
+            else if (!this.bsameadr && !validateFullName(this.sfname)) {
+                (<HTMLInputElement>document.getElementById('sfname')).focus();
+                this.alertStore.error('Enter full name (first & last name).Shipping');
+
+
+            } else if (!this.bsameadr && !is_valid_Email(this.semail)) {
+                (<HTMLInputElement>document.getElementById('semail')).focus();
+                this.alertStore.error('Enter valid email.');
+
+            } else if (!this.bsameadr && !this.saddress) {
+                (<HTMLInputElement>document.getElementById('sadr')).focus();
+                this.alertStore.error("Shipping Address required");
+
+            } else if (!this.bsameadr && !this.scity) {
+                (<HTMLInputElement>document.getElementById('scity')).focus();
+                this.alertStore.error("City required");
+
+            } else if (!this.bsameadr && !this.checkPostCodeAndCountry(this.scountry, this.szip)) {
+
+                return true;
+            }
+
             // no error  
             else {
                 return false;
@@ -446,42 +550,41 @@ export default defineComponent({
             }
             return true
         },
-        async makeReservation() {
+        async makeReservation(): Promise<void> {
             this.alertStore.reset();
-            if (!this.user) return await this.$router.push({ name: 'Login' });
             const paymentDetails = this.checkCreditCardDetails();
+            const billingAddress = this.checkBillingAddress();
             const shippingDetails = this.checkShippingAddress();
+
             let reservation: userReservation = {} as userReservation;
-            if (!isObjEmpty(paymentDetails) && this.bsameadr) {
+            if (this.bsameadr && !isObjEmpty(paymentDetails) && !isObjEmpty(billingAddress)) {
+
                 reservation = {
                     cart: this.cart,
                     total_price: this.totalPrice,
-                    paymentDetails: paymentDetails as CreditCard,
+                    payment_details: paymentDetails as CreditCard,
+                    billing_address: billingAddress as BillingAddress
 
                 }
                 await this.cartStore.checkOut(reservation);
-            } else if (!this.bsameadr && !isObjEmpty(shippingDetails) && !isObjEmpty(paymentDetails)) {
+            } else if (!this.bsameadr && !isObjEmpty(paymentDetails) && !isObjEmpty(billingAddress) && !isObjEmpty(shippingDetails)) {
                 reservation = {
                     cart: this.cart,
                     total_price: this.totalPrice,
-                    paymentDetails: paymentDetails as CreditCard,
-                    shippingDetails: shippingDetails as ShippingAdress
+                    payment_details: paymentDetails as CreditCard,
+                    billing_address: billingAddress as BillingAddress,
+                    shipping_details: shippingDetails as ShippingAddress
 
                 }
                 await this.cartStore.checkOut(reservation);
             }
 
             else {
-
                 this.invalidFeedback();
-
             }
 
         }
 
-    },
-    mounted() {
-        console.log(this.user);
     },
     computed: {
         totalPrice() {

@@ -30,13 +30,16 @@ export type CreditCard = {
 
 }
 
-export type ShippingAdress = {
+export type ShippingAddress = {
     bfname: null,
     baddress: null,
     bemail: null,
     bcountry: null,
     bzip: null,
     bcity: null,
+
+}
+export interface BillingAddress extends ShippingAddress {
 
 }
 
@@ -49,8 +52,9 @@ export interface AuthHeader extends AxiosRequestHeaders {
 export type userReservation = {
     total_price: number;
     cart: Array<Item>;
-    paymentDetails: CreditCard;
-    shippingDetails?: ShippingAdress
+    payment_details: CreditCard;
+    billing_address: BillingAddress;
+    shipping_details?: ShippingAddress;
 
 }
 

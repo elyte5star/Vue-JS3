@@ -142,6 +142,10 @@ export default defineComponent({
             }
 
         },
+        async handleMsalRedirect() { 
+            await this.msalInstance.handleRedirectPromise();
+        },
+
         async SignOut() {
             await this.msalInstance.logout({});
         },
@@ -170,10 +174,10 @@ export default defineComponent({
         }
 
     },
-    async created() {
-        await this.msalInstance.handleRedirectPromise();
+    created() {
+        this.handleMsalRedirect();
     },
-    async mounted() {
+    mounted() {
         const { user } = storeToRefs(this.authStore);
         this.user = user
         if (this.user) {

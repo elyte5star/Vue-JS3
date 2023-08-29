@@ -1,7 +1,7 @@
 <template>
-    <div v-if="oid" id="confirm" class="container">
+    <div id="confirm" class="container">
         <div class=content>
-            <div class="wrapper-1">
+            <div v-if="oid" class="wrapper-1">
                 <div class="wrapper-2">
                     <h1>Thank you !</h1>
                     <p> Thank you for shopping with us!</p>
@@ -10,30 +10,36 @@
                     <router-link :to="{ name: 'Home' }" class="go-home btn btn-lg">go home</router-link>
                 </div>
                 <div class="footer-like">
-                    <p>Email not received?
-                        <a href="#">Click here to send again</a>
+                    <p>Any questions?
+                        <router-link :to="{ name: 'Contact' }">Contact us.</router-link>
                     </p>
                 </div>
             </div>
+            <div v-else>
+                <div class="wrapper-2">
+                    <h1>Thank you !</h1>
+                    <p> Your account is activated!</p>
+                    <router-link :to="{ name: 'Login' }" class="go-home btn btn-lg">Login</router-link>
+                </div>
+                <div class="footer-like">
+                    <p>Please sign in.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useRoute } from 'vue-router'
-
+import { useRoute } from 'vue-router';
 export default defineComponent({
     name: "Confirm",
-    props: {
-        oid: {
-            type: String, required: true
-        }
-    },
-    setup(props, ctx) {
-        const oid = props.oid
+    setup() {
+        const route = useRoute();
+        const { oid } = route.query;
         return { oid }
     },
-
+   
 
 })
 

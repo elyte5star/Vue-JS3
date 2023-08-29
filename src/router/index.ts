@@ -10,7 +10,7 @@ import RegisterUser from '@/views/RegisterUserView.vue'
 import ContactUs from '@/views/ContactView.vue'
 import Confirm from '@/views/Confirmation.vue'
 import ServerError from '@/views/ServerError.vue';
-
+import SendEmail from '@/views/SendVerifyEmail.vue'
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
 
@@ -23,6 +23,16 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomeView
+  },
+
+  {
+    path: '/home',
+    redirect: { name: 'Home' }
+  },
+  {
+    path: '/send-email',
+    name: 'Email',
+    component: SendEmail
   },
   {
     path: '/contact',
@@ -75,7 +85,7 @@ const routes = [
     name: 'NotFound'
   },
   {
-    path: "/confirm/:oid",
+    path: "/confirm",
     name: "Confirm",
     component: Confirm,
     props: true
@@ -109,7 +119,7 @@ router.beforeEach(async (to: any, from, next) => {
 
 
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login', 'Home', 'oneProduct', 'ServerError', 'Contact', 'Cart', 'Register'];
+  const publicPages = ['Login', 'Confirm', 'Email', 'Home', 'oneProduct', 'ServerError', 'Contact', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
 

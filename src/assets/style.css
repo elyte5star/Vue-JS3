@@ -795,6 +795,15 @@ article:hover {
 
 }
 
+.add_entry p {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 .bi {
     position: relative;
     left: 575px;
@@ -1046,8 +1055,6 @@ table.shoping-cart-table tr td:first-child {
 
 #order_history tr td:hover {
     cursor: pointer;
-    background-color: #3299BB;
-
 }
 
 article h3 {
@@ -1121,6 +1128,8 @@ article h3 {
 }
 
 #email_contact,
+#token,
+#verifyEmail,
 #name_contact,
 #subject,
 #country {
