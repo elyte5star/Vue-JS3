@@ -94,7 +94,7 @@ export const userAuthStore = defineStore({
         async logout() {
             this.user = null;
             localStorage.removeItem('user');
-            router.replace({ name: 'Login' });
+            router.push({ name: 'Login' });
             return true;
         }
 

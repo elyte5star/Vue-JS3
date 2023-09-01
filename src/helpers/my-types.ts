@@ -72,6 +72,7 @@ export type Booking = {
     owner_id: string;
     oid: string;
     created_at: Date
+    shipping_details: ShippingAddress
 }
 
 export type Review = {

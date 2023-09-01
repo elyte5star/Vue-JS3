@@ -46,8 +46,12 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    Date: {{ formatDate(booking.created_at) }}
-                                                    <p>Order number: {{ booking.oid }}</p>
+                                                    <p><strong>Date of order:</strong> {{ formatDate(booking.created_at) }}</p>
+                                                    <p><strong>Order number:</strong> {{ booking.oid }}</p>
+                                                    <p><strong>Shipping details</strong> <i class="fa fa-institution"></i></p>
+                                                    <p>Name: <span>{{ booking.shipping_details.bfname}}</span></p>
+                                                    <p>Email: <span>{{ booking.shipping_details.bemail}}</span></p>
+                                                    <p>Address: <span>{{ booking.shipping_details.baddress}}, {{ booking.shipping_details.bzip}} {{ booking.shipping_details.bcity}}. {{ booking.shipping_details.bcountry}}.</span></p>
                                                 </td>
                                                 <td :style="{ width: '65px' }">
                                                     <input type="text" :disabled="isDisabled" class="form-control"
