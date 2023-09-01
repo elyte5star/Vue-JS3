@@ -8,6 +8,7 @@ import router from '@/router/index'
 import { axiosInstance } from '@/helpers/axiosHttp';
 
 import type { tokenData } from '@/helpers/my-types';
+import { URLSearchParams } from "url";
 
 
 let user = localStorage.getItem('user')
@@ -20,7 +21,7 @@ export const userAuthStore = defineStore({
     }),
     actions: {
 
-        async login(userData: object) {
+        async login(userData: URLSearchParams) {
             try {
                 const response = await axiosInstance.post('auth/token', userData);
                 if (response.data.success && response.data.token_data !== undefined) {
@@ -41,6 +42,7 @@ export const userAuthStore = defineStore({
         },
 
         async cloudLogin(userData: object) {
+           
             try {
                 const response = await axiosInstance.post('auth/get-token', userData);
 
