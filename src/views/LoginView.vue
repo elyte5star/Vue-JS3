@@ -16,10 +16,6 @@
                                     class="btn btn-link btn-floating mx-1">
                                     <i class="fa fa-google"></i>
                                 </button>
-                                <button v-on:click.prevent="twitterLogin" type="button"
-                                    class="btn btn-link btn-floating mx-1">
-                                    <i class="fa fa-twitter"></i>
-                                </button>
                             </div>
 
                             <p class="text-center">or:</p>
@@ -92,16 +88,17 @@
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
 import { storeToRefs } from 'pinia';
-import { googleOneTap, decodeCredential } from "vue3-google-login"
+import { googleOneTap, } from "vue3-google-login"
 import { isUserNameValid, showPassword } from "@/helpers/script";
 import { loginRequest, _msalInstance } from "@/helpers/msoftAuthConfig";
 import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "LoginView",
+   
     data() {
         return {
-            user: {}, msalInstance: _msalInstance, username: null, password: null, showPassword, authStore: userAuthStore(),
+            user: {}, msalInstance: _msalInstance, username: null, password: null, showPassword, authStore: userAuthStore()
         }
     },
     methods: {
@@ -109,9 +106,7 @@ export default defineComponent({
         async googleLogin() {
             try {
                 const loginResponse = await googleOneTap();
-                const userData: any = decodeCredential(loginResponse.credential)
-                await this.authStore.cloudLogin({ userid: userData.sub, email: userData.email, username: userData.name })
-
+                await this.authStore.cloudLogin({ type: "GMAIL", token: loginResponse.credential });
             } catch (error) {
 
                 this.authStore.alert.error(`error during authentication: ${error}`);
@@ -120,21 +115,16 @@ export default defineComponent({
 
         },
 
-        async twitterLogin() {
-
-            console.error('twitter error during authentication:');
-
-        },
         async msoftLogin() {
+
             try {
                 await this.msalInstance.loginPopup(loginRequest);
                 const accounts = this.msalInstance.getAllAccounts();
                 if (accounts.length === 0) {
-                    return;
+                    return this.msalInstance.loginRedirect(loginRequest);
                 }
                 const account = accounts[0]
-                const userData = { userid: account.localAccountId, email: account.username, username: account.name }
-                await this.authStore.cloudLogin(userData);
+                await this.authStore.cloudLogin({ type: "MSOFT", token: account.idToken });
 
             } catch (error) {
 
@@ -142,12 +132,8 @@ export default defineComponent({
             }
 
         },
-        async handleMsalRedirect() { 
+        async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise();
-        },
-
-        async SignOut() {
-            await this.msalInstance.logout({});
         },
         async onSubmitLogin() {
 

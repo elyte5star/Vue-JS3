@@ -9,10 +9,10 @@
                     <li v-if="version"><a href="javascript:void(0)"><i class="fa fa-code-fork"></i>Vue version {{ version
                     }}</a></li>
 
-                    <li v-if="user"><a :href="'/user/' + user.userid"><i class="fa fa-user-circle"
-                                style="font-size: 25px"></i>Logged
+                    <li v-if="user"><router-link :to="{ name: 'oneUser', params: { userid: user.userid } }"><i
+                                class="fa fa-user-circle" style="font-size: 25px"></i>Logged
                             in as {{ user.username
-                            }}</a></li>
+                            }}</router-link></li>
                     <li v-if="!!user?.admin"><a href="/admin"><i class="fa fa-cogs"></i>Admin page</a></li>
 
                     <li><router-link to="/cart"><i class="fa fa-shopping-cart" style="font-size: 25px"></i>Cart<span

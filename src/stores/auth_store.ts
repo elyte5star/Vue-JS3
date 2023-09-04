@@ -27,7 +27,7 @@ export const userAuthStore = defineStore({
                 if (response.data.success && response.data.token_data !== undefined) {
                     this.user = response.data.token_data;
                     localStorage.setItem('user', JSON.stringify(response.data.token_data));
-                    return router.push(this.returnUrl || '/');
+                    router.push(this.returnUrl || '/');
 
                 } else if (response.data.token_data.hasOwnProperty("active") && !response.data.active) {
                     router.push({ name: 'Email', query: response.data.token_data })
@@ -42,7 +42,7 @@ export const userAuthStore = defineStore({
         },
 
         async cloudLogin(userData: object) {
-           
+
             try {
                 const response = await axiosInstance.post('auth/get-token', userData);
 
@@ -51,8 +51,7 @@ export const userAuthStore = defineStore({
                     this.user = response.data.token_data;
 
                     localStorage.setItem('user', JSON.stringify(response.data.token_data));
-                    return router.push(this.returnUrl || '/');
-
+                    router.push({ name: 'oneUser', params: { userid: this.user.userid } })
 
                 } else {
 
