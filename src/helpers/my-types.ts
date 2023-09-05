@@ -23,10 +23,11 @@ export type User = {
 
 };
 export type CreditCard = {
-    cardNumber: null,
-    expiryDate: null,
-    cardCvv: null,
-    nameOnCard: null,
+    cardType: null
+    cardNumber: null
+    expiryDate: null
+    cardCvv: null
+    nameOnCard: null
 
 }
 

@@ -372,9 +372,6 @@ export default defineComponent({
             scountry: null, szip: null, scity: null, saddress: null,
         }
     },
-    mounted() {
-        console.log(this.user);
-    },
     methods: {
         removeFromCart(item: Item) {
             this.cartStore.removeFromCart(item);
@@ -450,6 +447,7 @@ export default defineComponent({
                 && this.expirationValidation(this.expiryDate)
                 && hasOnlyDigits(this.cardCvv)) {
                 const creditCardDetails = {
+                    cardType: this.card,
                     cardNumber: this.cardNumber,
                     expiryDate: this.expiryDate,
                     cardCvv: this.cardCvv,
@@ -566,6 +564,7 @@ export default defineComponent({
                     billing_address: billingAddress as BillingAddress
 
                 }
+                console.log(reservation)
                 await this.cartStore.checkOut(reservation);
             } else if (!this.bsameadr && !isObjEmpty(paymentDetails) && !isObjEmpty(billingAddress) && !isObjEmpty(shippingDetails)) {
                 reservation = {
