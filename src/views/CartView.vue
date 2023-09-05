@@ -564,7 +564,6 @@ export default defineComponent({
                     billing_address: billingAddress as BillingAddress
 
                 }
-                console.log(reservation)
                 await this.cartStore.checkOut(reservation);
             } else if (!this.bsameadr && !isObjEmpty(paymentDetails) && !isObjEmpty(billingAddress) && !isObjEmpty(shippingDetails)) {
                 reservation = {
