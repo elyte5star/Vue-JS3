@@ -9,7 +9,7 @@ let itemsInCart = window.localStorage.getItem('cartCount');
 
 import { axiosInstance } from '@/helpers/axiosHttp';
 
-import type { Item } from '@/helpers/my-types';
+import type { Item, userReservation } from '@/helpers/my-types';
 
 import { userAlertStore } from './alert';
 
@@ -85,15 +85,15 @@ export const userCartStore = defineStore({
             localStorage.removeItem('cartCount');
 
         },
-        async checkOut(bookingDetails: any) {
+        async checkOut(bookingDetails: userReservation) {
             try {
                 const response = await axiosInstance.post('booking/create', bookingDetails);
                 if (!response.data.success) {
                     this.alertStore.error(response.data.message);
                     return;
                 }
-                
-                router.push({ name: 'Confirm',  query: { oid: response.data.oid } });
+
+                router.push({ name: 'Confirm', query: { oid: response.data.oid } });
                 this.clearCart();
 
             } catch (error: any) {
@@ -101,7 +101,7 @@ export const userCartStore = defineStore({
             }
 
         },
-        async checkOutQueue(bookingDetails: any) {
+        async checkOutQueue(bookingDetails: userReservation) {
             try {
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);
                 let job_id = response.data.job_id;
@@ -123,7 +123,7 @@ export const userCartStore = defineStore({
                 let getBookingResponse = await axiosInstance.get("qbooking/" + job_id);
 
                 if (getBookingResponse.data.success) {
-                    this.alertStore.success("Booking with id " + getBookingResponse.data.oid + " created!")
+                    router.push({ name: 'Confirm', query: { oid: getBookingResponse.data.result_data.oid } });
                     this.clearCart();
 
                 } else {

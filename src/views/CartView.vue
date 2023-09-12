@@ -564,7 +564,7 @@ export default defineComponent({
                     billing_address: billingAddress as BillingAddress
 
                 }
-                await this.cartStore.checkOut(reservation);
+                await this.cartStore.checkOutQueue(reservation);
             } else if (!this.bsameadr && !isObjEmpty(paymentDetails) && !isObjEmpty(billingAddress) && !isObjEmpty(shippingDetails)) {
                 reservation = {
                     cart: this.cart,
@@ -574,7 +574,7 @@ export default defineComponent({
                     shipping_details: shippingDetails as ShippingAddress
 
                 }
-                await this.cartStore.checkOut(reservation);
+                await this.cartStore.checkOutQueue(reservation);
             }
 
             else {
