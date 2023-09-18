@@ -106,7 +106,11 @@ export const userCartStore = defineStore({
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);
                 let job_id = response.data.job_id;
                 let finished = false;
-
+                if (!response.data.success) {
+                    this.alertStore.error("Couldnt create reservation!.");
+                    console.error(response.data.message)
+                    return null;
+                }
                 for (let i = 0; i < 100; i++) {
                     let job_response = await axiosInstance.get("job/" + job_id);
 
@@ -117,7 +121,8 @@ export const userCartStore = defineStore({
                     await new Promise(r => setTimeout(r, this.countTime || 0));
                 }
                 if (!finished) {
-                    this.alertStore.error("Timeout! check the worker server!.");
+                    this.alertStore.error("Timeout!");
+                    console.error("Timeout! check the worker server!.")
                     return null;
                 }
                 let getBookingResponse = await axiosInstance.get("qbooking/" + job_id);
@@ -131,7 +136,7 @@ export const userCartStore = defineStore({
                 }
 
             } catch (error: any) {
-                console.log(error);
+                console.error(error);
             }
 
         }

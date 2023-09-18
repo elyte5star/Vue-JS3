@@ -95,7 +95,6 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "LoginView",
-   
     data() {
         return {
             user: {}, msalInstance: _msalInstance, username: null, password: null, showPassword, authStore: userAuthStore()

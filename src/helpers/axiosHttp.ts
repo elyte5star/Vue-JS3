@@ -20,7 +20,7 @@ function authHeader(url: string): AuthHeader | {} {
     let authStorage: any = localStorage.getItem('user');
     let user = JSON.parse(authStorage);
     const isLoggedIn = !!user?.access_token;
-    const isApiUrl = url.startsWith(process.env.VUE_API_URL || "");
+    const isApiUrl = url.startsWith(process.env.VUE_API_URL ?? "");
     if (isLoggedIn && isApiUrl) {
         return { Authorization: 'Bearer ' + user.access_token, 'Content-Type': 'application/json', Accept: 'application/json' };
     } else {
@@ -29,10 +29,10 @@ function authHeader(url: string): AuthHeader | {} {
 }
 
 axiosInstance.interceptors.request.use((config) => {
-    config.timeout = import.meta.env.VITE_APP_WAIT_TIME || 0;
+    config.timeout = import.meta.env.VITE_APP_WAIT_TIME ?? 0;
     const isloading = loadingStore();
     isloading.setLoading(true);
-    config.headers = authHeader(process.env.VUE_API_URL || "") as AuthHeader;
+    config.headers = authHeader(process.env.VUE_API_URL ?? "") as AuthHeader;
     return config;
 },
     function (error) {

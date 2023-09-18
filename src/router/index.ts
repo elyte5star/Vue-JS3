@@ -15,7 +15,10 @@ import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
 
 
-
+function removeQueryParams(to: any) {
+  if (Object.keys(to.query).length)
+    return { path: to.path, query: {}, hash: to.hash }
+}
 
 
 const routes = [
@@ -117,6 +120,8 @@ router.beforeEach(async (to: any, from, next) => {
 
   alertStore.reset();
 
+  const maintenance  = process.env.VUE_MAINTENANCE_MODE;
+  
 
   // redirect to login page if not logged in and trying to access a restricted page
   const publicPages = ['Login', 'Confirm', 'Email', 'Home', 'oneProduct', 'ServerError', 'Contact', 'Register'];
@@ -125,17 +130,21 @@ router.beforeEach(async (to: any, from, next) => {
 
   const auth = userAuthStore();
 
-  if (authRequired && !auth.user) {
+  if (to.name !== 'ServerError' && maintenance === 'true') {
+    
+    next({ name: 'ServerError' });
+
+  } else if (to.name !== 'Login' && authRequired && !auth.user) {
 
     auth.returnUrl = to.fullPath;
     next({ name: 'Login' });
 
-  } else {
+  }
+  else {
 
     next();
 
   }
-
 
 });
 
