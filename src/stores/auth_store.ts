@@ -30,7 +30,7 @@ export const userAuthStore = defineStore({
                     router.push(this.returnUrl || '/');
 
                 } else if (response.data.token_data.hasOwnProperty("active") && !response.data.active) {
-                    router.push({ name: 'Email', query: response.data.token_data })
+                    router.replace({ name: 'Email', query: response.data.token_data })
 
                 } else {
                     this.alert.error(response.data.message);
