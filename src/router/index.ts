@@ -15,10 +15,6 @@ import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
 
 
-function removeQueryParams(to: any) {
-  if (Object.keys(to.query).length)
-    return { path: to.path, query: {}, hash: to.hash }
-}
 
 
 const routes = [
