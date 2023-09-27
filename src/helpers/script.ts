@@ -41,6 +41,9 @@ export const isUserNameValid = (username: string | null) => {
     const valid = !!res;
     return valid;
 }
+
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export const greet = () => {
     let curHr = new Date().getHours();
     const conds = [

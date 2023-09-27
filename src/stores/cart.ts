@@ -11,17 +11,19 @@ import { axiosInstance } from '@/helpers/axiosHttp';
 
 import type { Item, userReservation } from '@/helpers/my-types';
 
+import { sleep } from '@/helpers/script';
+
 import { userAlertStore } from './alert';
 
 import router from '@/router/index';
 
-
+let countTime = import.meta.env.VITE_APP_WAIT_TIME;
 
 export const userCartStore = defineStore({
     id: 'cart',
     state: () => ({
         cart: cart ? JSON.parse(cart) : [], itemsInCart: itemsInCart ? parseInt(itemsInCart) : 0,
-        alertStore: userAlertStore(), countTime: import.meta.env.VITE_APP_WAIT_TIME
+        alertStore: userAlertStore(), countTime: countTime ? parseInt(countTime) : 0
     }),
     actions: {
         addToCart(item: Item, volume: number) {
@@ -111,14 +113,15 @@ export const userCartStore = defineStore({
                     console.error(response.data.message)
                     return null;
                 }
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 5; i++) {
                     let job_response = await axiosInstance.get("job/" + job_id);
 
                     if (job_response.data.job.job_status.is_finished) {
                         finished = true;
                         break;
                     }
-                    await new Promise(r => setTimeout(r, this.countTime || 0));
+                    console.log(`Waiting ${(i * this.countTime)/1000} seconds...`);
+                    await sleep(i * this.countTime);
                 }
                 if (!finished) {
                     this.alertStore.error("Timeout!");
