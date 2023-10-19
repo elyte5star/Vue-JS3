@@ -13,6 +13,22 @@
     src: url(./google-fonts/Kaushan/KaushanScript-Regular.ttf);
 }
 
+:root {
+    --green: #00FF00;
+    --white: #FFFFFF;
+    --black: #000000;
+}
+
+.light-theme {
+    --bg: var(--green);
+    --fontColor: var(--black);
+}
+
+.dark-theme {
+    --bg: var(--black);
+    --fontColor: var(--green);
+}
+
 /** Common **/
 
 .disabled {
@@ -1075,7 +1091,8 @@ article h3 {
     margin-top: 5px;
     text-align: center;
 }
-#user{
+
+#user {
     max-width: 1320px;
     min-width: none;
 }
