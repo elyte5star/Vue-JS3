@@ -115,7 +115,7 @@ import { userAlertStore } from '@/stores/alert';
 import { userStore } from '@/stores/userAccount';
 import { is_valid_Email, countries } from '@/helpers/script';
 import type { Enquiry } from '@/helpers/my-types';
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'ContactUs',
     data() {
