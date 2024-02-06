@@ -23,7 +23,7 @@ export const productStore = defineStore({
                     isloading.setLoading(true);
                     return;
                 }
-
+                console.log(response.data);
                 this.products = response.data.products;
 
             } catch (error: any) {
