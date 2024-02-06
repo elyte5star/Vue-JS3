@@ -5,6 +5,8 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import path from 'path'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
+
 // https://vitejs.dev/config/
 
 
@@ -26,6 +28,7 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       vue(),
+      nodePolyfills(),
       vueJsx(),
       splitVendorChunkPlugin(),
       // copy image files for production
@@ -55,6 +58,7 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
+       
       }
     }
   }

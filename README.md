@@ -33,7 +33,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
   ```
 NODE_ENV=development
-VUE_API_URL=http://localhost:8000/ # The base API endpoint to which requests are made
+VUE_API_URL=http://localhost:8001/ # The base API endpoint to which requests are made
 VUE_API_CLIENT_ID=elyte
 VUE_BASE_URL=http://localhost:9000/
 VUE_MAINTENANCE_MODE=false
@@ -41,8 +41,8 @@ VUE_WAIT_TIME=3000
 VITE_APP_MSAL_CLIENT_ID=xxxxxxxxxxx
 VUE_APP_MSAL_LOGIN_AUTHORITY=https://login.microsoftonline.com/xxxxxxxxxxxxxxxx
 VUE_GOOGLE_CLIENT_ID=xxxxxxxxxxxxx.apps.googleusercontent.com
-NGINX_PROXY_PASS=http://api:8000/
-NGINX_PORT=8000
+NGINX_PROXY_PASS=http://api:8001/
+NGINX_PORT=8001
   ```
 
 
