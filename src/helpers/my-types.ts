@@ -60,9 +60,6 @@ export type userReservation = {
 }
 
 
-
-
-
 export type Alert = {
     type: string;
     message: string;
@@ -97,18 +94,46 @@ export type Product = {
     pid: string;
     details: string;
     description: string;
-    created_at: Date
     stock_quantity: number
     image: string;
     name: string;
     category: string;
     price: number;
     reviews: Array<Review>;
-    discount: Array<number>;
+    
 
 }
 
 export interface Item extends Product {
     quantity: number
     calculated_price: number
+}
+
+export type Sort ={
+    unsorted:boolean
+    sorted:boolean
+    empty:boolean
+}
+
+export type Pageable ={
+    offset:number
+    pageNumber:number
+    pageSize:number
+    paged:boolean
+    sort:Sort
+    unpaged:boolean
+}
+
+export type ProductsResponse ={
+    empty:boolean
+    first:boolean
+    last:boolean
+    numberOfElements:number
+    pageable:Pageable
+    Products:Array<Product>
+    size:number
+    sort:Sort
+    totalElements:number
+    totalPages:number
+
 }
