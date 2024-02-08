@@ -5,13 +5,13 @@ import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { loadingStore } from "@/stores/loading";
 
-import type { Product, Review,ProductsResponse } from '@/helpers/my-types';
+import type { Product, Review, ProductsResponse } from '@/helpers/my-types';
 
 
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        products: [] as Product[],productRes:null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
+        products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts() {
@@ -23,7 +23,7 @@ export const productStore = defineStore({
                     isloading.setLoading(true);
                     return;
                 }
-                this.productRes = response.data.result
+                this.productsRes = response.data.result
                 this.products = response.data.result.products;
             } catch (error: any) {
                 console.log(error);

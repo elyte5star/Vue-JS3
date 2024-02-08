@@ -1,26 +1,27 @@
 <template>
-    <div id="slide_image" v-on:mouseover="stopSlide" v-on:mouseleave="startSlide">
-        <transition-group name="fade" tag="div">
-            <div v-for="i in [currentIndex]" :key="i">
-                <router-link v-if="currentPid" :to="{
-                    name: 'oneProduct',
-                    params: {
-                        pid: currentPid
-                    }
-                }"><img v-if="currentImg !== null" :src="'src/assets/images/products/' + currentImg"
-                        v-bind:alt="currentImg" />
-                </router-link>
-            </div>
-        </transition-group>
-        <a class="prev" @click="prev" href="#">&#10094; Previous</a>
-        <a class="next" @click="next" href="#">Next &#10095;</a>
-
+    <div v-if="products">
+        <div id="slide_image" v-on:mouseover="stopSlide" v-on:mouseleave="startSlide">
+            <transition-group name="fade" tag="div">
+                <div v-for="i in [currentIndex]" :key="i">
+                    <router-link v-if="currentPid" :to="{
+                        name: 'oneProduct',
+                        params: {
+                            pid: currentPid
+                        }
+                    }"><img v-if="currentImg !== null" :src="'src/assets/images/products/' + currentImg"
+                            v-bind:alt="currentImg" />
+                    </router-link>
+                </div>
+            </transition-group>
+            <a class="prev" @click="prev" href="#">&#10094; Previous</a>
+            <a class="next" @click="next" href="#">Next &#10095;</a>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import type { Product } from '@/helpers/my-types';
+import { defineComponent, type PropType } from 'vue'
+import type {ProductsResponse } from '@/helpers/my-types';
 
 export default defineComponent({
     name: 'ImageSlide',
@@ -31,8 +32,8 @@ export default defineComponent({
         }
     },
     props: {
-        products: {
-            type: Array<Product>,
+        productsRes: {
+            type: Object as PropType<ProductsResponse>,
             required: true
         }
     },
@@ -58,6 +59,10 @@ export default defineComponent({
         }
     },
     computed: {
+        products: function(){
+            return this.productsRes?.products
+            
+        },
         currentImg: function () {
             return this.images[Math.abs(this.currentIndex) % this.images.length];
         },

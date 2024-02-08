@@ -33,7 +33,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
   ```
 NODE_ENV=development
-VUE_API_URL=http://localhost:8001/ # The base API endpoint to which requests are made
+VITE_API_URL=http://localhost:8001/ # The base API endpoint to which requests are made
 VUE_API_CLIENT_ID=elyte
 VUE_BASE_URL=http://localhost:9000/
 VUE_MAINTENANCE_MODE=false

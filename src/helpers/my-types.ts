@@ -130,7 +130,7 @@ export type ProductsResponse ={
     last:boolean
     numberOfElements:number
     pageable:Pageable
-    Products:Array<Product>
+    products:Array<Product>
     size:number
     sort:Sort
     totalElements:number

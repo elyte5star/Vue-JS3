@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     <BigIcons />
-    <ImageSlide v-bind:products="products" />
-    <MainProducts v-bind:products="products" />
+    <ImageSlide v-bind:productsRes="productsRes"/>
+    <MainProducts v-bind:productsRes="productsRes" />
+    <MainFooter v-bind:productsRes="productsRes" />
   </div>
 </template>
 
@@ -10,7 +11,8 @@
 // @ is an alias to /src
 import BigIcons from '../components/BigIcons.vue'
 import ImageSlide from '../components/ImageSlide.vue';
-import MainProducts from '../components/Products.vue'
+import MainProducts from '../components/Products.vue';
+import MainFooter from '../components/Footer.vue';
 
 import { storeToRefs } from 'pinia';
 import { productStore } from '@/stores/products'
@@ -20,17 +22,17 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'HomeView',
   components: {
-    BigIcons, ImageSlide, MainProducts
+    BigIcons, ImageSlide, MainProducts, MainFooter
   },
   setup() {
     const pStore = productStore();
-    const { products } = storeToRefs(pStore);
+    const { productsRes } = storeToRefs(pStore);
     return {
-      products, pStore
+      pStore, productsRes
     }
   },
   methods: {
-    async getAllProducts(){
+    async getAllProducts() {
       await this.pStore.getProducts();
 
     }

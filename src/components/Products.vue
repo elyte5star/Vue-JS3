@@ -11,7 +11,6 @@
                 <div class="prod_right">
                     <h3>{{ product.name }}</h3>
                     <p>{{ product.description }}</p>
-
                     <h4>£{{ product.price }}</h4>
                     <p v-if="product.stock_quantity">Available in stock {{ product.stock_quantity }}.</p>
                     <p v-else>Out of stock {{ product.stock_quantity }}.</p>
@@ -31,22 +30,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import type { Product } from '@/helpers/my-types';
+import { defineComponent, type PropType } from 'vue'
+import type { Product, ProductsResponse } from '@/helpers/my-types';
 
 export default defineComponent({
     name: 'MainProducts',
     props: {
-        products: {
-            type: Array<Product>,
+        productsRes: {
+            type: Object as PropType<ProductsResponse>,
             required: true
         }
     },
+
     methods: {
         getImage(image: string): string {
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
         }
     },
+
+    computed: {
+        products: function(){
+            return this.productsRes?.products
+            
+        },
+    }
     
 
 
