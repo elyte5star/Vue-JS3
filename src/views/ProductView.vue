@@ -52,7 +52,7 @@
                                                 </td>
                                                 <td class="desc" :style="{ width: '500px' }">
                                                     <h5>Nickname :
-                                                        {{ review.reviewer_name }}
+                                                        {{ review.reviewerName }}
                                                     </h5>
                                                     <dl class="small m-b-none">
                                                         <dt>Description</dt>
@@ -69,7 +69,7 @@
                                                 <td colspan="2">
                                                     <dl class="small m-b-none">
                                                         <dt>Date</dt>
-                                                        <dd>{{ formatDate(review.created_at) }}</dd>
+                                                        <dd>{{ formatDate(review.createdAt) }}</dd>
                                                     </dl>
                                                 </td>
 

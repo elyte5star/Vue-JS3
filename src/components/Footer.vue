@@ -1,32 +1,18 @@
 <template>
-   
-    <div>{{ isSorted }}</div>
-   
-
-
-
-
-
+    <div>
+        <footer>
+            <div class="contact">
+                <span class="strong"><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments"> Customer
+                                Service</i></router-link>:</span> | <i class="fa fa-phone"></i>
+                +44 7482 06 7903 |
+                <a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i> elyte5star@gmail.com</a>
+            </div>
+        </footer>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
-import type { ProductsResponse } from '@/helpers/my-types';
 export default defineComponent({
-    name:'MainFooter',
-    props:{
-        productsRes:{ 
-            type: Object as PropType<ProductsResponse>,
-            required: true
-            
-        }
-    },
-    computed: {
-        isSorted(){
-            return this.productsRes?.sort;
-        }
-    }
-    
-
+    name: 'MainFooter'
 });
 </script>

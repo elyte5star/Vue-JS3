@@ -73,16 +73,27 @@ export type Booking = {
     shipping_details: ShippingAddress
 }
 
+export type CreateReview = {
+    rating: number;
+    pid: string;
+    email: string;
+    reviewerName: string;
+    comment: string;
+}
+
 export type Review = {
+    createdBy:string
+    createdAt: Date
+    lastModifiedBy:string
+    lastModifiedAt:string
     rating: number;
     rid: string;
-    created_at: Date;
     email: string;
-    reviewer_name: string;
+    reviewerName: string;
     comment: string;
-    product_id: string;
-
 }
+
+
 export type Enquiry = {
     client_name: string;
     client_email: string;
@@ -92,16 +103,15 @@ export type Enquiry = {
 }
 export type Product = {
     pid: string;
-    details: string;
+    name: string;
     description: string;
+    category: string;
     stock_quantity: number
     image: string;
-    name: string;
-    category: string;
     price: number;
     reviews: Array<Review>;
+    details: string;
     
-
 }
 
 export interface Item extends Product {

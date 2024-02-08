@@ -1,15 +1,15 @@
 <template>
   <div class="home">
     <BigIcons />
-    <ImageSlide v-bind:productsRes="productsRes"/>
-    <MainProducts v-bind:productsRes="productsRes" />
-    <MainFooter v-bind:productsRes="productsRes" />
+    <ImageSlide v-bind:products="products" />
+    <MainProducts v-bind:products="products" />
+    <MainFooter  />
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
-import BigIcons from '../components/BigIcons.vue'
+import BigIcons from '../components/BigIcons.vue';
 import ImageSlide from '../components/ImageSlide.vue';
 import MainProducts from '../components/Products.vue';
 import MainFooter from '../components/Footer.vue';
@@ -19,20 +19,21 @@ import { productStore } from '@/stores/products'
 import { defineComponent } from 'vue'
 
 
+
 export default defineComponent({
   name: 'HomeView',
   components: {
-    BigIcons, ImageSlide, MainProducts, MainFooter
+    BigIcons, ImageSlide, MainProducts,MainFooter
   },
   setup() {
     const pStore = productStore();
-    const { productsRes } = storeToRefs(pStore);
+    let { products,productsRes } = storeToRefs(pStore);
     return {
-      pStore, productsRes
+      products, pStore
     }
   },
   methods: {
-    async getAllProducts() {
+    async getAllProducts(){
       await this.pStore.getProducts();
 
     }

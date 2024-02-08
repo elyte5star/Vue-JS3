@@ -5,7 +5,7 @@
       <input :style="{ backgroundImage: 'url(' + searchImage + ')' }" @keyup="searchEntries()" type="text" name="search"
         id="search-icon" size="15" placeholder="Search.." />
     </div>
-    <h1 id="welcome">Welcome to e-Market</h1>
+    <h1 id="welcome">Welcome to elyte realm</h1>
     <!-- Sort content -->
     <div class="dropdown" id="sort-div">
       <i class="fa fa-sort"></i>
