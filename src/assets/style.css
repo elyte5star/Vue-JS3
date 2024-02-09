@@ -375,8 +375,8 @@ mark {
     margin-right: auto;
 }
 #slide_image{
-   
     overflow: hidden;
+    background-color: #000000;
 }
 
 .fade-enter-active,
@@ -403,7 +403,7 @@ mark {
     top: 23%;
     width: auto;
     padding: 16px;
-    color: #3299BB;
+    color: white;
     font-weight: bold;
     font-size: 18px;
     transition: 0.7s ease;
