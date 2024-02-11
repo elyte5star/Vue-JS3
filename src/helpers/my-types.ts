@@ -101,17 +101,23 @@ export type Enquiry = {
     subject: string;
     message: string;
 }
+
 export type Product = {
-    pid: string;
-    name: string;
-    description: string;
     category: string;
-    stock_quantity: number
-    image: string;
-    price: number;
-    reviews: Array<Review>;
+    description: string;
     details: string;
-    
+    image: string;
+    name: string;
+    pid: string;
+    price:number;
+    reviews: Array<Review>;
+    stock_quantity: number
+}
+
+export interface ProductsQuery{
+    page:number;
+    size:number
+    sort?:Array<string>
 }
 
 export interface Item extends Product {
@@ -120,9 +126,9 @@ export interface Item extends Product {
 }
 
 export type Sort ={
-    unsorted:boolean
-    sorted:boolean
     empty:boolean
+    sorted:boolean
+    unsorted:boolean
 }
 
 export type Pageable ={
@@ -134,7 +140,7 @@ export type Pageable ={
     unpaged:boolean
 }
 
-export type ProductsResponse ={
+export type ProductsResponse={
     empty:boolean
     first:boolean
     last:boolean
@@ -142,7 +148,7 @@ export type ProductsResponse ={
     pageable:Pageable
     products:Array<Product>
     size:number
-    sort:Sort
+    number:number
     totalElements:number
     totalPages:number
 

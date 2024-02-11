@@ -2,7 +2,7 @@
   <div class="home">
     <BigIcons />
     <ImageSlide v-bind:products="products" />
-    <MainProducts v-bind:products="products" />
+    <MainProducts v-bind:itemsResult="productsRes"  />
     <MainFooter  />
   </div>
 </template>
@@ -13,7 +13,6 @@ import BigIcons from '../components/BigIcons.vue';
 import ImageSlide from '../components/ImageSlide.vue';
 import MainProducts from '../components/Products.vue';
 import MainFooter from '../components/Footer.vue';
-
 import { storeToRefs } from 'pinia';
 import { productStore } from '@/stores/products'
 import { defineComponent } from 'vue'
@@ -27,10 +26,11 @@ export default defineComponent({
   },
   setup() {
     const pStore = productStore();
-    let { products,productsRes } = storeToRefs(pStore);
+    const  { products,productsRes } = storeToRefs(pStore);
     return {
-      products, pStore
+      products, pStore, productsRes
     }
+
   },
   methods: {
     async getAllProducts(){
@@ -42,6 +42,9 @@ export default defineComponent({
   created() {
     this.getAllProducts();
   },
+
+
+  
 
 })
 

@@ -2,6 +2,7 @@ import './assets/style.css'
 import { createApp } from 'vue'
 
 import App from './App.vue'
+
 import vue3GoogleLogin from 'vue3-google-login'
 
 import router from './router'
@@ -16,6 +17,8 @@ import 'vue3-easy-data-table/dist/style.css';
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+
+import { PaginationBar } from 'v-page';
 
 
 
@@ -33,7 +36,9 @@ const app = createApp(App);
 
 
 app.use(VueSweetalert2, options);
-app.use(vue3GoogleLogin, { clientId: process.env.VUE_GOOGLE_CLIENT_ID })
+app.use(vue3GoogleLogin, { clientId: process.env.VUE_GOOGLE_CLIENT_ID });
+app.use(PaginationBar, {
+  })
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(createPinia());
 app.use(router);

@@ -12,10 +12,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 
 export default defineConfig(({ command, mode }) => {
-
-
   const env = loadEnv(mode, process.cwd(), ''); //use process.env
-
   return {
     server: {
       port: 3000,

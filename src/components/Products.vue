@@ -1,6 +1,5 @@
 <template>
     <div class="products">
-       
         <main id="container_" class="container">
             <h1 id="products" v-if="products">Products</h1>
             <article class="framed column" :id="'' + product.pid" v-for="product in products" v-bind:key="product.pid">
@@ -19,7 +18,6 @@
                 </div>
                 <router-link :to="{
                     name: 'oneProduct',
-
                     params: {
                         pid: product.pid
                     }
@@ -28,28 +26,52 @@
                 </router-link>
             </article>
         </main>
-      
+        <PaginationBar :page-size-menu="false" :border="true" align="center" :total-row="totalRow" v-model="pageNum"
+            @change="pageChange" />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import type { Product } from '@/helpers/my-types';
+import { defineComponent, type PropType, computed } from 'vue';
+import type { ProductsResponse } from '@/helpers/my-types';
+import { PaginationBar } from 'v-page';
+import type { PageInfo } from 'v-page/types';
 
 export default defineComponent({
     name: 'MainProducts',
-    props: {
-        products: {
-            type: Array<Product>,
-            required: true
-        }
-    },
+    props:["itemsResult"],
     methods: {
         getImage(image: string): string {
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
+        },
+        pageChange(data: PageInfo) {
+            const params = {
+                page: (data.pageNumber - 1),
+                size: 12,
+
+            }
+            
+            console.log(params) // { pageNumber: 1, pageSize: 10 }
+           
+
+            //make api call
+
         }
+
     },
-    
+    computed: {
+        products() {
+            return this.itemsResult?.products;
+        },
+        totalRow() {
+            return this.itemsResult?.numberOfElements;
+        },
+        pageNum() {
+            return this.itemsResult?.pageable.pageNumber;
+        }
+
+    }
+
 
 
 })

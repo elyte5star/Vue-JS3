@@ -5,7 +5,7 @@ import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { loadingStore } from "@/stores/loading";
 
-import type { Product, Review, ProductsResponse } from '@/helpers/my-types';
+import type { Product, Review, ProductsResponse, ProductsQuery } from '@/helpers/my-types';
 
 
 export const productStore = defineStore({
@@ -14,9 +14,9 @@ export const productStore = defineStore({
         products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
-        async getProducts() {
+        async getProducts(data?: ProductsQuery) {
             try {
-                const response = await axiosInstance.get('products');
+                const response = await axiosInstance.get('products', { params: data });
                 const isloading = loadingStore();
                 if (!response.data.success) {
                     console.error(response.data.message);
@@ -30,6 +30,7 @@ export const productStore = defineStore({
             }
 
         },
+
         async submitReview(review: object) {
             try {
                 const response = await axiosInstance.post('products/create/review', review);
@@ -44,6 +45,7 @@ export const productStore = defineStore({
             }
 
         },
+
         async getProductById(pid: string) {
             try {
                 const response = await axiosInstance.get('products/' + pid);
