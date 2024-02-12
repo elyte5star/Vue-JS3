@@ -5,7 +5,7 @@ import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { loadingStore } from "@/stores/loading";
 
-import type { Product, Review, ProductsResponse, ProductsQuery } from '@/helpers/my-types';
+import type { Product, Review, ProductsResponse, ProductsQuery, CreateReview } from '@/helpers/my-types';
 
 
 export const productStore = defineStore({
@@ -31,7 +31,7 @@ export const productStore = defineStore({
 
         },
 
-        async submitReview(review: object) {
+        async submitReview(review: CreateReview) {
             try {
                 const response = await axiosInstance.post('products/create/review', review);
                 if (!response.data.success) {

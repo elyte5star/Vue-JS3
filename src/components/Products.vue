@@ -32,47 +32,56 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, computed } from 'vue';
-import type { ProductsResponse } from '@/helpers/my-types';
-import { PaginationBar } from 'v-page';
+import { defineComponent } from 'vue';
+import PaginationBar  from 'v-page';
 import type { PageInfo } from 'v-page/types';
+import { storeToRefs } from 'pinia';
+import { productStore } from '@/stores/products';
 
 export default defineComponent({
     name: 'MainProducts',
-    props:["itemsResult"],
+    setup() {
+        const pStore = productStore();
+        const { productsRes } = storeToRefs(pStore);
+        return {
+            pStore, productsRes
+        }
+
+    },
     methods: {
+        async getAllProducts() {
+            await this.pStore.getProducts();
+
+        },
         getImage(image: string): string {
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
         },
-        pageChange(data: PageInfo) {
+        async pageChange(data: PageInfo) {
             const params = {
                 page: (data.pageNumber - 1),
                 size: 12,
-
             }
-            
-            console.log(params) // { pageNumber: 1, pageSize: 10 }
-           
-
-            //make api call
+            //console.log(params) // { pageNumber: 1, pageSize: 10 }
+            if(!this.productsRes?.first) return await this.pStore.getProducts(params); 
+            console.log(params) 
 
         }
 
     },
     computed: {
         products() {
-            return this.itemsResult?.products;
+            return this.productsRes?.products;
         },
         totalRow() {
-            return this.itemsResult?.numberOfElements;
+            return this.productsRes?.numberOfElements;
         },
         pageNum() {
-            return this.itemsResult?.pageable.pageNumber;
+            return this.productsRes?.pageable.pageNumber;
         }
 
-    }
-
-
-
+    },
+    created() {
+        this.getAllProducts();
+    },
 })
 </script>

@@ -2,7 +2,7 @@
   <div class="home">
     <BigIcons />
     <ImageSlide v-bind:products="products" />
-    <MainProducts v-bind:itemsResult="productsRes"  />
+    <MainProducts />
     <MainFooter  />
   </div>
 </template>
