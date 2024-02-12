@@ -1,7 +1,7 @@
 <template>
     <div class="products">
         <main id="container_" class="container">
-            <h1 id="products" v-if="products">Products</h1>
+            <h1 v-if="products">Products</h1>
             <article class="framed column" :id="'' + product.pid" v-for="product in products" v-bind:key="product.pid">
                 <div class="prod_left">
                     <img :src="getImage(product.image)" :alt="product.name">
@@ -18,6 +18,7 @@
                 </div>
                 <router-link :to="{
                     name: 'oneProduct',
+
                     params: {
                         pid: product.pid
                     }
@@ -32,56 +33,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import PaginationBar  from 'v-page';
+import { defineComponent } from 'vue'
+import type { Product } from '@/helpers/my-types';
+import { PaginationBar } from 'v-page';
 import type { PageInfo } from 'v-page/types';
-import { storeToRefs } from 'pinia';
-import { productStore } from '@/stores/products';
 
 export default defineComponent({
     name: 'MainProducts',
-    setup() {
-        const pStore = productStore();
-        const { productsRes } = storeToRefs(pStore);
-        return {
-            pStore, productsRes
+    props: {
+        products: {
+            type: Array<Product>,
+            required: true
         }
-
+    },
+    data(){
+        return{totalRow:12,pageNum:0}
     },
     methods: {
-        async getAllProducts() {
-            await this.pStore.getProducts();
-
-        },
         getImage(image: string): string {
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
         },
-        async pageChange(data: PageInfo) {
+        pageChange(data: PageInfo) {
             const params = {
                 page: (data.pageNumber - 1),
                 size: 12,
+
             }
-            //console.log(params) // { pageNumber: 1, pageSize: 10 }
-            if(!this.productsRes?.first) return await this.pStore.getProducts(params); 
-            console.log(params) 
-
+            this.$emit('changePage', params);
         }
+    },
+    
 
-    },
-    computed: {
-        products() {
-            return this.productsRes?.products;
-        },
-        totalRow() {
-            return this.productsRes?.numberOfElements;
-        },
-        pageNum() {
-            return this.productsRes?.pageable.pageNumber;
-        }
 
-    },
-    created() {
-        this.getAllProducts();
-    },
 })
 </script>

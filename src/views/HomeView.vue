@@ -2,21 +2,21 @@
   <div class="home">
     <BigIcons />
     <ImageSlide v-bind:products="products" />
-    <MainProducts />
-    <MainFooter  />
+    <MainProducts v-bind:products="products" @changePage="getProductsPages" />
+    <MainFooter />
   </div>
 </template>
 
 <script lang="ts">
 // @ is an alias to /src
-import BigIcons from '../components/BigIcons.vue';
+import BigIcons from '../components/BigIcons.vue'
 import ImageSlide from '../components/ImageSlide.vue';
-import MainProducts from '../components/Products.vue';
+import MainProducts from '../components/Products.vue'
 import MainFooter from '../components/Footer.vue';
 import { storeToRefs } from 'pinia';
 import { productStore } from '@/stores/products'
 import { defineComponent } from 'vue'
-
+import type { ProductsQuery} from '@/helpers/my-types';
 
 
 export default defineComponent({
@@ -26,25 +26,25 @@ export default defineComponent({
   },
   setup() {
     const pStore = productStore();
-    const  { products,productsRes } = storeToRefs(pStore);
+    const { products } = storeToRefs(pStore);
     return {
-      products, pStore, productsRes
+      products, pStore
     }
-
   },
   methods: {
     async getAllProducts(){
       await this.pStore.getProducts();
 
+    },
+    async getProductsPages(data: ProductsQuery) {
+      await this.pStore.getProducts(data);
     }
+
   },
 
   created() {
     this.getAllProducts();
   },
-
-
-  
 
 })
 

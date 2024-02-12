@@ -11,7 +11,7 @@ import type { Product, Review, ProductsResponse, ProductsQuery, CreateReview } f
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
+        pageNumber:0,numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts(data?: ProductsQuery) {
@@ -25,6 +25,9 @@ export const productStore = defineStore({
                 }
                 this.productsRes = response.data.result
                 this.products = response.data.result.products;
+                this.numberOfElements = response.data.result.numberOfElements
+                this.pageNumber= response.data.result.pageable.pageNumber
+                
             } catch (error: any) {
                 console.log(error);
             }
