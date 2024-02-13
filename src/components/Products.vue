@@ -44,10 +44,14 @@ export default defineComponent({
         products: {
             type: Array<Product>,
             required: true
+        },
+        totalRow: {
+            type: Number,
+            required: true
         }
     },
     data(){
-        return{totalRow:12,pageNum:0}
+        return{pageNum:0}
     },
     methods: {
         getImage(image: string): string {

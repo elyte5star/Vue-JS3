@@ -204,7 +204,7 @@
 import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
-import type { Item } from '@/helpers/my-types';
+import type { CreateReview, Item } from '@/helpers/my-types';
 
 import { is_valid_Email } from '@/helpers/script';
 import { defineComponent } from 'vue'
@@ -273,12 +273,12 @@ export default defineComponent({
         },
         async onSubmitReview() {
             if (this.rating && is_valid_Email(this.reviewer_email)) {
-                let productReview: any = {
-                    reviewer_name: this.reviewer_name,
-                    email: this.reviewer_email,
+                let productReview: CreateReview = {
+                    reviewerName: this.reviewer_name || " ",
+                    email: this.reviewer_email || " ",
                     rating: Number(this.rating),
                     comment: this.review,
-                    product_id: this.pid,
+                    pid: this.pid,
                 }
 
                 await this.pStore.submitReview(productReview)

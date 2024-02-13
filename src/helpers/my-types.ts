@@ -2,26 +2,35 @@ import type { AxiosRequestHeaders } from 'axios'
 
 
 export type tokenData = {
-    access_token: string;
-    token_type: string;
-    host_url: string;
-    userid: string;
-    username: string;
-    admin: boolean
-
-}
-export type User = {
-    username: string;
+    access_token: string
+    token_type: string
+    username: string
     email: string;
-    active: boolean;
-    discount: null;
-    created_at: Date;
-    userid: string;
-    admin: boolean,
-    telephone: string;
-    bookings: Array<Booking>
+    enabled: boolean
+    admin: boolean
+    userid:string
+}
 
-};
+export type User = {
+    createdBy: string
+    createdAt: Date
+    lastModifiedBy: string
+    lastModifiedAt: Date
+    userid: string
+    username: string
+    email: string
+    accountNonLocked: boolean
+    failedAttempt: number
+    lockTime: Date,
+    admin: boolean
+    enabled: boolean
+    bookings: Array<Booking>
+    locations: Array<string>
+    telephone: string
+    discount: null,
+    using2FA: false
+}
+
 export type CreditCard = {
     cardType: null
     cardNumber: null

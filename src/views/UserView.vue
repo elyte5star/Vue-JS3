@@ -20,7 +20,7 @@ export default defineComponent({
       type: String, required: true
     }
   },
-  setup(props, ctx) {
+  setup() {
     const user_store = userStore();
     const { user, bookingsHistory } = storeToRefs(user_store);
     return {

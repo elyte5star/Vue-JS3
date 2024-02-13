@@ -46,7 +46,7 @@
                                                     </div>
                                                 </td>
 
-                                                <td v-if="item.discount.length > 0">
+                                                <td v-if="item.discount">
                                                     £{{ item.price }}
                                                     <s class="small text-muted">$230,00</s>
                                                 </td>

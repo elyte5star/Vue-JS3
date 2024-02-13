@@ -2,7 +2,7 @@
   <div class="home">
     <BigIcons />
     <ImageSlide v-bind:products="products" />
-    <MainProducts v-bind:products="products" @changePage="getProductsPages" />
+    <MainProducts v-bind:products="products" :totalRow="numberOfElements" @changePage="getProductsPages" />
     <MainFooter />
   </div>
 </template>
@@ -26,9 +26,9 @@ export default defineComponent({
   },
   setup() {
     const pStore = productStore();
-    const { products } = storeToRefs(pStore);
+    const { products,numberOfElements } = storeToRefs(pStore);
     return {
-      products, pStore
+      products,numberOfElements, pStore
     }
   },
   methods: {

@@ -11,7 +11,7 @@ import type { tokenData } from '@/helpers/my-types';
 import { URLSearchParams } from "url";
 
 
-let user = localStorage.getItem('user')
+const user = localStorage.getItem('user')
 
 export const userAuthStore = defineStore({
     id: 'auth',
@@ -20,24 +20,24 @@ export const userAuthStore = defineStore({
         returnUrl: '', alert: userAlertStore(), emailSent: false
     }),
     actions: {
-
         async login(userData: URLSearchParams) {
             try {
-                const response = await axiosInstance.post('auth/token', userData);
-                if (response.data.success && response.data.token_data !== undefined) {
-                    this.user = response.data.token_data;
-                    localStorage.setItem('user', JSON.stringify(response.data.token_data));
+                const response = await axiosInstance.post('auth/form-login', userData);
+                if (response.data.success && response.data.result !== undefined) {
+                    this.user = response.data.result;
+                    localStorage.setItem('user', JSON.stringify(response.data.result));
                     router.push(this.returnUrl || '/');
 
-                } else if (response.data.token_data.hasOwnProperty("active") && !response.data.active) {
-                    router.replace({ name: 'Email', query: response.data.token_data })
+                } else if (Object.prototype.hasOwnProperty.call(response.data.result,"enabled") && !response.data.result.enabled) {
+                    router.replace({ name: 'Email', query: response.data.result })
 
                 } else {
                     this.alert.error(response.data.message);
                 }
 
             } catch (error: any) {
-                console.log(error);
+                this.alert.error(error.response.data.result);
+                console.error(error);
             }
         },
 
@@ -46,11 +46,11 @@ export const userAuthStore = defineStore({
             try {
                 const response = await axiosInstance.post('auth/get-token', userData);
 
-                if (response.data.success && response.data.token_data !== undefined) {
+                if (response.data.success && response.data.result !== undefined) {
 
                     this.user = response.data.token_data;
 
-                    localStorage.setItem('user', JSON.stringify(response.data.token_data));
+                    localStorage.setItem('user', JSON.stringify(response.data.result));
                     router.push({ name: 'oneUser', params: { userid: this.user.userid } })
 
                 } else {
@@ -66,7 +66,6 @@ export const userAuthStore = defineStore({
             try {
                 const response = await axiosInstance.post('auth/send-email-confirmation', data);
                 if (response.data.success) {
-
                     console.log(response.data);
                     this.emailSent = true;
                 } else {
@@ -87,10 +86,10 @@ export const userAuthStore = defineStore({
                     return;
                 }
                 return router.replace({ name: 'Confirm' })
-            } catch (error) {
+            } catch (error:any) { 
+                console.error(error);
 
-            }
-
+                }
         },
         async logout() {
             this.user = null;

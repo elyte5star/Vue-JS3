@@ -21,7 +21,7 @@ export const userStore = defineStore({
                     this.alertStore.error(response.data.message || 'Couldnt get Users');
                     return;
                 }
-                this.users = response.data.users;
+                this.users = response.data.result;
 
             } catch (error: any) {
                 console.log(error);
@@ -49,7 +49,7 @@ export const userStore = defineStore({
                     this.alertStore.error(response.data.message || 'Operation unsuccessful');
                     return;
                 }
-                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.eid);
+                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.result.eid);
             } catch (error: any) {
                 console.log(error);
             }
@@ -63,8 +63,8 @@ export const userStore = defineStore({
                     this.alertStore.error(response.data.message || 'Operation unsuccessful');
                     return;
                 }
-                this.user = response.data.user
-                this.bookingsHistory = response.data.user.bookings
+                this.user = response.data.result
+                this.bookingsHistory = response.data.result.bookings
 
             } catch (error: any) {
                 console.log(error);

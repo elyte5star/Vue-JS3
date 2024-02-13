@@ -4,14 +4,12 @@ import { userAlertStore } from './alert';
 import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { loadingStore } from "@/stores/loading";
-
-import type { Product, Review, ProductsResponse, ProductsQuery, CreateReview } from '@/helpers/my-types';
-
+import type { Product, Review, ProductsResponse, ProductsQuery, CreateReview} from '@/helpers/my-types';
 
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        pageNumber:0,numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
+        numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts(data?: ProductsQuery) {
@@ -24,10 +22,8 @@ export const productStore = defineStore({
                     return;
                 }
                 this.productsRes = response.data.result
-                this.products = response.data.result.products;
-                this.numberOfElements = response.data.result.numberOfElements
-                this.pageNumber= response.data.result.pageable.pageNumber
-                
+                this.products = this.productsRes?.products!
+                this.numberOfElements = this.productsRes?.numberOfElements!   
             } catch (error: any) {
                 console.log(error);
             }
@@ -36,9 +32,11 @@ export const productStore = defineStore({
 
         async submitReview(review: CreateReview) {
             try {
+                const isloading = loadingStore();
                 const response = await axiosInstance.post('products/create/review', review);
                 if (!response.data.success) {
                     this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    isloading.setLoading(true);
                     return;
                 }
                 this.alertStore.success('Good job!' + " Yor review has been saved!");
@@ -49,16 +47,16 @@ export const productStore = defineStore({
 
         },
 
-        async getProductById(pid: string) {
+        async getProductById(pid: string):Promise<void>  {
             try {
                 const response = await axiosInstance.get('products/' + pid);
                 if (!response.data.success) {
                     this.alertStore.error(response.data.message || 'Operation unsuccessful');
                     return;
                 }
-                this.product = response.data.product;
-                this.stockQuantity = response.data.product.stock_quantity;
-                this.reviews = response.data.product.reviews
+                this.product = response.data.result;
+                this.stockQuantity = this.product?.stock_quantity!;
+                this.reviews = this.product?.reviews!;
 
             } catch (error: any) {
                 console.log(error);
@@ -95,8 +93,8 @@ export const productStore = defineStore({
             })
         },
 
-        async sortProductsBykey(key: string) {
-            console.log(key);
+        async sortProductsBykey(data?: ProductsQuery) {
+            console.log(data);
         }
 
     }

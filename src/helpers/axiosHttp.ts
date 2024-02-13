@@ -13,8 +13,8 @@ export const axiosInstance: AxiosInstance = axios.create({
 });
 
 function authHeader(url: string): AuthHeader | {} {
-    let authStorage: any = localStorage.getItem('user');
-    let user = JSON.parse(authStorage);
+    const authStorage: any = localStorage.getItem('user');
+    const user = JSON.parse(authStorage);
     const isLoggedIn = !!user?.access_token;
     const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL ?? "");
     if (isLoggedIn && isApiUrl) {
