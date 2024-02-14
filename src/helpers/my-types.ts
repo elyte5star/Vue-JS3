@@ -126,7 +126,8 @@ export type Product = {
 export interface ProductsQuery{
     page:number;
     size:number
-    sort?:Array<string>
+    sortByDesc?:string
+    sortByAsc?:string
 }
 
 export interface Item extends Product {

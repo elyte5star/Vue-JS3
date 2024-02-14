@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import type { Product } from '@/helpers/my-types';
+import type { Product, ProductsQuery } from '@/helpers/my-types';
 import { PaginationBar } from 'v-page';
 import type { PageInfo } from 'v-page/types';
 
@@ -48,19 +48,23 @@ export default defineComponent({
         totalRow: {
             type: Number,
             required: true
+        },
+        pN: {
+            type: Number,
+            required: true
         }
     },
     data(){
-        return{pageNum:0}
+        return{pageNum:this.pN}
     },
     methods: {
         getImage(image: string): string {
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
         },
         pageChange(data: PageInfo) {
-            const params = {
+            const params:ProductsQuery = {
                 page: (data.pageNumber - 1),
-                size: 12,
+                size: this.totalRow,
 
             }
             this.$emit('changePage', params);

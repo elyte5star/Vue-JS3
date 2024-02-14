@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <BigIcons />
+    <BigIcons :totalRow="numberOfElements" :pN="pageNum" @sortProducts="getProductsPages" />
     <ImageSlide v-bind:products="products" />
-    <MainProducts v-bind:products="products" :totalRow="numberOfElements" @changePage="getProductsPages" />
+    <MainProducts v-bind:products="products" :pN="pageNum" :totalRow="numberOfElements" @changePage="getProductsPages" />
     <MainFooter />
   </div>
 </template>
@@ -26,9 +26,9 @@ export default defineComponent({
   },
   setup() {
     const pStore = productStore();
-    const { products,numberOfElements } = storeToRefs(pStore);
+    const { products,numberOfElements,pageNum } = storeToRefs(pStore);
     return {
-      products,numberOfElements, pStore
+      products,numberOfElements,pageNum, pStore
     }
   },
   methods: {

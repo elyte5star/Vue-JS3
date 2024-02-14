@@ -13,11 +13,13 @@
         <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-content">
-        <a href="/sort/?sort_key=deals">Deals</a>
-        <a href="/sort/?sort_key=name_asc"><i class="fa fa-sort-alpha-asc"></i>Alpahbetical order</a>
-        <a href="/sort/?sort_key=name_desc"><i class="fa fa-sort-alpha-desc"></i>Alpahbetical order</a>
-        <a href="/sort/?sort_key=numeric_desc"><i class="fa fa-sort-numeric-desc"></i>Price:High-Low</a>
-        <a href="/sort/?sort_key=numeric_asc"><i class="fa fa-sort-numeric-asc"></i>Price:Low-High</a>
+        <a href="javascript:void(0);">Deals</a>
+        <a href="javascript:void(0);" v-on:click.stop="sortByNameAsc"><i class="fa fa-sort-alpha-asc"></i>Alpahbetical
+          order</a>
+        <a href="javascript:void(0);" v-on:click.stop="sortByNameDesc"><i class="fa fa-sort-alpha-desc"></i>Alpahbetical
+          order</a>
+        <a href="javascript:void(0)" v-on:click.stop="sortByPriceDesc"><i class="fa fa-sort-numeric-desc"></i>Price:High-Low</a>
+        <a href="javascript:void(0)" v-on:click.stop="sortByPriceAsc"><i class="fa fa-sort-numeric-asc"></i>Price:Low-High</a>
       </div>
     </div>
     <!-- Sub content Icons-->
@@ -39,15 +41,60 @@
 
 <script lang="ts">
 
+import type { ProductsQuery } from '@/helpers/my-types';
 import { filterEntries } from '@/helpers/script';
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'BigIcons',
+  props: {
+    totalRow: {
+      type: Number,
+      required: true
+    },
+    pN: {
+      type: Number,
+      required: true
+    }
+  },
   methods: {
     searchEntries() {
       filterEntries();
-    }
+    },
+    sortByNameAsc() {
+      const params:ProductsQuery = {
+        page: this.pN,
+        size: this.totalRow,
+        sortByAsc: "name"
+      }
+      this.$emit('sortProducts', params);
+    },
+
+    sortByNameDesc() {
+      const params:ProductsQuery = {
+        page: this.pN,
+        size: this.totalRow,
+        sortByDesc:"name"
+      }
+      this.$emit('sortProducts', params);
+    },
+    sortByPriceAsc() {
+      const params:ProductsQuery= {
+        page: this.pN,
+        size: this.totalRow,
+        sortByAsc:"price"
+      }
+      this.$emit('sortProducts', params);
+    },
+    sortByPriceDesc() {
+      const params:ProductsQuery = {
+        page: this.pN,
+        size: this.totalRow,
+        sortByDesc:"price"
+      }
+      this.$emit('sortProducts', params);
+    },
+
   },
   computed: {
     searchImage() {

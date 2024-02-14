@@ -9,7 +9,7 @@ import type { Product, Review, ProductsResponse, ProductsQuery, CreateReview} fr
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
+        pageNum:0,numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
         async getProducts(data?: ProductsQuery) {
@@ -23,7 +23,8 @@ export const productStore = defineStore({
                 }
                 this.productsRes = response.data.result
                 this.products = this.productsRes?.products!
-                this.numberOfElements = this.productsRes?.numberOfElements!   
+                this.numberOfElements = this.productsRes?.numberOfElements!
+                this.pageNum = this.productsRes?.number!   
             } catch (error: any) {
                 console.log(error);
             }
