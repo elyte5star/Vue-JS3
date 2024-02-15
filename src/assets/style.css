@@ -376,7 +376,7 @@ mark {
 }
 #slide_image{
     overflow: hidden;
-    background-color: #000000;
+    background-color:white;
 }
 
 .fade-enter-active,

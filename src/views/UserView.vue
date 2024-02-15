@@ -45,15 +45,11 @@ export default defineComponent({
   },
   methods: {
     _changeActiveComponent(str: string) {
-
       if (str === 'update_details') {
-
         this.currentTabComponent = EditUser;
-
       } else {
         this.currentTabComponent = UserProfile;
       }
-
     },
     async getAUser(): Promise<void> {
       await this.user_store.getUserById(this.userid);
