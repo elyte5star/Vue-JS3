@@ -49,13 +49,13 @@ export default defineComponent({
             type: Number,
             required: true
         },
-        pN: {
+        pageNumumber: {
             type: Number,
             required: true
         }
     },
     data(){
-        return{pageNum:this.pN}
+        return{pageNum:this.pageNumumber}
     },
     methods: {
         getImage(image: string): string {

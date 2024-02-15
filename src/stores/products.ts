@@ -12,7 +12,7 @@ export const productStore = defineStore({
         pageNum:0,numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
     }),
     actions: {
-        async getProducts(data?: ProductsQuery) {
+        async getProducts(data?: ProductsQuery):Promise<void> {
             try {
                 const response = await axiosInstance.get('products', { params: data });
                 const isloading = loadingStore();
@@ -31,7 +31,7 @@ export const productStore = defineStore({
 
         },
 
-        async submitReview(review: CreateReview) {
+        async submitReview(review: CreateReview):Promise<void> {
             try {
                 const isloading = loadingStore();
                 const response = await axiosInstance.post('products/create/review', review);
@@ -63,7 +63,7 @@ export const productStore = defineStore({
                 console.log(error);
             }
         },
-        async deleteProductById(pid: string) {
+        async deleteProductById(pid: string) :Promise<void>{
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -84,7 +84,6 @@ export const productStore = defineStore({
                         this.products = this.products.filter(x => x.pid !== pid);//Shallow copy
                         this.alertStore.success('The product has been deleted.');
 
-
                     } catch (error: any) {
                         console.log(error);
                     }
@@ -95,7 +94,21 @@ export const productStore = defineStore({
         },
 
         async sortProductsBykey(data?: ProductsQuery) {
-            console.log(data);
+            try {
+                const response = await axiosInstance.get('products', { params: data });
+                const isloading = loadingStore();
+                if (!response.data.success) {
+                    console.error(response.data.message);
+                    isloading.setLoading(true);
+                    return;
+                }
+                this.productsRes = response.data.result
+                this.products = this.productsRes?.products!
+                this.numberOfElements = this.productsRes?.numberOfElements!
+                this.pageNum = this.productsRes?.number!   
+            } catch (error: any) {
+                console.log(error);
+            }
         }
 
     }

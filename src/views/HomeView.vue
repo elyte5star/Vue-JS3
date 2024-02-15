@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <BigIcons :totalRow="numberOfElements" :pN="pageNum" @sortProducts="getProductsPages" />
+    <BigIcons :totalRow="numberOfElements" :pageNum="pageNum" @sortProducts="getProductsPages" />
     <ImageSlide v-bind:products="products" />
-    <MainProducts v-bind:products="products" :pN="pageNum" :totalRow="numberOfElements" @changePage="getProductsPages" />
+    <MainProducts v-bind:products="products" :pageNumumber="pageNum" :totalRow="numberOfElements" @changePage="getProductsPages" />
     <MainFooter />
   </div>
 </template>
@@ -38,8 +38,8 @@ export default defineComponent({
     },
     async getProductsPages(data: ProductsQuery) {
       await this.pStore.getProducts(data);
-    }
-
+    },
+   
   },
 
   created() {

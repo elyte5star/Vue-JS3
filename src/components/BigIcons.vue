@@ -18,8 +18,10 @@
           order</a>
         <a href="javascript:void(0);" v-on:click.stop="sortByNameDesc"><i class="fa fa-sort-alpha-desc"></i>Alpahbetical
           order</a>
-        <a href="javascript:void(0)" v-on:click.stop="sortByPriceDesc"><i class="fa fa-sort-numeric-desc"></i>Price:High-Low</a>
-        <a href="javascript:void(0)" v-on:click.stop="sortByPriceAsc"><i class="fa fa-sort-numeric-asc"></i>Price:Low-High</a>
+        <a href="javascript:void(0)" v-on:click.stop="sortByPriceDesc"><i
+            class="fa fa-sort-numeric-desc"></i>Price:High-Low</a>
+        <a href="javascript:void(0)" v-on:click.stop="sortByPriceAsc"><i
+            class="fa fa-sort-numeric-asc"></i>Price:Low-High</a>
       </div>
     </div>
     <!-- Sub content Icons-->
@@ -34,7 +36,6 @@
             class="icon-text">Hotels</span></a></div>
       <div class="icon-div"><a href="/news"><i class="fa fa-newspaper-o"></i><span class="icon-text">News</span></a></div>
     </div>
-
   </div>
 </template>
 
@@ -52,7 +53,7 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    pN: {
+    pageNum: {
       type: Number,
       required: true
     }
@@ -62,35 +63,36 @@ export default defineComponent({
       filterEntries();
     },
     sortByNameAsc() {
-      const params:ProductsQuery = {
-        page: this.pN,
+      const params: ProductsQuery = {
+        page: this.pageNum,
         size: this.totalRow,
-        sortByAsc: "name"
+        sort: "name"
       }
+      console.log(params)
       this.$emit('sortProducts', params);
     },
 
     sortByNameDesc() {
-      const params:ProductsQuery = {
-        page: this.pN,
+      const params: ProductsQuery = {
+        page: this.pageNum,
         size: this.totalRow,
-        sortByDesc:"name"
+        sort: "name,desc"
       }
       this.$emit('sortProducts', params);
     },
     sortByPriceAsc() {
-      const params:ProductsQuery= {
-        page: this.pN,
+      const params: ProductsQuery = {
+        page: this.pageNum,
         size: this.totalRow,
-        sortByAsc:"price"
+        sort: "price"
       }
       this.$emit('sortProducts', params);
     },
     sortByPriceDesc() {
-      const params:ProductsQuery = {
-        page: this.pN,
+      const params: ProductsQuery = {
+        page: this.pageNum,
         size: this.totalRow,
-        sortByDesc:"price"
+        sort: "price,desc"
       }
       this.$emit('sortProducts', params);
     },

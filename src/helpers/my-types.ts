@@ -126,8 +126,8 @@ export type Product = {
 export interface ProductsQuery{
     page:number;
     size:number
-    sortByDesc?:string
-    sortByAsc?:string
+    sort?:string
+    
 }
 
 export interface Item extends Product {
@@ -155,7 +155,6 @@ export type ProductsResponse={
     first:boolean
     last:boolean
     numberOfElements:number
-    pageable:Pageable
     products:Array<Product>
     size:number
     number:number
