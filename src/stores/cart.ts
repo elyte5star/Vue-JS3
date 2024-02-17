@@ -17,7 +17,7 @@ import { userAlertStore } from './alert';
 
 import router from '@/router/index';
 
-let countTime = import.meta.env.VITE_APP_WAIT_TIME;
+const countTime = import.meta.env.VITE_APP_WAIT_TIME;
 
 export const userCartStore = defineStore({
     id: 'cart',
@@ -29,7 +29,7 @@ export const userCartStore = defineStore({
         addToCart(item: Item, volume: number) {
 
             for (let i = 0; i < volume; i++) {
-                let found = this.cart.find((itemInCart: Item) => itemInCart.pid == item.pid);
+                const found = this.cart.find((itemInCart: Item) => itemInCart.pid == item.pid);
 
                 if (found) {
                     found.quantity++;
@@ -49,11 +49,11 @@ export const userCartStore = defineStore({
         },
         removeFromCart(itemToBeRemoved: Item) {
 
-            let indexItemToBeRemoved = this.cart.findIndex((a: Item) => a.pid === itemToBeRemoved.pid);
+            const indexItemToBeRemoved = this.cart.findIndex((a: Item) => a.pid === itemToBeRemoved.pid);
 
             if (indexItemToBeRemoved > -1) {
 
-                let item = this.cart[indexItemToBeRemoved];
+                const item = this.cart[indexItemToBeRemoved];
 
                 item.quantity--;
 
@@ -106,7 +106,7 @@ export const userCartStore = defineStore({
         async checkOutQueue(bookingDetails: userReservation) {
             try {
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);
-                let job_id = response.data.job_id;
+                const job_id = response.data.job_id;
                 let finished = false;
                 if (!response.data.success) {
                     this.alertStore.error("Couldnt create reservation!.");
@@ -114,7 +114,7 @@ export const userCartStore = defineStore({
                     return null;
                 }
                 for (let i = 0; i < 5; i++) {
-                    let job_response = await axiosInstance.get("job/" + job_id);
+                    const job_response = await axiosInstance.get("job/" + job_id);
 
                     if (job_response.data.job.job_status.is_finished) {
                         finished = true;
@@ -128,7 +128,7 @@ export const userCartStore = defineStore({
                     console.error("Timeout! check the worker server!.")
                     return null;
                 }
-                let getBookingResponse = await axiosInstance.get("qbooking/" + job_id);
+                const getBookingResponse = await axiosInstance.get("qbooking/" + job_id);
 
                 if (getBookingResponse.data.success) {
                     router.push({ name: 'Confirm', query: { oid: getBookingResponse.data.result_data.oid } });

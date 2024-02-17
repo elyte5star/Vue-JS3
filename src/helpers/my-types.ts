@@ -134,7 +134,10 @@ export interface Item extends Product {
     quantity: number
     calculated_price: number
 }
-
+export type CloudLogin = {
+    type:string
+    token:string | undefined
+}
 export type Sort ={
     empty:boolean
     sorted:boolean

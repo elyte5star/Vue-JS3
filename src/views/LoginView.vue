@@ -92,6 +92,8 @@ import { googleOneTap, } from "vue3-google-login"
 import { isUserNameValid, showPassword } from "@/helpers/script";
 import { loginRequest, _msalInstance } from "@/helpers/msoftAuthConfig";
 import { defineComponent } from 'vue';
+import type { AccountInfo } from "@azure/msal-browser";
+import type { CloudLogin } from "@/helpers/my-types";
 
 export default defineComponent({
     name: "LoginView",
@@ -107,7 +109,6 @@ export default defineComponent({
                 const loginResponse = await googleOneTap();
                 await this.authStore.cloudLogin({ type: "GMAIL", token: loginResponse.credential });
             } catch (error) {
-
                 this.authStore.alert.error(`error during authentication: ${error}`);
             }
 
@@ -122,8 +123,11 @@ export default defineComponent({
                 if (accounts.length === 0) {
                     return this.msalInstance.loginRedirect(loginRequest);
                 }
-                const account = accounts[0]
-                await this.authStore.cloudLogin({ type: "MSOFT", token: account.idToken });
+                const account:AccountInfo = accounts[0]
+                const data: CloudLogin ={
+                    type: "MSOFT", token: account.idToken 
+                }
+                await this.authStore.cloudLogin(data);
 
             } catch (error) {
 
