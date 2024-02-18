@@ -1,7 +1,7 @@
 <template>
   <div v-if="user" class="user">
     <component :is="{...currentTabComponent}" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="userImage"
-      @changeActiveComponent="_changeActiveComponent" />
+      @changeActiveComponent="_changeActiveComponent" @enableExternalLogin="enableExternalLogin" />
   </div>
 </template>
 
@@ -53,7 +53,12 @@ export default defineComponent({
     },
     async getAUser(): Promise<void> {
       await this.user_store.getUserById(this.userid);
-    }
+    },
+
+    async enableExternalLogin(username: string): Promise<void> {
+      await this.user_store.enableExternalLogin(username);
+
+    },
   },
 });
 </script>

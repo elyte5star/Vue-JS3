@@ -38,7 +38,7 @@ export const userStore = defineStore({
                 this.alertStore.success('Good job!' + " User account with ID " + response.data.userid + " has been created!");
                 //router.push({ name: 'Email', query: response.data.token_data })
             } catch (error: any) {
-                console.log(error);
+                console.error(error);
             }
 
         },
@@ -56,7 +56,6 @@ export const userStore = defineStore({
 
         },
         async getUserById(userid: string) {
-
             try {
                 const response = await axiosInstance.get('users/' + userid);
                 if (!response.data.success) {
@@ -67,7 +66,21 @@ export const userStore = defineStore({
                 this.bookingsHistory = response.data.result.bookings
 
             } catch (error: any) {
-                console.log(error);
+                console.error(error);
+            }
+
+        },
+        async enableExternalLogin(username:string){
+            try {
+                const response = await axiosInstance.put('users/enable/' + username);
+                if (!response.data.success) {
+                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+                    return;
+                }
+                this.alertStore.success("External Login enabled");
+            } catch (error: any) {
+                console.error(error);
             }
 
         },
@@ -86,7 +99,7 @@ export const userStore = defineStore({
                     this.authStore.user = user;
                 }
             } catch (error: any) {
-                console.log(error);
+                console.error(error);
             }
 
         },

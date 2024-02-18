@@ -52,6 +52,7 @@ export const userAuthStore = defineStore({
                     this.alert.error(response.data.message);
                 }
         },
+
         async sendConfirmationEmail(data: object) {
             try {
                 const response = await axiosInstance.post('auth/send-email-confirmation', data);

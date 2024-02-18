@@ -78,7 +78,7 @@ export type Booking = {
     cart: Array<Item>;
     owner_id: string;
     oid: string;
-    created_at: Date
+    createdAt: Date
     shipping_details: ShippingAddress
 }
 

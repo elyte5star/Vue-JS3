@@ -1095,7 +1095,14 @@ article h3 {
     max-width: 1320px;
     min-width: none;
 }
+#using2F{
+    padding: 5px;
+    font-size: 1.2em;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-align: center;
 
+}
 /** USER CARD **/
 
 /** CONTACT US **/
