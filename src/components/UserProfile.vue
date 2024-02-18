@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="d-grid col-12 mx-auto">
-        <button id="using2F" type="button" class="btn btn-outline-secondary "> ENABLE MSOFT OR GOOGLE LOGIN</button>
+        <button id="using2F" :disabled="isUsing2F" @click="twoFactorLogin(user_info.username)" type="button" class="btn btn-outline-secondary "> ENABLE MSOFT OR GOOGLE LOGIN</button>
       </div>
     </div>
     <div class="container">
@@ -193,6 +193,9 @@ export default defineComponent({
   },
 
   computed: {
+    isUsing2F(){
+      return this.user_info.using2FA;
+    },
     overallTotal() {
       let amount: number = 0
 
