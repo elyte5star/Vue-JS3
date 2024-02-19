@@ -107,7 +107,10 @@ export default defineComponent({
         async googleLogin() {
             try {
                 const loginResponse = await googleOneTap();
-                await this.authStore.cloudLogin({ type: "GMAIL", token: loginResponse.credential });
+                const data: CloudLogin ={
+                    type: "GMAIL", token: loginResponse.credential
+                }
+                await this.authStore.cloudLogin(data);
             } catch (error) {
                 this.authStore.alert.error(`error during authentication: ${error}`);
             }
@@ -116,8 +119,8 @@ export default defineComponent({
         },
 
         async msoftLogin() {
-
             try {
+                await this.msalInstance.handleRedirectPromise();
                 await this.msalInstance.loginPopup(loginRequest);
                 const accounts = this.msalInstance.getAllAccounts();
                 if (accounts.length === 0) {
@@ -136,7 +139,7 @@ export default defineComponent({
 
         },
         async handleMsalRedirect() {
-            await this.msalInstance.handleRedirectPromise();
+            await this.msalInstance.handleRedirectPromise()
         },
         async onSubmitLogin() {
 
@@ -163,7 +166,7 @@ export default defineComponent({
         }
 
     },
-    created() {
+    async created() {
         this.handleMsalRedirect();
     },
     mounted() {

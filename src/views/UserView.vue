@@ -1,6 +1,6 @@
 <template>
   <div v-if="user" class="user">
-    <component :is="{...currentTabComponent}" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="userImage"
+    <component :is="{...currentTabComponent}" :btnText="buttonText" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="userImage"
       @changeActiveComponent="_changeActiveComponent" @enableExternalLogin="enableExternalLogin" />
   </div>
 </template>
@@ -42,6 +42,9 @@ export default defineComponent({
     userImage(): string {
       return this.user?.admin ? "admin-icon.png" : "user-icon.png";
     },
+    buttonText(): string{
+      return this.user?.using2FA ? "DISABLE MSOFT OR GOOGLE LOGIN" : "ENABLE MSOFT OR GOOGLE LOGIN" 
+    }
   },
   methods: {
     _changeActiveComponent(str: string) {

@@ -18,15 +18,15 @@
           <div class="discount">Discount : {{ user_info.discount }}%</div>
         </div>
         <div class="item_right">
-          <h3>Username : {{ user_info.username }}</h3>
-          <h5>Telephone : {{ user_info.telephone }}</h5>
-          <h5>Email : {{ user_info.email }}</h5>
-          <h6>User id : {{ user_info.userid }}.</h6>
-          <h6>Registered since {{ formatDate(user_info.createdAt) }}.</h6>
+          <h3>USERNAME : {{ user_info.username }}</h3>
+          <h5>TELEPHONE : {{ user_info.telephone }}</h5>
+          <h5>EMAIL : {{ user_info.email }}</h5>
+          <h6>ID : {{ user_info.userid }}.</h6>
+          <h6>MEMBER SINCE : {{ formatDate(user_info.createdAt) }}.</h6>
         </div>
       </div>
       <div class="d-grid col-12 mx-auto">
-        <button id="using2F" :disabled="isUsing2F" @click="twoFactorLogin(user_info.username)" type="button" class="btn btn-outline-secondary "> ENABLE MSOFT OR GOOGLE LOGIN</button>
+        <button id="using2F" @click="twoFactorLogin(user_info.username)" type="button" class="btn btn-outline-secondary ">{{ btnText }}</button>
       </div>
     </div>
     <div class="container">
@@ -138,7 +138,7 @@ export default defineComponent({
   name: 'UserProfile',
   data() {
     return {
-      isDisabled: true
+      isDisabled: true,
     }
   },
   props: {
@@ -150,7 +150,10 @@ export default defineComponent({
       type: String,
       required: true
     },
-
+    btnText: {
+      type: String,
+      required: true
+    },
     bookingsHistory: {
       type: Array<Booking>,
       required: true
@@ -193,9 +196,6 @@ export default defineComponent({
   },
 
   computed: {
-    isUsing2F(){
-      return this.user_info.using2FA;
-    },
     overallTotal() {
       let amount: number = 0
 

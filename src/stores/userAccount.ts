@@ -78,7 +78,9 @@ export const userStore = defineStore({
                     (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
                     return;
                 }
-                this.alertStore.success("External Login enabled");
+                this.user = response.data.result
+                this.alertStore.success("External login : " + this.user?.using2FA);
+                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
             } catch (error: any) {
                 console.error(error);
             }

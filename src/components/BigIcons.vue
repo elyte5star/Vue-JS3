@@ -68,7 +68,6 @@ export default defineComponent({
         size: this.totalRow,
         sort: "name"
       }
-      console.log(params)
       this.$emit('sortProducts', params);
     },
 

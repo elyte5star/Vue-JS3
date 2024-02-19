@@ -54,7 +54,7 @@ const msalConfig: msal.Configuration = {
     },
     telemetry: {
         application: {
-            appName: "My Application",
+            appName: "Elyte Realm",
             appVersion: "1.0.0"
         }
     }

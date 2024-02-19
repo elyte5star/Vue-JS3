@@ -6,7 +6,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import path from 'path'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 // https://vitejs.dev/config/
 
 
@@ -28,6 +28,9 @@ export default defineConfig(({ command, mode }) => {
       nodePolyfills(),
       vueJsx(),
       splitVendorChunkPlugin(),
+      VueI18nPlugin({
+        include: path.resolve(path.dirname(fileURLToPath(import.meta.url)), './src/i18n/locales/**'), // provide a path to the folder where you'll store translation data (see below)
+      }),
       // copy image files for production
       viteStaticCopy({
         targets: [
