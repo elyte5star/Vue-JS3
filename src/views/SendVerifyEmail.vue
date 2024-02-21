@@ -1,5 +1,5 @@
 <template>
-    <div v-if="(active === 'false')">
+    <div v-if="(enabled === 'false')">
         <div class="container">
             <!-- Instructions -->
             <div class="row">
@@ -77,8 +77,8 @@ export default {
         const route = useRoute();
         const authStore = userAuthStore();
         const { emailSent } = storeToRefs(authStore);
-        const { username, userid, email, active } = route.query;
-        return { username, userid, email, active, emailSent, authStore }
+        const { username, userid, email, enabled } = route.query;
+        return { username, userid, email, enabled, emailSent, authStore }
     },
     data() {
         return {

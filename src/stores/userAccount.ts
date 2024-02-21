@@ -6,6 +6,7 @@ import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
 import type { User, Enquiry, Booking } from '@/helpers/my-types';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
+import { loadingStore } from "@/stores/loading";
 
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
@@ -55,6 +56,20 @@ export const userStore = defineStore({
             }
 
         },
+        async sendPasswordResetToken(email: string) {
+            try {
+                const isloading = loadingStore();
+                const response = await axiosInstance.get('users/reset/password',{ params:{email:email}});
+                if (!response.data.success) {
+                    isloading.setLoading(true);
+                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                    return;
+                }
+                this.alertStore.success('Your password change request was submitted!' + " Please check your email ");
+            } catch (error: any) {
+                console.log(error);
+            }
+        },
         async getUserById(userid: string) {
             try {
                 const response = await axiosInstance.get('users/' + userid);
@@ -70,7 +85,7 @@ export const userStore = defineStore({
             }
 
         },
-        async enableExternalLogin(username:string){
+        async enableExternalLogin(username: string) {
             try {
                 const response = await axiosInstance.put('users/enable/' + username);
                 if (!response.data.success) {

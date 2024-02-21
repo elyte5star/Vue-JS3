@@ -10,11 +10,15 @@
                                 <div class="btn-group user-action">
                                     <button @click.prevent="deleteUser(user_info.userid)" class="btn btn-danger"
                                         type="submit" id="delete_account"><i class="fa fa-trash-o"></i>
-                                        Delete account</button>
+                                        DELETE ACCOUNT</button>
+                                    <button id="user_info" @click="resetPassword(user_info.email)"
+                                        class="btn btn-warning"><i class="fa fa-key"></i>
+                                       RESET PASSWORD
+                                    </button>
                                     <button id="user_info" @click="changeActiveComponent('user_details')"
                                         class="btn btn-info"><i class="fa fa-user-circle"></i>
-                                        User
-                                        info</button>
+                                        BACK TO USER DETAILS
+                                    </button>
                                 </div>
                             </div>
                             <p class="text-center">or:</p>
@@ -22,15 +26,8 @@
                             <p>Modify user credentials:</p>
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editUsername">Username:</label>
-                                <input v-model="editUsername" type="text" id="editUsername" class="form-control"
+                                <input :disabled="true" v-model="editUsername" type="text" id="editUsername" class="form-control"
                                     aria-describedby="usernameHelpBlock" />
-                                <div id="usernameHelpBlock" class="form-text">
-                                    Usernames must be 5-20 and can only have:
-                                    - Lowercase Letters(a-z)
-                                    - Numbers(0-9)
-                                    - Dots(.)
-                                    - Underscores(_)
-                                </div>
                             </div>
 
                             <!-- Email input -->
@@ -39,36 +36,7 @@
                                 <input v-model="editEmail" type="email" id="editEmail" class="form-control" />
                             </div>
 
-                            <!-- Password input -->
-                            <div class="form-outline mb-4">
-                                <label class="form-label" for="editPassword">Password: <em>(Leave default to
-                                        keep the same password)</em></label>
-                                <input v-model.lazy="editPassword" type="password" id="editPassword" class="form-control"
-                                    aria-describedby="passwordHelpBlock" autocomplete="on" />
-                                <a href="javascript:void(0)" @click="showPassword('editPassword', 'toggleEditPassword')"><i
-                                        class="bi bi-eye-slash" id="toggleEditPassword"></i></a>
-                                <div id="passwordHelpBlock" class="form-text">
-                                    Your password must be 5-20 characters long, contain letters and numbers, and must
-                                    not
-                                    contain spaces, special characters, or emoji.
-                                </div>
-                            </div>
-
-                            <!-- Repeat Password input -->
-                            <div class="form-outline mb-4">
-                                <label class="form-label" for="editRepeatPassword">Repeat password: <em>(Leave default to
-                                        keep the same password)</em></label>
-                                <input v-model.lazy="editRepeatPassword" type="password" id="editRepeatPassword"
-                                    class="form-control" aria-describedby="passwordHelpBlock" autocomplete="on" />
-                                <a href="javascript:void(0)"
-                                    @click="showPassword('editRepeatPassword', 'toggleEditRepeatPassword')"><i
-                                        class="bi bi-eye-slash" id="toggleEditRepeatPassword"></i></a>
-                                <div id="passwordHelpBlock" class="form-text">
-                                    Your password must be 5-20 characters long, contain letters and numbers, and must
-                                    not
-                                    contain spaces, special characters, or emoji.
-                                </div>
-                            </div>
+                
                             <!-- Telephone input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editTel">Telephone:</label>
@@ -102,21 +70,22 @@
         </div>
     </div>
 </template>
+
 <script lang="ts">
 
 
 import { userStore } from "@/stores/userAccount";
-import { showPassword, is_Input_Error } from "@/helpers/script";
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import type { User } from "@/helpers/my-types";
+import { userAlertStore } from '@/stores/alert';
 
 
 export default defineComponent({
     name: 'EditUser',
     data() {
 
-        return { editTel: " ", editRepeatPassword: " ", editPassword: " ", editEmail: " ", editUsername: " ", showPassword, userStore: userStore() }
+        return { editTel: " " || null,  editEmail:  " " || null, editUsername: " " || null, userStore: userStore(),alertStore: userAlertStore() }
     },
     props: {
         user_info: {
@@ -127,12 +96,16 @@ export default defineComponent({
         changeActiveComponent(str: string) {
             this.$emit('changeActiveComponent', str);
         },
+        async resetPassword(email:string){
+            await this.userStore.sendPasswordResetToken(email);
+        },
         async updateDetails() {
-            if (!is_Input_Error(this.editUsername, this.editEmail, this.editPassword, this.editRepeatPassword, this.editTel)) {
-                const updateUserData = { username: this.editUsername, email: this.editEmail, telephone: this.editTel, password: this.editPassword }
-                if (this.editPassword == 'default') updateUserData.password = 'default';
+            if (this.editUsername && this.editEmail && this.editTel) {
+                const updateUserData = { email: this.editEmail, telephone: this.editTel}
                 await this.userStore.updateUserById(this.user_info.userid, updateUserData);
+                return;
             }
+            this.alertStore.error("Telephone or email can not be empty!")
 
         },
         async deleteUser(userid: string) {
@@ -144,9 +117,6 @@ export default defineComponent({
         this.editUsername = this.user_info.username;
         this.editTel = this.user_info.telephone;
         this.editEmail = this.user_info.email;
-        this.editRepeatPassword = 'default'
-        this.editPassword = 'default'
-
     },
 
 })

@@ -36,8 +36,7 @@ export const userAuthStore = defineStore({
                 }
 
             } catch (error: any) {
-                this.alert.error(error.response.data.result);
-                console.error(error);
+                this.alert.error(error.response.data.message);
             }
         },
 

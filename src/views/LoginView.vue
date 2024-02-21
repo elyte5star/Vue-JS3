@@ -48,7 +48,7 @@
                                     contain spaces, special characters, or emoji.
                                 </div>
                             </div>
-                            <div id="forgetget_password"><a href="#!">Forgot password?</a></div>
+                            <div id="forgetget_password"><router-link :to="{ name: 'Email' }">Forgot password?</router-link></div>
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary">Sign in</button>
