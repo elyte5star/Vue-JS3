@@ -2,6 +2,7 @@
   <div v-if="user" class="user">
     <component :is="{...currentTabComponent}" :btnText="buttonText" :bookingsHistory="bookingsHistory" :user_info="user" :user_image="userImage"
       @changeActiveComponent="_changeActiveComponent" @enableExternalLogin="enableExternalLogin" />
+      <MainFooter />
   </div>
 </template>
 
@@ -11,10 +12,11 @@ import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from "pinia";
 import EditUser from "@/components/EditUser.vue";
 import UserProfile from "@/components/UserProfile.vue";
+import MainFooter from '../components/Footer.vue';
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: "UserView",
-  components: { EditUser, UserProfile },
+  components: { EditUser, UserProfile ,MainFooter},
   props: {
     userid: {
       type: String, required: true

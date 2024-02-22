@@ -81,6 +81,7 @@
             </div>
         </div>
     </div>
+    <MainFooter />  
 </template>
 
 
@@ -94,9 +95,11 @@ import { loginRequest, _msalInstance } from "@/helpers/msoftAuthConfig";
 import { defineComponent } from 'vue';
 import type { AccountInfo } from "@azure/msal-browser";
 import type { CloudLogin } from "@/helpers/my-types";
+import MainFooter from '../components/Footer.vue';
 
 export default defineComponent({
     name: "LoginView",
+    components: { MainFooter},
     data() {
         return {
             user: {}, msalInstance: _msalInstance, username: null, password: null, showPassword, authStore: userAuthStore()

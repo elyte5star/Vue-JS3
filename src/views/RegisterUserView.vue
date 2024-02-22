@@ -91,15 +91,18 @@
             </div>
         </div>
     </div>
+    <MainFooter /> 
 </template>
 
 <script lang="ts">
 
 import { is_Input_Error, showPassword } from '@/helpers/script';
+import MainFooter from '../components/Footer.vue';
 import { userStore } from "@/stores/userAccount";
 import { defineComponent } from 'vue'
 export default defineComponent({
     name: 'RegisterUser',
+    components: { MainFooter},
     data() {
         return {
             registerTel: null, registerRepeatPassword: null, registerPassword: null, registerEmail: null, registerUsername: null, showPassword
