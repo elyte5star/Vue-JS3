@@ -5,19 +5,27 @@
                 <div class="row">
                     <div class="col-md-6">
                         <form @submit.prevent="registerUser">
+                            <div class="text-center mb-3">
+                                <p>Sign up with:</p>
+                                <button v-on:click.prevent="msoftCreateAccount" type="button"
+                                    class="btn btn-link btn-floating mx-1">
+                                    <i class="fa fa-windows"></i>
+                                </button>
+                                <button v-on:click.prevent="googleCreateAccount" type="button"
+                                    class="btn btn-link btn-floating mx-1">
+                                    <i class="fa fa-google"></i>
+                                </button>
+                            </div>
 
-                            <p class="text-center">Please Sign up:</p>
+                            <p class="text-center">or:</p>
                             <!-- Username input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="registerUsername">Username:</label>
                                 <input v-model="registerUsername" type="text" id="registerUsername" class="form-control"
                                     aria-describedby="usernameHelpBlock" />
                                 <div id="usernameHelpBlock" class="form-text">
-                                    Usernames must be 5-20 and can only have:
-                                    - Lowercase Letters(a-z)
-                                    - Numbers(0-9)
-                                    - Dots(.)
-                                    - Underscores(_)
+                                    Usernames must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9)
+                                    - Dots(.) - Underscores(_)
                                 </div>
                             </div>
 
@@ -37,8 +45,7 @@
                                         class="bi bi-eye-slash" id="toggleRegisterPassword"></i></a>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Your password must be 5-20 characters long, contain letters and numbers, and must
-                                    not
-                                    contain spaces, special characters, or emoji.
+                                    not contain spaces, special characters, or emoji.
                                 </div>
                             </div>
 
@@ -52,8 +59,7 @@
                                         class="bi bi-eye-slash" id="toggleRegisterRepeatPassword"></i></a>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Your password must be 5-20 characters long, contain letters and numbers, and must
-                                    not
-                                    contain spaces, special characters, or emoji.
+                                    not contain spaces, special characters, or emoji.
                                 </div>
                             </div>
                             <!-- Telephone input -->
@@ -77,55 +83,116 @@
                             </div>
                             <div class="ibox-content text-center">
                                 <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
-                                <h3><a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
-                                        elyte5star@gmail.com</a></h3>
-                                <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a></h3>
+                                <h3>
+                                    <a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
+                                        elyte5star@gmail.com</a>
+                                </h3>
+                                <h3>
+                                    <a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a>
+                                </h3>
                                 <span class="small">
                                     Please contact with us if you have any questions. We are avalible 24h.
                                 </span>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <MainFooter /> 
+    <MainFooter />
 </template>
 
 <script lang="ts">
-
-import { is_Input_Error, showPassword } from '@/helpers/script';
-import MainFooter from '../components/Footer.vue';
-import { userStore } from "@/stores/userAccount";
+import { is_Input_Error, showPassword } from '@/helpers/script'
+import { googleOneTap } from 'vue3-google-login'
+import MainFooter from '../components/Footer.vue'
+import { userStore } from '@/stores/userAccount'
+import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { defineComponent } from 'vue'
+import type { AccountInfo } from '@azure/msal-browser'
+import type { CloudLogin } from '@/helpers/my-types'
+import { userAuthStore } from '@/stores/auth_store'
+
 export default defineComponent({
     name: 'RegisterUser',
-    components: { MainFooter},
+    components: { MainFooter },
     data() {
         return {
-            registerTel: null, registerRepeatPassword: null, registerPassword: null, registerEmail: null, registerUsername: null, showPassword
+            msalInstance: _msalInstance,
+            registerTel: null,
+            registerRepeatPassword: null,
+            registerPassword: null,
+            registerEmail: null,
+            registerUsername: null,
+            showPassword,
+            authStore: userAuthStore()
         }
+    },
+    async created() {
+        this.handleMsalRedirect()
     },
     methods: {
-        async registerUser(): Promise<void> {
-            if (!is_Input_Error(this.registerUsername, this.registerEmail, this.registerPassword, this.registerRepeatPassword, this.registerTel)) {
-                const registerUser = { "username": this.registerUsername, "email": this.registerEmail, "password": this.registerPassword, "telephone": this.registerTel };
-                const user_store = userStore();
-                await user_store.signUP(registerUser);
-                this.registerUsername = null;
-                this.registerEmail = null;
-                this.registerPassword = null;
-                this.registerRepeatPassword = null;
-                this.registerTel = null;
-                //(<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
-
+        async handleMsalRedirect() {
+            await this.msalInstance.handleRedirectPromise()
+        },
+        async googleCreateAccount(): Promise<void> {
+            try {
+                const loginResponse = await googleOneTap()
+                const data: CloudLogin = {
+                    type: 'GMAIL',
+                    token: loginResponse.credential
+                }
+                await this.authStore.cloudLogin(data)
+            } catch (error) {
+                this.authStore.alert.error(`error during authentication: ${error}`)
             }
+        },
 
+        async msoftCreateAccount(): Promise<void> {
+            try {
+                await this.msalInstance.handleRedirectPromise()
+                await this.msalInstance.loginPopup(loginRequest)
+                const accounts = this.msalInstance.getAllAccounts()
+                if (accounts.length === 0) {
+                    return this.msalInstance.loginRedirect(loginRequest)
+                }
+                const account: AccountInfo = accounts[0]
+                const data: CloudLogin = {
+                    type: 'MSOFT',
+                    token: account.idToken
+                }
+                await this.authStore.cloudLogin(data)
+            } catch (error) {
+                this.authStore.alert.error(`error during authentication: ${error}`)
+            }
+        },
+        async registerUser(): Promise<void> {
+            if (
+                !is_Input_Error(
+                    this.registerUsername,
+                    this.registerEmail,
+                    this.registerPassword,
+                    this.registerRepeatPassword,
+                    this.registerTel
+                )
+            ) {
+                const registerUser = {
+                    username: this.registerUsername,
+                    email: this.registerEmail,
+                    password: this.registerPassword,
+                    telephone: this.registerTel
+                }
+                const user_store = userStore()
+                await user_store.signUP(registerUser)
+                this.registerUsername = null
+                this.registerEmail = null
+                this.registerPassword = null
+                this.registerRepeatPassword = null
+                this.registerTel = null
+                //(<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+            }
         }
-    },
-
+    }
 })
-
 </script>

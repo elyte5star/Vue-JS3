@@ -107,7 +107,7 @@ export default defineComponent({
     },
     methods: {
 
-        async googleLogin() {
+        async googleLogin():Promise<void>  {
             try {
                 const loginResponse = await googleOneTap();
                 const data: CloudLogin ={
@@ -121,7 +121,7 @@ export default defineComponent({
 
         },
 
-        async msoftLogin() {
+        async msoftLogin():Promise<void>  {
             try {
                 await this.msalInstance.handleRedirectPromise();
                 await this.msalInstance.loginPopup(loginRequest);
@@ -144,7 +144,7 @@ export default defineComponent({
         async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise()
         },
-        async onSubmitLogin() {
+        async onSubmitLogin():Promise<void>  {
 
             if (isUserNameValid(this.username) && this.password) {
                 let form = new FormData();
