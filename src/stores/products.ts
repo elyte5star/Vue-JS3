@@ -15,10 +15,8 @@ export const productStore = defineStore({
         async getProducts(data?: ProductsQuery):Promise<void> {
             try {
                 const response = await axiosInstance.get('products', { params: data });
-                const isloading = loadingStore();
                 if (!response.data.success) {
                     console.error(response.data.message);
-                    isloading.setLoading(true);
                     return;
                 }
                 this.productsRes = response.data.result
@@ -33,11 +31,9 @@ export const productStore = defineStore({
 
         async submitReview(review: CreateReview):Promise<void> {
             try {
-                const isloading = loadingStore();
                 const response = await axiosInstance.post('products/create/review', review);
                 if (!response.data.success) {
                     this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                    isloading.setLoading(true);
                     return;
                 }
                 this.alertStore.success('Good job!' + " Yor review has been saved!");
@@ -96,10 +92,8 @@ export const productStore = defineStore({
         async sortProductsBykey(data?: ProductsQuery) {
             try {
                 const response = await axiosInstance.get('products', { params: data });
-                const isloading = loadingStore();
                 if (!response.data.success) {
                     console.error(response.data.message);
-                    isloading.setLoading(true);
                     return;
                 }
                 this.productsRes = response.data.result

@@ -775,19 +775,19 @@ article:hover {
 
 .login_access form {
     text-align: left;
-    padding: 20px;
+    padding: 0px;
     border-radius: 10px;
 }
 
 .add_entry form {
     text-align: left;
-    padding: 20px;
+    padding: 0px;
     border-radius: 10px;
 }
 
 .update_entry form {
     text-align: left;
-    padding: 20px;
+    padding: 0px;
     border-radius: 10px;
 }
 

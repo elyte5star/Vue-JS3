@@ -40,8 +40,8 @@ export type CreditCard = {
 
 }
 
-export type ShippingAddress = {
-    bfname: null,
+export type Address = {
+    fname: null,
     baddress: null,
     bemail: null,
     bcountry: null,
@@ -49,7 +49,7 @@ export type ShippingAddress = {
     bcity: null,
 
 }
-export interface BillingAddress extends ShippingAddress {
+export interface BillingAddress extends Address {
 
 }
 
@@ -64,7 +64,7 @@ export type userReservation = {
     cart: Array<Item>;
     payment_details: CreditCard;
     billing_address: BillingAddress;
-    shipping_details?: ShippingAddress;
+    shipping_details?: Address;
 
 }
 
@@ -79,7 +79,7 @@ export type Booking = {
     owner_id: string;
     oid: string;
     createdAt: Date
-    shipping_details: ShippingAddress
+    shipping_details: Address
 }
 
 export type CreateReview = {

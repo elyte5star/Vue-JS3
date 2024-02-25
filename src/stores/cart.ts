@@ -87,22 +87,7 @@ export const userCartStore = defineStore({
             localStorage.removeItem('cartCount');
 
         },
-        async checkOut(bookingDetails: userReservation) {
-            try {
-                const response = await axiosInstance.post('booking/create', bookingDetails);
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message);
-                    return;
-                }
-
-                router.push({ name: 'Confirm', query: { oid: response.data.oid } });
-                this.clearCart();
-
-            } catch (error: any) {
-                console.log(error);
-            }
-
-        },
+        
         async checkOutQueue(bookingDetails: userReservation) {
             try {
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);

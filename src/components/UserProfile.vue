@@ -55,7 +55,7 @@
                               <strong>Shipping details</strong> <i class="fa fa-institution"></i>
                             </p>
                             <p>
-                              Name: <span>{{ booking.shipping_details.bfname }}</span>
+                              Name: <span>{{ booking.shipping_details.fname }}</span>
                             </p>
                             <p>
                               Email: <span>{{ booking.shipping_details.bemail }}</span>

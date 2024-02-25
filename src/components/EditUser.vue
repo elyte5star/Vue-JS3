@@ -33,9 +33,8 @@
                             <!-- Email input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editEmail"><i class="fa fa-envelope-o"></i> Email:</label>
-                                <input :disabled="true" v-model="editEmail" type="email" id="editEmail" class="form-control" />
+                                <input  v-model="editEmail" type="email" id="editEmail" class="form-control" />
                             </div>
-
                 
                             <!-- Telephone input -->
                             <div class="form-outline mb-4">
@@ -93,6 +92,40 @@
                             </div>
                         </div>
 
+
+                        <div class="ibox">
+                            <div class="ibox-content">
+
+                                <p class="font-bold">
+                                    Products you may be interested
+                                </p>
+                                <hr>
+                                <div>
+                                    <a href="#" class="product-name"> Product 1</a>
+                                    <div class="small m-t-xs">
+                                        Many desktop publishing packages and web page editors now.
+                                    </div>
+                                    <div class="m-t text-righ">
+
+                                        <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i
+                                                class="fa fa-long-arrow-right"></i> </a>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <a href="#" class="product-name"> Product 2</a>
+                                    <div class="small m-t-xs">
+                                        Many desktop publishing packages and web page editors now.
+                                    </div>
+                                    <div class="m-t text-righ">
+
+                                        <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i
+                                                class="fa fa-long-arrow-right"></i> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -106,10 +139,10 @@
 import { userStore } from "@/stores/userAccount";
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
-import type { User } from "@/helpers/my-types";
+import type { Address, User } from "@/helpers/my-types";
 import { userAlertStore } from '@/stores/alert';
 import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator';
-import { countries, validateFullName, hasOnlyDigits, is_valid_Email, isObjEmpty } from '@/helpers/script';
+import { countries, validateFullName, is_valid_Email, isObjEmpty } from '@/helpers/script';
 export default defineComponent({
     name: 'EditUser',
     data() {
@@ -129,9 +162,9 @@ export default defineComponent({
             await this.userStore.sendPasswordResetToken(email);
         },
         async updateDetails() {
-            if (this.editUsername && this.editEmail && this.editTel) {
-                const updateUserData = { email: this.editEmail, telephone: this.editTel}
-                await this.userStore.updateUserById(this.user_info.userid, updateUserData);
+            const address = this.checkAddress();
+            if (!isObjEmpty(address)) {
+                await this.userStore.updateUserById(this.user_info.userid,address);
                 return;
             }
             this.alertStore.error("Telephone or email can not be empty!")
@@ -139,7 +172,8 @@ export default defineComponent({
         },
         async deleteUser(userid: string) {
             await this.userStore.deleteUserAccount(userid);
-        },checkPostCodeAndCountry(countryCode: string | null, zip: string | null): boolean {
+        },
+        checkPostCodeAndCountry(countryCode: string | null, zip: string | null): boolean {
             if (!postcodeValidatorExistsForCountry(countryCode as string)) {
                 this.alertStore.error("No valid postcode for the selected country!");
                 (<HTMLInputElement>document.getElementById('country')).focus();
@@ -155,22 +189,22 @@ export default defineComponent({
             }
 
         },
-        checkAddress(): BillingAddress | {} {
+        checkAddress(): Address | {} {
             if (validateFullName(this.fname)
                 && is_valid_Email(this.editEmail)
-                && this.address && this.bcity
-                && this.checkPostCodeAndCountry(this.bcountry, this.bzip)
+                && this.address && this.city
+                && this.checkPostCodeAndCountry(this.bcountry, this.zip)
             ) {
-                const shippingAddress = {
-                    bfname: this.bfname,
-                    bemail: this.bemail,
-                    baddress: this.baddress,
+                const Address = {
+                    bfname: this.fname,
+                    bemail: this.editEmail,
+                    baddress: this.address,
                     bcountry: this.bcountry,
-                    bzip: this.bzip,
-                    bcity: this.bcity
+                    bzip: this.zip,
+                    bcity: this.city
                 }
 
-                return shippingAddress;
+                return Address;
             }
 
             return {};
