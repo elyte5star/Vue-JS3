@@ -53,6 +53,17 @@ export interface BillingAddress extends Address {
 
 }
 
+export type ModifyUserInfo ={
+    email:string|null
+    telephone: string|null
+    fullName:string|null
+    address:string|null
+    city:string
+    country:string|null
+    zip:string|null
+
+}
+
 export interface AuthHeader extends AxiosRequestHeaders {
     Authorization: string;
     Accept: string;
