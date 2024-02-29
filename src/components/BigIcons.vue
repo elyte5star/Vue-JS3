@@ -28,7 +28,7 @@
     <div id="icons" class="icons">
       <div class="icon-div"><a href="/map"><i class="fa fa-map-marker"></i><span class="icon-text">Maps</span></a></div>
       <div class="icon-div"><a href="/game"><i class="fa fa-gamepad"></i><span class="icon-text">Games</span></a></div>
-      <div class="icon-div"><a href="javascript:void(0)"><i class="fa fa-gift"></i><span class="icon-text">Gift</span></a>
+      <div class="icon-div"><a href="javascript:void(0)"><i class="fa fa-users" aria-hidden="true"></i><span class="icon-text">Rent a friend</span></a>
       </div>
       <div class="icon-div"><a href="javascript:void(0)"><i class="fa fa-car"></i><span
             class="icon-text">Automobile</span></a></div>
