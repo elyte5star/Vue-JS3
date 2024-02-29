@@ -10,6 +10,7 @@ import router from "@/router/index";
 
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
+    withCredentials: true
     
 });
 
