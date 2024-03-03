@@ -23,6 +23,7 @@ import { PaginationBar } from 'v-page';
 
 
 
+
 //Global options
 const options = {
     confirmButtonColor: '#41b882',
@@ -37,7 +38,7 @@ const app = createApp(App);
 
 app.use(VueSweetalert2, options);
 app.use(vue3GoogleLogin, { clientId: process.env.VUE_GOOGLE_CLIENT_ID });
-app.use(PaginationBar, {
+app.use(PaginationBar as any, {
   })
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(createPinia());

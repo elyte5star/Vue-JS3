@@ -12,7 +12,7 @@ import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
     state: () => ({
-        users: [] as User[], user: null as User | null, bookingsHistory: [] as Booking | [], alertStore: userAlertStore(), authStore: userAuthStore()
+        users: [] as User[], emailSent: false, user: null as User | null, bookingsHistory: [] as Booking | [], alertStore: userAlertStore(), authStore: userAuthStore()
     }),
     actions: {
         async getUsers() {
@@ -27,6 +27,36 @@ export const userStore = defineStore({
             } catch (error: any) {
                 console.log(error);
             }
+        },
+        async reSendOtpEmail(email: string) {
+            try {
+                const response = await axiosInstance.get('users/signup/resendOtp',  { params: {"email":email}});
+                if (response.data.success) {
+                    console.log(response.data.result);
+                    this.emailSent = true;
+                    return router.replace({ name: 'Confirm',query: response.data.result})
+                } else {
+                    this.alertStore.error(response.data.result);
+                }
+
+            } catch (error: any) {
+                console.log(error);
+            }
+
+        },
+        async confirmEmailToken(token: string) {
+            try {
+                token = token.trim();
+                const response = await axiosInstance.get('users/confirm-email/' + token);
+                if (!response.data.success) {
+                    console.log(response.data.result);
+                    return;
+                }
+                return router.replace({ name: 'Confirm' })
+            } catch (error:any) { 
+                console.error(error);
+
+                }
         },
         async signUP(user: any) {
             try {
@@ -50,7 +80,7 @@ export const userStore = defineStore({
                     this.alertStore.error(response.data.message || 'Operation unsuccessful');
                     return;
                 }
-                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.result.eid);
+                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.result);
             } catch (error: any) {
                 console.log(error);
             }

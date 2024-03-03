@@ -17,7 +17,7 @@ export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         user: user ? JSON.parse(user) : null as tokenData | null,
-        returnUrl: '', alert: userAlertStore(), emailSent: false
+        returnUrl: '', alert: userAlertStore(),
     }),
     actions: {
         async login(userData: URLSearchParams) {
@@ -27,59 +27,31 @@ export const userAuthStore = defineStore({
                     this.user = response.data.result;
                     localStorage.setItem('user', JSON.stringify(response.data.result));
                     router.push(this.returnUrl || '/');
-
-                } else if (Object.prototype.hasOwnProperty.call(response.data.result,"enabled") && !response.data.result.enabled) {
-                    router.replace({ name: 'Email', query: response.data.result })
-
                 } else {
                     this.alert.error(response.data.message);
                 }
-
             } catch (error: any) {
-                this.alert.error(error.response.data.message);
+                if (Object.prototype.hasOwnProperty.call(error.response.data.result, "disabled") && error.response.data.result.disabled) {
+                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
+                } else if (Object.prototype.hasOwnProperty.call(error.response.data.result, "locked") && error.response.data.result.locked) {
+                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
+                } else {
+                    this.alert.error(error.response.data.message);
+                }
+
             }
         },
 
         async cloudLogin(userData: CloudLogin) {
-                const response = await axiosInstance.post('auth/get-token', userData);
-                if (response.data.success && response.data.result !== undefined) {
-                    this.user = response.data.result;
-                    localStorage.setItem('user', JSON.stringify(response.data.result));
-                    router.push({ name: 'oneUser', params: { userid: this.user.userid } })
+            const response = await axiosInstance.post('auth/get-token', userData);
+            if (response.data.success && response.data.result !== undefined) {
+                this.user = response.data.result;
+                localStorage.setItem('user', JSON.stringify(response.data.result));
+                router.push({ name: 'oneUser', params: { userid: this.user.userid } })
 
-                } else {
-                    this.alert.error(response.data.message);
-                }
-        },
-
-        async sendConfirmationEmail(data: object) {
-            try {
-                const response = await axiosInstance.post('auth/send-email-confirmation', data);
-                if (response.data.success) {
-                    console.log(response.data);
-                    this.emailSent = true;
-                } else {
-                    this.alert.error(response.data);
-                }
-
-            } catch (error: any) {
-                console.log(error);
+            } else {
+                this.alert.error(response.data.message);
             }
-
-        },
-        async confirmEmailToken(token: string) {
-            try {
-                token = token.trim();
-                const response = await axiosInstance.get('auth/confirm-email/' + token);
-                if (!response.data.success) {
-                    console.log(response.data);
-                    return;
-                }
-                return router.replace({ name: 'Confirm' })
-            } catch (error:any) { 
-                console.error(error);
-
-                }
         },
         async logout() {
             this.user = null;

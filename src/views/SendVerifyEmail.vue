@@ -1,14 +1,13 @@
 <template>
-    <div v-if="(enabled === 'false')">
+    <div v-if="(disabled === 'true')">
         <div class="container">
             <!-- Instructions -->
             <div class="row">
                 <div class="alert alert-success col-md-12" role="alert" id="notes">
                     <h4>NOTES</h4>
                     <ul>
-                        <li><strong>Hello {{ username }}</strong></li>
-                        <li><strong>Your account ID is {{ userid }} !</strong></li>
-                        <li><strong>Your account is not active! To Activate your account, click the button below and you
+                        <li><strong>Hello</strong></li>
+                        <li><strong>Your account is not active! To Activate your account, enter your email click the button below and you
                                 will recieve a verification code on
                                 your email.</strong></li>
                     </ul>
@@ -21,7 +20,7 @@
                         <form @submit.prevent="onSubmit1" class="send-email" id="send-email">
                             <div class="col-md-9 col-sm-12">
                                 <div class="form-group form-group-lg">
-                                    <input id="verifyEmail" type="text" :disabled="isDisabled" :value="email"
+                                    <input v-model="email" id="verifyEmail" type="text" :disabled="emailSent"
                                         class="form-control col-md-6 col-sm-6 col-sm-offset-2" name="verifyEmail">
                                     <input :disabled="emailSent" class="btn btn-primary btn-lg col-md-2 col-sm-2"
                                         type="submit" value="Send Email">
@@ -53,7 +52,7 @@
                     <h5>Support</h5>
                 </div>
                 <div class="ibox-content text-center">
-                    <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
+                    <h3><i class="fa fa-phone"></i> +44 7482 06 7903</h3>
                     <h3><a href="mailto:elyte5star@gmail.com"><i class="fa fa-envelope-o"></i>
                             elyte5star@gmail.com</a></h3>
                     <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i>
@@ -68,37 +67,38 @@
 </template>
 <script lang="ts">
 import { useRoute } from 'vue-router';
-import { userAuthStore } from "@/stores/auth_store";
+import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from 'pinia';
 import { userAlertStore } from '@/stores/alert';
+import { is_valid_Email} from '@/helpers/script';
+
 export default {
     name: "SendEmail",
     setup() {
         const route = useRoute();
-        const authStore = userAuthStore();
-        const { emailSent } = storeToRefs(authStore);
-        const { username, userid, email, enabled } = route.query;
-        return { username, userid, email, enabled, emailSent, authStore }
+        const user_store = userStore();
+        const { emailSent } = storeToRefs(user_store);
+        const { locked,disabled} = route.query;
+        return { emailSent,locked,disabled, user_store }
     },
     data() {
         return {
-            isDisabled: true, token: null, alertStore: userAlertStore()
+            email:null,isDisabled: true, token: null, alertStore: userAlertStore()
         }
     },
     methods: {
-        async onSubmit1() {
-            const data = {
-                body: {
-                    username: this.username,
-                    home: process.env.VUE_BASE_URL,
-                }, email: [this.email]
+        async onSubmit1(): Promise<void>  {
+            if(this.email && is_valid_Email(this.email)){
+                await this.user_store.reSendOtpEmail(this.email);
+            }else{
+                (<HTMLInputElement>document.getElementById('verifyEmail')).focus();
+                this.alertStore.error("Empty email Field");
             }
-            await this.authStore.sendConfirmationEmail(data);
+            
         },
-        async onSubmit2() {
+        async onSubmit2(): Promise<void> {
             if (this.token) {
-                await this.authStore.confirmEmailToken(this.token);
-
+                await this.user_store.confirmEmailToken(this.token);
             } else {
                 (<HTMLInputElement>document.getElementById('token')).focus();
                 this.alertStore.error("Empty Token Field");

@@ -1,5 +1,4 @@
-<template>
-    <div v-if="!user">
+<template >
         <!-- Login panel -->
         <div id="login_access" class="login_access">
             <div class="container">
@@ -48,10 +47,11 @@
                                     contain spaces, special characters, or emoji.
                                 </div>
                             </div>
-                            <div id="forgetget_password"><router-link :to="{ name: 'Email' }">Forgot password?</router-link></div>
+                            <div id="forgetget_password"><router-link :to="{ name: 'OtpEmail' }">Forgot password?</router-link>
+                            </div>
 
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-primary">Sign in</button>
+                            <button type="submit" class="btn btn-outline-primary">Sign in</button>
 
                             <!-- Register buttons -->
                             <div class="text-center">
@@ -75,46 +75,48 @@
                             </div>
                         </div>
                         <div class="ibox">
-                            <div class="ibox-content">
-                                <p class="font-bold">Other products you may be interested</p>
-                                <hr />
-                                <div>
-                                    <a href="#" class="product-name"> Product 1</a>
-                                    <div class="small m-t-xs">
-                                        Many desktop publishing packages and web page editors now.
-                                    </div>
-                                    <div class="m-t text-righ">
-                                        <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i
-                                                class="fa fa-long-arrow-right"></i>
-                                        </a>
-                                    </div>
+                            <p class="font-bold">Products you may be interested</p>
+                            <div v-for="item in items" v-bind:key="item.pid" class="ibox-content">
+                                <div class="table-responsive">
+                                    <table class="table shoping-cart-table">
+                                        <tbody>
+                                            <tr>
+                                                <td :style="{ width: '90px' }">
+                                                    <div class="cart-product-imitation">
+                                                        <img :src="'src/assets/images/products/' + item.image"
+                                                            v-bind:alt="item.name" />
+                                                    </div>
+                                                </td>
+                                                <td class="desc">
+                                                    <h3>
+                                                        <router-link :to="{ name: 'oneProduct', params: { pid: item.pid } }"
+                                                            class="text-navy">
+                                                            {{ item.name }}
+                                                        </router-link>
+                                                    </h3>
+                                                    <p class="small">
+                                                        {{ item.details }}
+                                                    </p>
+                                                    <dl class="small m-b-none">
+                                                        <dt>Description</dt>
+                                                        <dd>{{ item.description }}</dd>
+                                                    </dl>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+
                                 </div>
-                                <hr />
-                                <div>
-                                    <a href="#" class="product-name"> Product 2</a>
-                                    <div class="small m-t-xs">
-                                        Many desktop publishing packages and web page editors now.
-                                    </div>
-                                    <div class="m-t text-righ">
-                                        <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i
-                                                class="fa fa-long-arrow-right"></i>
-                   
-                                            </a>
-                                    </div>
-                                </div>
+
                             </div>
+                            <hr />
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
-   
 </template>
-
-
 
 <script lang="ts">
 import { userAuthStore } from "@/stores/auth_store";
@@ -124,22 +126,26 @@ import { isUserNameValid, showPassword } from "@/helpers/script";
 import { loginRequest, _msalInstance } from "@/helpers/msoftAuthConfig";
 import { defineComponent } from 'vue';
 import type { AccountInfo } from "@azure/msal-browser";
-import type { CloudLogin } from "@/helpers/my-types";
-
+import type { CloudLogin, Product } from "@/helpers/my-types";
+import { productStore } from '@/stores/products'
 
 export default defineComponent({
     name: "LoginView",
+    setup() {
+        const pStore = productStore();
+        const { products } = storeToRefs(pStore);
+        return { products }
+    },
     data() {
         return {
             user: {}, msalInstance: _msalInstance, username: null, password: null, showPassword, authStore: userAuthStore()
         }
     },
     methods: {
-
-        async googleLogin():Promise<void>  {
+        async googleLogin(): Promise<void> {
             try {
                 const loginResponse = await googleOneTap();
-                const data: CloudLogin ={
+                const data: CloudLogin = {
                     type: "GMAIL", token: loginResponse.credential
                 }
                 await this.authStore.cloudLogin(data);
@@ -149,8 +155,7 @@ export default defineComponent({
 
 
         },
-
-        async msoftLogin():Promise<void>  {
+        async msoftLogin(): Promise<void> {
             try {
                 await this.msalInstance.handleRedirectPromise();
                 await this.msalInstance.loginPopup(loginRequest);
@@ -158,9 +163,9 @@ export default defineComponent({
                 if (accounts.length === 0) {
                     return this.msalInstance.loginRedirect(loginRequest);
                 }
-                const account:AccountInfo = accounts[0]
-                const data: CloudLogin ={
-                    type: "MSOFT", token: account.idToken 
+                const account: AccountInfo = accounts[0]
+                const data: CloudLogin = {
+                    type: "MSOFT", token: account.idToken
                 }
                 await this.authStore.cloudLogin(data);
 
@@ -170,10 +175,21 @@ export default defineComponent({
             }
 
         },
+        getRandomItem(arr: Array<Product>) {
+
+            // get random index value
+            let randomIndex = Math.floor(Math.random() * arr.length);
+
+            // get random item
+            const item = arr[randomIndex];
+
+            return item;
+        },
+
         async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise()
         },
-        async onSubmitLogin():Promise<void>  {
+        async onSubmitLogin(): Promise<void> {
 
             if (isUserNameValid(this.username) && this.password) {
                 let form = new FormData();
@@ -183,33 +199,39 @@ export default defineComponent({
                 for (const [key, value] of form) {
                     userData.append(key, value as string);
                 }
-
                 await this.authStore.login(userData);
                 this.username = null;
                 this.password = null;
 
             } else {
+                this.invalidFeedback();
 
-                if (!this.password) this.authStore.alert.error("Password required!");
-                if (!isUserNameValid(this.username)) this.authStore.alert.error("Invalid username!");
-
+            }
+        },
+        invalidFeedback() {
+            if (!this.password) {
+                (<HTMLInputElement>document.getElementById('loginUsername')).focus();
+                this.authStore.alert.error("Password required!");
+            }
+            if (!isUserNameValid(this.username)) {
+                this.authStore.alert.error("Invalid username!");
+                (<HTMLInputElement>document.getElementById('password')).focus();
 
             }
         }
 
     },
+    computed: {
+        items(): Array<Product> {
+            return [this.getRandomItem(this.products), this.getRandomItem(this.products)];
+        }
+    },
+
     async created() {
         this.handleMsalRedirect();
-    },
-    mounted() {
-        const { user } = storeToRefs(this.authStore);
-        this.user = user
-        if (this.user) {
-            this.$router.push({ name: 'Home' });
-        }
 
     },
-
+    
 
 });
 </script>

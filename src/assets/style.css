@@ -66,7 +66,7 @@ html {
     margin: 10px;
     position: relative;
     padding: 5px;
-    width: 98%;
+    max-width: 98%;
     font-weight: bold;
     background-color: white;
 }
@@ -847,6 +847,11 @@ article:hover {
 #passwordHelpBlock {
     margin-top: -1.25rem;
 }
+#login_access img{
+    width: 50px;
+    height: 50px;
+
+}
 
 /* End Login */
 
@@ -1113,6 +1118,7 @@ article h3 {
     border-radius: 4px;
     background-color: #f8f8f8;
     resize: none;
+    
 }
 
 
@@ -1133,17 +1139,22 @@ article h3 {
     border-radius: 10px;
 }
 
+.customer_service button{
+    margin-top: 10px;
+}
+
 #customer_service a {
     text-decoration: none;
+    color: black;
 }
 
 
 #customer_service {
-    border: 5px solid #ececec;
+   
     margin: 10px;
     position: relative;
     padding: 5px;
-    width: 98%;
+    width: auto;
     background-color: white;
 }
 
@@ -1157,7 +1168,6 @@ article h3 {
 }
 
 #email_contact,
-#token,
 #verifyEmail,
 #name_contact,
 #subject,
@@ -1169,7 +1179,6 @@ article h3 {
 
 .customer_service .fa {
     font-size: 40px;
-
     text-shadow: 3px 3px 3px #aaa;
 }
 /** footer **/

@@ -3,13 +3,12 @@ import { defineStore } from 'pinia';
 import { userAlertStore } from './alert';
 import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { loadingStore } from "@/stores/loading";
 import type { Product, Review, ProductsResponse, ProductsQuery, CreateReview} from '@/helpers/my-types';
 
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        pageNum:0,numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0, productRecommendations: Array()
+        pageNum:0,numberOfElements:0,products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0
     }),
     actions: {
         async getProducts(data?: ProductsQuery):Promise<void> {

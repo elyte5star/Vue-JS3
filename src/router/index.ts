@@ -30,7 +30,7 @@ const routes = [
   },
   {
     path: '/send-email',
-    name: 'Email',
+    name: 'OtpEmail',
     component: SendEmail
   },
   {
@@ -120,7 +120,7 @@ router.beforeEach(async (to: any, from, next) => {
   
 
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login', 'Confirm', 'Email', 'Home', 'oneProduct', 'ServerError', 'Contact', 'Register'];
+  const publicPages = ['Login', 'Confirm', 'Home','OtpEmail', 'oneProduct', 'ServerError', 'Contact', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
 

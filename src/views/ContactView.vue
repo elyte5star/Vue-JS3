@@ -19,9 +19,9 @@
                                 <!--Grid column-->
                                 <div class="col-md-6">
                                     <div class="md-form mb-0">
+                                        <label for="name" class="">Your name ( or nickname..example superman)</label>
                                         <input v-model="name_contact" type="text" id="name_contact" name="name"
                                             class="form-control">
-                                        <label for="name" class="">Your name ( or nickname..example superman)</label>
                                     </div>
                                 </div>
                                 <!--Grid column-->
@@ -29,9 +29,9 @@
                                 <!--Grid column-->
                                 <div class="col-md-6">
                                     <div class="md-form mb-0">
+                                        <label for="email_contact" class="">Your email</label>
                                         <input v-model="email_contact" type="text" id="email_contact" name="email_contact"
                                             class="form-control">
-                                        <label for="email_contact" class="">Your email</label>
                                     </div>
                                 </div>
                                 <!--Grid column-->
@@ -41,18 +41,18 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="md-form mb-0">
-                                        <input v-model="subject" type="text" id="subject" name="subject"
-                                            class="form-control">
                                         <label for="subject" class="">Subject</label>
+                                        <input v-model="subject" type="text" id="subject" name="subject"
+                                            class="form-control"> 
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="md-form mb-0">
+                                        <label class="" for="country"> Country </label>
                                         <select v-model="country_contact" class="form-select" id="country" name="country">
                                             <option v-if="countries" v-for="country in countries" :key="country.text"
                                                 :value=country.value>{{ country.text }}</option>
                                         </select>
-                                        <label class="" for="country"> Country </label>
                                     </div>
                                 </div>
                             </div>
@@ -62,17 +62,16 @@
                                 <!--Grid column-->
                                 <div class="col-md-12">
                                     <div class="md-form">
+                                        <label for="">Your message</label>
                                         <textarea v-model="message" type="text" id="message" name="message" rows="2"
                                             class="form-control md-textarea"></textarea>
-                                        <label for="">Your message</label>
+                                        
                                     </div>
 
                                 </div>
                             </div>
-                            <button class="btn btn-primary" type="submit">Send message</button>
+                            <button class="btn btn-outline-primary" type="submit">Send message</button>
                         </form>
-
-
                         <div class="status"></div>
                     </div>
                     <!--Grid column-->
@@ -89,7 +88,7 @@
                             </li>
 
                             <li><i class="fa fa-phone"></i>
-                                <p>+ 47 409 780 57</p>
+                                <p>+ 44 409 780 57</p>
                             </li>
 
                             <li><i class="fa fa-envelope-o"></i><br>
@@ -136,8 +135,8 @@ export default defineComponent({
             this.alertStore.reset();
             if (this.name_contact && this.email_contact && is_valid_Email(this.email_contact) && this.country_contact && this.subject && this.message) {
                 const enquiry: Enquiry = {
-                    client_name: this.name_contact,
-                    client_email: this.email_contact,
+                    clientName: this.name_contact,
+                    clientEmail: this.email_contact,
                     country: this.country_contact,
                     subject: this.subject, message: this.message
                 }

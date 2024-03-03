@@ -115,8 +115,8 @@ export type Review = {
 
 
 export type Enquiry = {
-    client_name: string;
-    client_email: string;
+    clientName: string;
+    clientEmail: string;
     country: string;
     subject: string;
     message: string;
