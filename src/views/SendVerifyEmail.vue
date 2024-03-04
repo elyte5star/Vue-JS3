@@ -7,7 +7,8 @@
                     <h4>NOTES</h4>
                     <ul>
                         <li><strong>Hello</strong></li>
-                        <li><strong>Your account is not active! To Activate your account, enter your email click the button below and you
+                        <li><strong>Your account is not active! To Activate your account, enter your email click the
+                                button below and you
                                 will recieve a verification code on
                                 your email.</strong></li>
                     </ul>
@@ -38,7 +39,8 @@
                             <div class="col-md-9 col-sm-12">
                                 <div class="form-group form-group-lg">
                                     <input v-model="token" type="text" placeholder="Enter Verification Code"
-                                        class="form-control col-md-6 col-sm-6 col-sm-offset-2" name="verifyCode" id="token">
+                                        class="form-control col-md-6 col-sm-6 col-sm-offset-2" name="verifyCode"
+                                        id="token">
                                     <input :disabled="!emailSent" class="btn btn-primary btn-lg col-md-2 col-sm-2"
                                         type="submit" value="Verify Code">
                                 </div>
@@ -65,12 +67,13 @@
         </div>
     </div>
 </template>
+
 <script lang="ts">
 import { useRoute } from 'vue-router';
 import { userStore } from "@/stores/userAccount";
 import { storeToRefs } from 'pinia';
 import { userAlertStore } from '@/stores/alert';
-import { is_valid_Email} from '@/helpers/script';
+import { is_valid_Email } from '@/helpers/script';
 
 export default {
     name: "SendEmail",
@@ -78,23 +81,23 @@ export default {
         const route = useRoute();
         const user_store = userStore();
         const { emailSent } = storeToRefs(user_store);
-        const { locked,disabled} = route.query;
-        return { emailSent,locked,disabled, user_store }
+        const { locked, disabled } = route.query;
+        return { emailSent, locked, disabled, user_store }
     },
     data() {
         return {
-            email:null,isDisabled: true, token: null, alertStore: userAlertStore()
+            email: null, isDisabled: true, token: null, alertStore: userAlertStore()
         }
     },
     methods: {
-        async onSubmit1(): Promise<void>  {
-            if(this.email && is_valid_Email(this.email)){
+        async onSubmit1(): Promise<void> {
+            if (this.email && is_valid_Email(this.email)) {
                 await this.user_store.reSendOtpEmail(this.email);
-            }else{
+            } else {
                 (<HTMLInputElement>document.getElementById('verifyEmail')).focus();
                 this.alertStore.error("Empty email Field");
             }
-            
+
         },
         async onSubmit2(): Promise<void> {
             if (this.token) {
@@ -111,6 +114,7 @@ export default {
 }
 
 </script>
+
 <style scoped>
 .jumbotron.text-center {
     height: 17em;

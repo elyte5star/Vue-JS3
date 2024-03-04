@@ -134,7 +134,6 @@
 
 <script lang="ts">
 import { is_Input_Error, showPassword } from '@/helpers/script'
-import AlertVue from '@/components/Alert.vue'
 import { googleOneTap } from 'vue3-google-login'
 import { userStore } from '@/stores/userAccount'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
@@ -145,7 +144,6 @@ import { userAuthStore } from '@/stores/auth_store'
 
 export default defineComponent({
     name: 'RegisterUser',
-    components: { AlertVue },
     data() {
         return {
             msalInstance: _msalInstance,

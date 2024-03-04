@@ -66,7 +66,7 @@ export const userStore = defineStore({
                     return;
                 }
                 await router.push({ path: '/login', replace: true })
-                this.alertStore.success('Good job!' + " User account with ID " + response.data.userid + " has been created!");
+                this.alertStore.success( " User account with ID " + response.data.userid + " has been created! A confirmation email was sent!");
                 //router.push({ name: 'Email', query: response.data.token_data })
             } catch (error: any) {
                 console.error(error);
