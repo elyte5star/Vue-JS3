@@ -10,6 +10,8 @@ import RegisterUser from '@/views/RegisterUserView.vue'
 import ContactUs from '@/views/ContactView.vue'
 import Confirm from '@/views/Confirmation.vue'
 import ServerError from '@/views/ServerError.vue';
+import AdminUserList from '@/components/AdminUserList.vue'
+import AdminUserDetails from '@/components/AdminUserDetails.vue'
 import SendEmail from '@/views/SendVerifyEmail.vue'
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
@@ -46,8 +48,13 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: AdminView
+    children: [
+      { path: '', component: AdminView},
+      { path: 'users', component: AdminUserList },
+      { path: 'users/:id', component: AdminUserDetails },
+    ], 
   },
+   
 
   {
     path: '/user/:userid',

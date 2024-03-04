@@ -96,34 +96,39 @@
                     </div>
 
                     <div class="ibox">
-                        <div class="ibox-content">
-                            <p class="font-bold">Other products you may be interested</p>
-                            <hr />
-                            <div>
-                                <a href="#" class="product-name"> Product 1</a>
-                                <div class="small m-t-xs">
-                                    Many desktop publishing packages and web page editors now.
-                                </div>
-                                <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i
-                                            class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <hr />
-                            <div>
-                                <a href="#" class="product-name"> Product 2</a>
-                                <div class="small m-t-xs">
-                                    Many desktop publishing packages and web page editors now.
-                                </div>
-                                <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i
-                                            class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
+                        <p class="font-bold">Products you may be interested</p>
+                        <div v-for="item in products" v-bind:key="item.pid" class="ibox-content">
+                            <div class="table-responsive">
+                                <table class="table shoping-cart-table">
+                                    <tbody>
+                                        <tr>
+                                            <td :style="{ width: '90px' }">
+                                                <div class="cart-product-imitation">
+                                                    <img :src="'src/assets/images/products/' + item.image"
+                                                        v-bind:alt="item.name" />
+                                                </div>
+                                            </td>
+                                            <td class="desc">
+                                                <h3>
+                                                    <router-link :to="{ name: 'oneProduct', params: { pid: item.pid } }"
+                                                        class="text-navy">
+                                                        {{ item.name }}
+                                                    </router-link>
+                                                </h3>
+                                                <p class="small">
+                                                    {{ item.details }}
+                                                </p>
+                                                <dl class="small m-b-none">
+                                                    <dt>Description</dt>
+                                                    <dd>{{ item.description }}</dd>
+                                                </dl>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-
+                        <hr />
                     </div>
                 </div>
 
@@ -141,9 +146,16 @@ import { defineComponent } from 'vue'
 import type { AccountInfo } from '@azure/msal-browser'
 import type { CloudLogin } from '@/helpers/my-types'
 import { userAuthStore } from '@/stores/auth_store'
+import { productStore } from '@/stores/products'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
     name: 'RegisterUser',
+    setup() {
+        const pStore = productStore()
+        const { products } = storeToRefs(pStore)
+        return { products, pStore }
+    },
     data() {
         return {
             msalInstance: _msalInstance,
@@ -157,9 +169,13 @@ export default defineComponent({
         }
     },
     async created() {
+        this.getAllProducts()
         this.handleMsalRedirect()
     },
     methods: {
+        async getAllProducts() {
+            await this.pStore.getProducts()
+        },
         async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise()
         },

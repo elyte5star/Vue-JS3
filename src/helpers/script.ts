@@ -1,5 +1,6 @@
 
 import { userAlertStore } from "@/stores/alert";
+import type { Product } from "./my-types";
 
 
 /* eslint-disable */
@@ -12,6 +13,22 @@ export function showPassword(ele_id: string, ele2_id: string = 'toggleLoginPassw
     togglePassword?.classList.toggle('bi-eye');
 
 }
+export function getRandomItem(arr: Array<Product>) {
+    // get random index value
+    let randomIndex = Math.floor(Math.random() * arr.length)
+    // get random item
+    const item = arr[randomIndex]
+
+    return item
+}
+
+export function getRandomIndex(n:number) {
+    // get random index value
+    let randomIndex = Math.floor(Math.random() * n)
+    return randomIndex
+}
+
+
 
 export const decodeJwtResponse = (token: string) => {
     let base64Url = token.split(".")[1];
