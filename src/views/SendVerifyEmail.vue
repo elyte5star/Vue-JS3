@@ -18,7 +18,7 @@
                 </div>
             </div>
             <!-- Send Email -->
-            <div class="row" id="sendEmailToken" style="display: none">
+            <div v-if="!emailSent" class="row" id="sendEmailToken" >
                 <div class="col-md-12">
                     <div class="jumbotron text-center">
                         <form @submit.prevent="onSubmit1" class="send-email" id="send-email">
@@ -96,20 +96,18 @@ export default {
         return { emailSent, locked, disabled, user_store }
     },
     data() {
+        let urlParams = new URLSearchParams(window.location.search)
         return {
-            urlParams: new URLSearchParams(window.location.search),
-            email: '' || null,
+            urlParams,
+            email:urlParams.get('email'),
             isDisabled: true,
             token: null,
             alertStore: userAlertStore()
         }
     },
-    mounted() {
-        this.email = this.urlParams.get('email')
-    },
     methods: {
-        ResendOtpToken(id: string) {
-            (<HTMLInputElement>document.getElementById(id)).style.display = ''
+        ResendOtpToken() {
+            this.emailSent = false
         },
         async onSubmit1(): Promise<void> {
             if (this.email && is_valid_Email(this.email)) {
