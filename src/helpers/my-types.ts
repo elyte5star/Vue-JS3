@@ -8,7 +8,13 @@ export type tokenData = {
     email: string;
     enabled: boolean
     admin: boolean
-    userid:string
+    userid: string
+}
+export type Registration = {
+    username: string | null
+    email: string | null
+    password: string | null
+    telephone: string | null
 }
 
 export type User = {
@@ -53,14 +59,14 @@ export interface BillingAddress extends Address {
 
 }
 
-export type ModifyUserInfo ={
-    email:string|null
-    telephone: string|null
-    fullName:string|null
-    address:string|null
-    city:string
-    country:string|null
-    zip:string|null
+export type ModifyUserInfo = {
+    email: string | null
+    telephone: string | null
+    fullName: string | null
+    address: string | null
+    city: string
+    country: string | null
+    zip: string | null
 
 }
 
@@ -102,10 +108,10 @@ export type CreateReview = {
 }
 
 export type Review = {
-    createdBy:string
+    createdBy: string
     createdAt: Date
-    lastModifiedBy:string
-    lastModifiedAt:string
+    lastModifiedBy: string
+    lastModifiedAt: string
     rating: number;
     rid: string;
     email: string;
@@ -129,16 +135,16 @@ export type Product = {
     image: string;
     name: string;
     pid: string;
-    price:number;
+    price: number;
     reviews: Array<Review>;
     stock_quantity: number
 }
 
-export interface ProductsQuery{
-    page:number;
-    size:number
-    sort?:string
-    
+export interface ProductsQuery {
+    page: number;
+    size: number
+    sort?: string
+
 }
 
 export interface Item extends Product {
@@ -146,33 +152,33 @@ export interface Item extends Product {
     calculated_price: number
 }
 export type CloudLogin = {
-    type:string
-    token:string | undefined
+    type: string
+    token: string | undefined
 }
-export type Sort ={
-    empty:boolean
-    sorted:boolean
-    unsorted:boolean
-}
-
-export type Pageable ={
-    offset:number
-    pageNumber:number
-    pageSize:number
-    paged:boolean
-    sort:Sort
-    unpaged:boolean
+export type Sort = {
+    empty: boolean
+    sorted: boolean
+    unsorted: boolean
 }
 
-export type ProductsResponse={
-    empty:boolean
-    first:boolean
-    last:boolean
-    numberOfElements:number
-    products:Array<Product>
-    size:number
-    number:number
-    totalElements:number
-    totalPages:number
+export type Pageable = {
+    offset: number
+    pageNumber: number
+    pageSize: number
+    paged: boolean
+    sort: Sort
+    unpaged: boolean
+}
+
+export type ProductsResponse = {
+    empty: boolean
+    first: boolean
+    last: boolean
+    numberOfElements: number
+    products: Array<Product>
+    size: number
+    number: number
+    totalElements: number
+    totalPages: number
 
 }

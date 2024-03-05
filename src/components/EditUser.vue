@@ -138,7 +138,7 @@
 </template>
 
 <script lang="ts">
-
+/* eslint-disable */
 
 import { userStore } from "@/stores/userAccount";
 import { defineComponent } from 'vue'

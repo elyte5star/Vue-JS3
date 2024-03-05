@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { axiosInstance } from '@/helpers/axiosHttp';
 import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
-import type { User, Enquiry, Booking } from '@/helpers/my-types';
+import type { User, Enquiry, Booking, Registration } from '@/helpers/my-types';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import { loadingStore } from "@/stores/loading";
 
@@ -30,11 +30,11 @@ export const userStore = defineStore({
         },
         async reSendOtpEmail(email: string) {
             try {
-                const response = await axiosInstance.get('users/signup/resendOtp',  { params: {"email":email}});
+                const response = await axiosInstance.get('users/signup/resendOtp', { params: { "email": email } });
                 if (response.data.success) {
                     console.log(response.data.result);
                     this.emailSent = true;
-                    return router.replace({ name: 'Confirm',query: response.data.result})
+                    //return router.replace({ name: 'Confirm', query: response.data.result })
                 } else {
                     this.alertStore.error(response.data.result);
                 }
@@ -47,27 +47,27 @@ export const userStore = defineStore({
         async confirmEmailToken(token: string) {
             try {
                 token = token.trim();
-                const response = await axiosInstance.get('users/confirm-email/' + token);
+                const response = await axiosInstance.get('users/signup/verify-otp', { params: { "otp": token } });
                 if (!response.data.success) {
                     console.log(response.data.result);
                     return;
                 }
-                return router.replace({ name: 'Confirm' })
-            } catch (error:any) { 
+                console.log(response.data.result)
+                //return router.replace({ name: 'Confirm' })
+            } catch (error: any) {
                 console.error(error);
 
-                }
+            }
         },
-        async signUP(user: any) {
+        async signUP(user: Registration) {
             try {
                 const response = await axiosInstance.post('users/signup', user);
                 if (!response.data.success) {
                     this.alertStore.error(response.data.message || 'Registration unsuccessful!');
                     return;
                 }
-                await router.push({ path: '/login', replace: true })
-                this.alertStore.success( " User account with ID " + response.data.userid + " has been created! A confirmation email was sent!");
-                //router.push({ name: 'Email', query: response.data.token_data })
+                this.emailSent = true;
+                router.replace({ name: 'OtpEmail', query: response.data.result })
             } catch (error: any) {
                 console.error(error);
             }
@@ -89,7 +89,7 @@ export const userStore = defineStore({
         async sendPasswordResetToken(email: string) {
             try {
                 const isloading = loadingStore();
-                const response = await axiosInstance.get('users/reset/password',{ params:{email:email}});
+                const response = await axiosInstance.get('users/reset/password', { params: { email: email } });
                 if (!response.data.success) {
                     isloading.setLoading(true);
                     this.alertStore.error(response.data.message || 'Operation unsuccessful');

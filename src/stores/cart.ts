@@ -3,9 +3,9 @@ import { defineStore } from 'pinia';
 
 
 //Persisting the Cart and cart count
-let cart = localStorage.getItem('cart');
+const cart = localStorage.getItem('cart');
 
-let itemsInCart = window.localStorage.getItem('cartCount');
+const itemsInCart = window.localStorage.getItem('cartCount');
 
 import { axiosInstance } from '@/helpers/axiosHttp';
 

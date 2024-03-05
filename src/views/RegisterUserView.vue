@@ -23,8 +23,8 @@
                             <input v-model="registerUsername" type="text" id="registerUsername" class="form-control"
                                 aria-describedby="usernameHelpBlock" />
                             <div id="usernameHelpBlock" class="form-text">
-                                Usernames must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9)
-                                - Dots(.) - Underscores(_)
+                                Usernames must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -
+                                Dots(.) - Underscores(_)
                             </div>
                         </div>
 
@@ -131,7 +131,6 @@
                         <hr />
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -144,7 +143,7 @@ import { userStore } from '@/stores/userAccount'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { defineComponent } from 'vue'
 import type { AccountInfo } from '@azure/msal-browser'
-import type { CloudLogin } from '@/helpers/my-types'
+import type { CloudLogin, Registration } from '@/helpers/my-types'
 import { userAuthStore } from '@/stores/auth_store'
 import { productStore } from '@/stores/products'
 import { storeToRefs } from 'pinia'
@@ -220,7 +219,7 @@ export default defineComponent({
                     this.registerTel
                 )
             ) {
-                const registerUser = {
+                const registerUser: Registration = {
                     username: this.registerUsername,
                     email: this.registerEmail,
                     password: this.registerPassword,

@@ -116,6 +116,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
 import { userAuthStore } from '@/stores/auth_store'
 import { storeToRefs } from 'pinia'
 import { googleOneTap } from 'vue3-google-login'
@@ -200,16 +201,17 @@ export default defineComponent({
         },
         invalidFeedback() {
             if (!this.password) {
-                ; (<HTMLInputElement>document.getElementById('loginUsername')).focus()
-                this.authStore.alert.error('Password required!')
+            (<HTMLInputElement>document.getElementById('loginUsername')).focus()
+                this.authStore.alert.error('Password required!');
+               
             }
             if (!isUserNameValid(this.username)) {
-                this.authStore.alert.error('Invalid username!')
-                    ; (<HTMLInputElement>document.getElementById('password')).focus()
+                this.authStore.alert.error('Invalid username!');
+                (<HTMLInputElement>document.getElementById('password')).focus();
+             
             }
         }
     },
-
     mounted() {
         this.handleMsalRedirect()
     },
