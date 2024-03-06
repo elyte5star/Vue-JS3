@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div id="forgetget_password">
-                            <router-link :to="{ name: 'OtpEmail' }">Forgot password?</router-link>
+                            <router-link :to="{ name: 'OtpEmail',query: { passwordReset: 'true' } }">Forgot password?</router-link>
                         </div>
 
                         <!-- Submit button -->

@@ -11,9 +11,9 @@
                                     <button @click.prevent="deleteUser(user_info.userid)" class="btn btn-danger"
                                         type="submit" id="delete_account"><i class="fa fa-trash-o"></i>
                                         DELETE ACCOUNT</button>
-                                    <button id="user_info" @click="resetPassword(user_info.email)"
+                                    <button id="user_info" @click="changeActiveComponent('update_passowrd')"
                                         class="btn btn-warning"><i class="fa fa-key"></i>
-                                        RESET PASSWORD
+                                        UPDATE PASSWORD
                                     </button>
                                     <button id="user_info" @click="changeActiveComponent('user_details')"
                                         class="btn btn-info"><i class="fa fa-user-circle"></i>
@@ -161,9 +161,7 @@ export default defineComponent({
         changeActiveComponent(str: string) {
             this.$emit('changeActiveComponent', str);
         },
-        async resetPassword(email: string) {
-            await this.userStore.sendPasswordResetToken(email);
-        },
+       
         async updateDetails() {
             const address = this.checkAddress();
             if (!isObjEmpty(address)) {
