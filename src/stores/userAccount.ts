@@ -60,7 +60,7 @@ export const userStore = defineStore({
         async confirmPasswordResetToken(token: string) {
             try {
                 token = token.trim();
-                const response = await axiosInstance.get('users/reset/confirm-token', { params: { "otp": token } });
+                const response = await axiosInstance.get('users/reset/confirm-token', { params: { "token": token } });
                 if (!response.data.success) {
                     console.log(response.data.result);
                     return;
