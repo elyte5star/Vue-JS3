@@ -87,7 +87,6 @@ export const userStore = defineStore({
             try {
                 const response = await axiosInstance.post('users/password/change-password', passChange);
                 if (response.data.success) {
-                    this.alertStore.error(response.data.message || 'Registration unsuccessful!');
                     return router.replace({ name: 'Confirm', query: { "message": response.data.result } })
                 }
                 this.alertStore.error(response.data.message || 'Registration unsuccessful!');
@@ -99,11 +98,11 @@ export const userStore = defineStore({
         async customerEnquiry(enquiry: Enquiry) {
             try {
                 const response = await axiosInstance.post('users/customer/service', enquiry);
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                if (response.data.success) {
+                    this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.result);
                     return;
                 }
-                this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.result);
+                this.alertStore.error(response.data.message || 'Operation unsuccessful'); 
             } catch (error: any) {
                 console.log(error);
             }
@@ -112,12 +111,12 @@ export const userStore = defineStore({
         async sendPasswordResetToken(email: string) {
             try {
                 const response = await axiosInstance.get('users/reset/password', { params: { email: email } });
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                if (response.data.success) {
+                    this.alertStore.success('Your password change request was submitted!' + " Please check your email ");
+                    this.emailSent = true;
                     return;
                 }
-                this.alertStore.success('Your password change request was submitted!' + " Please check your email ");
-                this.emailSent = true;
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
             } catch (error: any) {
                 console.log(error);
             }
@@ -125,13 +124,12 @@ export const userStore = defineStore({
         async getUserById(userid: string) {
             try {
                 const response = await axiosInstance.get('users/' + userid);
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                if (response.data.success) {
+                    this.user = response.data.result
+                    this.bookingsHistory = response.data.result.bookings
                     return;
                 }
-                this.user = response.data.result
-                this.bookingsHistory = response.data.result.bookings
-
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
             } catch (error: any) {
                 console.error(error);
             }
@@ -140,13 +138,13 @@ export const userStore = defineStore({
         async enableExternalLogin(username: string) {
             try {
                 const response = await axiosInstance.put('users/enable/' + username);
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                if (response.data.success) {
+                    this.user = response.data.result
+                    this.alertStore.success("External login : " + this.user?.using2FA);
                     (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
                     return;
                 }
-                this.user = response.data.result
-                this.alertStore.success("External login : " + this.user?.using2FA);
+                this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
             } catch (error: any) {
                 console.error(error);

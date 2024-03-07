@@ -1,4 +1,3 @@
-
 <template>
     <div v-if="user_info">
         <div id="update_entry" class="update_entry">
@@ -11,7 +10,7 @@
                                     <button @click.prevent="deleteUser(user_info.userid)" class="btn btn-danger"
                                         type="submit" id="delete_account"><i class="fa fa-trash-o"></i>
                                         DELETE ACCOUNT</button>
-                                    <button id="user_info" @click="changeActiveComponent('update_passowrd')"
+                                    <button id="user_info" @click="updatePassword(user_info.email)"
                                         class="btn btn-warning"><i class="fa fa-key"></i>
                                         UPDATE PASSWORD
                                     </button>
@@ -25,7 +24,8 @@
                             <!-- Username input -->
                             <p>Modify user credentials:</p>
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="editUsername"><i class="fa fa-user" aria-hidden="true"></i>
+                                <label class="form-label" for="editUsername"><i class="fa fa-user"
+                                        aria-hidden="true"></i>
                                     Username:</label>
                                 <input :disabled="true" v-model="editUsername" type="text" id="editUsername"
                                     class="form-control" aria-describedby="usernameHelpBlock" />
@@ -33,7 +33,8 @@
 
                             <!-- Email input -->
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="editEmail"><i class="fa fa-envelope-o"></i> Email:</label>
+                                <label class="form-label" for="editEmail"><i class="fa fa-envelope-o"></i>
+                                    Email:</label>
                                 <input v-model="editEmail" type="email" id="editEmail" class="form-control" />
                             </div>
 
@@ -58,8 +59,8 @@
                             <div>
                                 <label class="form-label" for="city"><i class="fa fa-institution"></i>
                                     City:</label>
-                                <input v-model="city" class="form-control billing-inputs" type="text" id="city" name="city"
-                                    placeholder="Lagos or St. Laos" maxlength="16">
+                                <input v-model="city" class="form-control billing-inputs" type="text" id="city"
+                                    name="city" placeholder="Lagos or St. Laos" maxlength="16">
                             </div>
                             <div class="row">
                                 <div class="col-md-6"><label class="form-label" for="state"><i class="fa fa-globe"
@@ -71,8 +72,8 @@
                                 </div>
                                 <div class="col-md-6"> <label class="form-label" for="zip"><i class="fa fa-map-pin"
                                             aria-hidden="true"></i> Zip:</label>
-                                    <input v-model="zip" class="form-control billing-inputs" type="text" id="zip" name="zip"
-                                        placeholder="10001">
+                                    <input v-model="zip" class="form-control billing-inputs" type="text" id="zip"
+                                        name="zip" placeholder="10001">
                                 </div>
                             </div><br>
 
@@ -89,7 +90,8 @@
                                 <h3><i class="fa fa-phone"></i> +47 409 78 057</h3>
                                 <h3><a href="mailto:checkuti@gmail.com"><i class="fa fa-envelope-o"></i>
                                         checkuti@gmail.com</a></h3>
-                                <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a></h3>
+                                <h3><a href="https://github.com/elyte5star"><i class="fa fa-github"></i> elyte5star</a>
+                                </h3>
                                 <span class="small">
                                     Please contact with us if you have any questions. We are avalible 24h.
                                 </span>
@@ -161,7 +163,10 @@ export default defineComponent({
         changeActiveComponent(str: string) {
             this.$emit('changeActiveComponent', str);
         },
-       
+        async updatePassword(email: string) {
+            console.log(email);
+
+        },
         async updateDetails() {
             const address = this.checkAddress();
             if (!isObjEmpty(address)) {
