@@ -17,6 +17,11 @@ export type Registration = {
     telephone: string | null
 }
 
+export type PasswordChange = {
+    password:string | null
+    resetToken:string | null
+}
+
 export type User = {
     createdBy: string
     createdAt: Date

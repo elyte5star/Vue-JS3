@@ -9,6 +9,7 @@ import AdminView from '@/views/AdminView.vue'
 import RegisterUser from '@/views/RegisterUserView.vue'
 import ContactUs from '@/views/ContactView.vue'
 import Confirm from '@/views/Confirmation.vue'
+import ChangePassword from '@/views/UpdatePassword.vue'
 import ServerError from '@/views/ServerError.vue';
 import AdminUserList from '@/components/AdminUserList.vue'
 import AdminUserDetails from '@/components/AdminUserDetails.vue'
@@ -24,6 +25,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomeView
+  },
+  {
+    path: '/reset-passowrd',
+    name: 'ChangePassword',
+    component:  ChangePassword
   },
 
   {
@@ -91,7 +97,7 @@ const routes = [
   },
   {
     path: "/confirm",
-    name: "Confirm",
+    name: "ConfirmationPage",
     component: Confirm,
     props: true
 
@@ -126,7 +132,7 @@ router.beforeEach(async (to: any, from, next) => {
   
 
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login', 'Confirm', 'Home','OtpEmail', 'oneProduct', 'ServerError', 'Contact', 'Register'];
+  const publicPages = ['Login','ChangePassword', 'Confirm', 'Home','OtpEmail', 'oneProduct', 'ServerError', 'Contact', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
 
