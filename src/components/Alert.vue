@@ -1,7 +1,7 @@
 <template>
-    <div v-if="alert" class="container">
+    <div v-if="alert" >
         <div class="m-3" id="alert1">
-            <div id="alert1" :class="'alert alert-dismissable  fade show ' + alert.type" role=alert>
+            <div id="alert1" :class="'text-center alert alert-dismissable  fade show ' + alert.type" role=alert>
                 <strong>{{ alert.message }}</strong>
                 <button @click="alertstore.reset()" class="btn btn-link close">
                     <span aria-hidden="true">&times;</span>

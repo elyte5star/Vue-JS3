@@ -77,7 +77,7 @@
                     <!--Grid column-->
 
                     <!--Grid column-->
-                    <div class="col-md-3 text-center" style="padding: ;">
+                    <div class="col-md-3 text-center" >
                         <div class="ibox-title">
                             <h5>Support</h5>
                         </div>

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { axiosInstance } from '@/helpers/axiosHttp';
 import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
-import type { User, Enquiry, Booking, Registration, PasswordChange } from '@/helpers/my-types';
+import type { User, Enquiry, Booking, Registration, PasswordChange, UpdateUserPassword} from '@/helpers/my-types';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 import { userAlertStore } from './alert';
@@ -15,13 +15,12 @@ export const userStore = defineStore({
         async getUsers() {
             try {
                 const response = await axiosInstance.get('users');
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Couldnt get Users');
-                    return;
+                if (response.data.success) {
+                    this.users = response.data.result;
                 }
-                this.users = response.data.result;
 
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message)
                 console.log(error);
             }
         },
@@ -29,14 +28,15 @@ export const userStore = defineStore({
             try {
                 const response = await axiosInstance.get('users/signup/resendOtp', { params: { "email": email } });
                 if (response.data.success) {
-                    console.log(response.data.result);
                     this.emailSent = true;
+                    this.alertStore.success(response.data.result);
                     //return router.replace({ name: 'Confirm', query: response.data.result })
                 } else {
                     this.alertStore.error(response.data.result);
                 }
 
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message)
                 console.log(error);
             }
 
@@ -45,13 +45,11 @@ export const userStore = defineStore({
             try {
                 token = token.trim();
                 const response = await axiosInstance.get('users/signup/verify-otp', { params: { "otp": token } });
-                if (!response.data.success) {
-                    console.log(response.data.result);
-                    return;
+                if (response.data.success) {
+                    this.alertStore.success(response.data.result);
                 }
-                console.log(response.data.result)
-                //return router.replace({ name: 'Confirm' })
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message)
                 console.error(error);
 
             }
@@ -64,8 +62,9 @@ export const userStore = defineStore({
                 if (response.data.success) {
                     return router.replace({ name: 'ChangePassword', query: { resetToken: token } })
                 }
-                console.log(response.data.result)
+               
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message)
                 console.error(error);
 
             }
@@ -77,8 +76,8 @@ export const userStore = defineStore({
                     this.emailSent = true;
                     return router.replace({ name: 'OtpEmail', query: response.data.result })
                 }
-                this.alertStore.error(response.data.message || 'Registration unsuccessful!');
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message || 'Registration unsuccessful!');
                 console.error(error);
             }
 
@@ -87,10 +86,24 @@ export const userStore = defineStore({
             try {
                 const response = await axiosInstance.post('users/password/change-password', passChange);
                 if (response.data.success) {
-                    return router.replace({ name: 'Confirm', query: { "message": response.data.result } })
+                    this.alertStore.success(response.data.result);
+                    //return router.replace({ name: 'Confirm', query: { "message": response.data.result } })
                 }
-                this.alertStore.error(response.data.message || 'Registration unsuccessful!');
+             
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message || 'Password Change unsuccessful!');
+            }
+
+        },
+        async updatePassword(passChange: UpdateUserPassword) {
+            try {
+                const response = await axiosInstance.post('users/password/updatePassword', passChange);
+                if (response.data.success) {
+                    //return router.replace({ name: 'Confirm', query: { "message": response.data.result } })
+                    this.alertStore.success(response.data.result);
+                }
+            } catch (error: any) {
+                this.alertStore.error(error.response.data.message || 'Password Change unsuccessful!');
                 console.error(error);
             }
 

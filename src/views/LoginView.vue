@@ -76,7 +76,7 @@
                     </div>
                     <div class="ibox">
                         <p class="font-bold">Products you may be interested</p>
-                        <div v-for="item in products" v-bind:key="item.pid" class="ibox-content">
+                        <div id="recommendation_list" v-for="item in Array.prototype.slice.call(products, 1, 3)" v-bind:key="item.pid" class="ibox-content">
                             <div class="table-responsive">
                                 <table class="table shoping-cart-table">
                                     <tbody>
@@ -120,7 +120,7 @@
 import { userAuthStore } from '@/stores/auth_store'
 import { storeToRefs } from 'pinia'
 import { googleOneTap } from 'vue3-google-login'
-import { isUserNameValid, showPassword } from '@/helpers/script'
+import { isUserNameValid, showPassword} from '@/helpers/script'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { defineComponent } from 'vue'
 import type { AccountInfo } from '@azure/msal-browser'

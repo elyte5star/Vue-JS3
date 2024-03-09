@@ -97,7 +97,7 @@
 
                     <div class="ibox">
                         <p class="font-bold">Products you may be interested</p>
-                        <div v-for="item in products" v-bind:key="item.pid" class="ibox-content">
+                        <div id="recommendation_list" v-for="item in Array.prototype.slice.call(products, 1, 3)" v-bind:key="item.pid" class="ibox-content">
                             <div class="table-responsive">
                                 <table class="table shoping-cart-table">
                                     <tbody>

@@ -17,14 +17,14 @@ export function getRandomItem(arr: Array<Product>) {
     // get random index value
     let randomIndex = Math.floor(Math.random() * arr.length)
     // get random item
-    const item = arr[randomIndex]
+    const item:Product = arr[randomIndex]
 
     return item
 }
 
-export function getRandomIndex(n:number) {
+export function getRandomIndex(length:number) {
     // get random index value
-    let randomIndex = Math.floor(Math.random() * n)
+    let randomIndex = Math.floor(Math.random() * length)
     return randomIndex
 }
 

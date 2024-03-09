@@ -60,6 +60,7 @@
                             <p>
                               Email: <span>{{ booking.shipping_details.bemail }}</span>
                             </p>
+                            
                             <p>
                               Address:
                               <span>{{ booking.shipping_details.baddress }},

@@ -50,7 +50,10 @@ export type CreditCard = {
     nameOnCard: null
 
 }
-
+export type UpdateUserPassword={
+    newPassword:string | null
+    oldPassword: string | null
+}
 export type Address = {
     fname: null,
     baddress: null,

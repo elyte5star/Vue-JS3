@@ -30,7 +30,10 @@
 }
 
 /** Common **/
-
+#recommendation_list img{
+    width: 50px;
+    height: 50px;
+}
 .disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -60,6 +63,7 @@ html {
 }
 
 #login_access,
+#update-pass,
 #add_entry,
 #update_entry {
     
@@ -67,7 +71,6 @@ html {
     position: relative;
     padding: 5px;
     max-width: 98%;
-    font-weight: bold;
     background-color: white;
 }
 
@@ -736,7 +739,9 @@ article:hover {
 
 /* Login Modify Register*/
 
-
+#globalError{
+    margin-top: 10px;
+}
 .user-action .btn {
     margin-right: 10px;
 }
@@ -754,6 +759,16 @@ article:hover {
 }
 
 .add_entry label {
+    color: #aaa;
+    letter-spacing: 1px;
+    margin: 0px;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    font-weight: bold;
+
+}
+
+.update-pass label {
     color: #aaa;
     letter-spacing: 1px;
     margin: 0px;
@@ -792,6 +807,12 @@ article:hover {
 }
 
 
+.update-pass form {
+    text-align: left;
+    padding: 0px;
+    border-radius: 10px;
+}
+
 .login_access label {
     color: #aaa;
     letter-spacing: 1px;
@@ -823,7 +844,7 @@ article:hover {
 
 .bi {
     position: relative;
-    left: 575px;
+    left: 615px;
     bottom: 30px;
 
 }
@@ -836,6 +857,7 @@ article:hover {
 
 .update_entry a {
     text-decoration: none;
+    color: #424242;
 
 }
 
@@ -848,16 +870,13 @@ article:hover {
     margin-top: -1.25rem;
 }
 
-#add_entry img{
-    width: 50px;
-    height: 50px;
-}
-
-#login_access img{
-    width: 50px;
-    height: 50px;
+#update-pass a {
+text-decoration: none;
+color: #424242;
 
 }
+
+
 
 /* End Login */
 

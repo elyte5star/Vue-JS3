@@ -59,10 +59,7 @@ axiosInstance.interceptors.response.use(function (response) {
     if (!error.response) {
 
         if (error.code === 'ERR_NETWORK' && error.message.includes('Network Error')) {
-
-            console.log('Error: Network Error, Server is down');
             router.replace({ name: 'ServerError' });
-
             return Promise.reject(error)
 
         } else if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {

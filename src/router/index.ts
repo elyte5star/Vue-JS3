@@ -9,7 +9,7 @@ import AdminView from '@/views/AdminView.vue'
 import RegisterUser from '@/views/RegisterUserView.vue'
 import ContactUs from '@/views/ContactView.vue'
 import Confirm from '@/views/Confirmation.vue'
-import ChangePassword from '@/views/UpdatePassword.vue'
+import ChangePassword from '@/views/ChangePassword.vue'
 import ServerError from '@/views/ServerError.vue';
 import AdminUserList from '@/components/AdminUserList.vue'
 import AdminUserDetails from '@/components/AdminUserDetails.vue'
