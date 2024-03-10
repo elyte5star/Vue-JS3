@@ -22,7 +22,7 @@ export type PasswordChange = {
     resetToken:string | null
 }
 
-export type User = {
+export interface User {
     createdBy: string
     createdAt: Date
     lastModifiedBy: string
@@ -32,14 +32,15 @@ export type User = {
     email: string
     accountNonLocked: boolean
     failedAttempt: number
-    lockTime: Date,
+    lockTime: Date
     admin: boolean
     enabled: boolean
     bookings: Array<Booking>
     locations: Array<string>
     telephone: string
-    discount: null,
+    userDiscount: null
     using2FA: false
+    address:UserAddress
 }
 
 export type CreditCard = {
@@ -66,15 +67,18 @@ export type Address = {
 export interface BillingAddress extends Address {
 
 }
+export type UserAddress ={
+    fullName: string 
+    streetAddress:string
+    country: string
+    zip: string
+    state: string
 
+}
 export type ModifyUserInfo = {
     email: string | null
     telephone: string | null
-    fullName: string | null
-    address: string | null
-    city: string
-    country: string | null
-    zip: string | null
+    address:UserAddress
 
 }
 
@@ -146,6 +150,7 @@ export type Product = {
     price: number;
     reviews: Array<Review>;
     stock_quantity: number
+    productDiscount:number
 }
 
 export interface ProductsQuery {

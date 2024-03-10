@@ -160,7 +160,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="ibox">
+                        <div v-if="products" class="ibox">
                         <p class="font-bold">Products you may be interested</p>
                         <div id="recommendation_list" v-for="item in Array.prototype.slice.call(products, 1, 3)" v-bind:key="item.pid" class="ibox-content">
                             <div class="table-responsive">

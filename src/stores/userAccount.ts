@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { axiosInstance } from '@/helpers/axiosHttp';
 import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
-import type { User, Enquiry, Booking, Registration, PasswordChange, UpdateUserPassword} from '@/helpers/my-types';
+import type { User, Enquiry, Booking, Registration, PasswordChange, UpdateUserPassword, ModifyUserInfo} from '@/helpers/my-types';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 import { userAlertStore } from './alert';
@@ -127,10 +127,10 @@ export const userStore = defineStore({
                 if (response.data.success) {
                     this.alertStore.success('Your password change request was submitted!' + " Please check your email ");
                     this.emailSent = true;
-                    return;
                 }
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
+               
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message)
                 console.log(error);
             }
         },
@@ -142,8 +142,8 @@ export const userStore = defineStore({
                     this.bookingsHistory = response.data.result.bookings
                     return;
                 }
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message)
                 console.error(error);
             }
 
@@ -157,28 +157,29 @@ export const userStore = defineStore({
                     (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
                     return;
                 }
-                this.alertStore.error(response.data.message || 'Operation unsuccessful');
                 (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
             } catch (error: any) {
+                this.alertStore.error(error.response.data.message)
                 console.error(error);
             }
 
         },
-        async updateUserById(userid: string, new_data: any) {
+        async updateUserById(userid: string, new_data: ModifyUserInfo| {}) {
             try {
                 const response = await axiosInstance.put('users/' + userid, new_data);
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                    (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
-                    return;
+                if (response.data.success) {
+                    if (userid === this.authStore.user.userid) {
+                        const user = { ...this.authStore.user, ...new_data };
+                        localStorage.setItem('user', JSON.stringify(user));
+                        this.authStore.user = user;
+                        this.user =user
+                    }
+                    this.alertStore.success(response.data.message || 'Operation unsuccessful');
                 }
 
-                if (userid === this.authStore.user.userid) {
-                    const user = { ...this.authStore.user, ...new_data };
-                    localStorage.setItem('user', JSON.stringify(user));
-                    this.authStore.user = user;
-                }
             } catch (error: any) {
+                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+                this.alertStore.error(error.response.data.message)
                 console.error(error);
             }
 

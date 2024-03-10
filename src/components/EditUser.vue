@@ -50,9 +50,9 @@
                             <input v-model="address" class="form-control billing-inputs" type="text" id="adr" name="address" placeholder="542 W. 15th Street" maxlength="20">
                         </div>
                         <div>
-                            <label class="form-label" for="city"><i class="fa fa-institution"></i>
-                                City:</label>
-                            <input v-model="city" class="form-control billing-inputs" type="text" id="city" name="city" placeholder="Lagos or St. Laos" maxlength="16">
+                            <label class="form-label" for="state"><i class="fa fa-institution"></i>
+                                State:</label>
+                            <input v-model="state" class="form-control billing-inputs" type="text" id="state" name="state" placeholder="Lagos or St. Laos" maxlength="16">
                         </div>
                         <div class="row">
                             <div class="col-md-6"><label class="form-label" for="state"><i class="fa fa-globe" aria-hidden="true"></i> Country:</label>
@@ -119,11 +119,9 @@
                                 </table>
                             </div>
                         </div>
-
                     </div>
-
+                    
                 </div>
-
             </div>
         </div>
     </div>
@@ -164,12 +162,12 @@ export default defineComponent({
     name: 'EditUser',
     data() {
         return {
-            zip: null,
+            zip: '',
             countries: countries,
-            fname: null,
-            address: null,
-            city: null,
-            bcountry: null,
+            fname: '',
+            address: '',
+            state: '',
+            bcountry: '',
             editTel: '',
             editEmail: '',
             editUsername: '',
@@ -196,7 +194,7 @@ export default defineComponent({
                 await this.userStore.updateUserById(this.user_info.userid, address);
                 return;
             }
-            this.userStore.alertStore.error("Telephone or email can not be empty!")
+            
 
         },
         async deleteUser(userid: string) {
@@ -221,17 +219,20 @@ export default defineComponent({
         checkAddress(): ModifyUserInfo | {} {
             if (validateFullName(this.fname) &&
                 is_valid_Email(this.editEmail) &&
-                this.address && this.city && this.editTel &&
+                this.address && this.state && this.editTel &&
                 this.checkPostCodeAndCountry(this.bcountry, this.zip)
             ) {
                 const update: ModifyUserInfo = {
                     email: this.editEmail,
                     telephone: this.editTel,
-                    fullName: this.fname,
-                    address: this.address,
-                    country: this.bcountry,
-                    zip: this.zip,
-                    city: this.city
+                    address: {
+                        fullName: this.fname,
+                        streetAddress: this.address,
+                        country: this.bcountry,
+                        zip: this.zip,
+                        state: this.state
+                    }
+
                 }
 
                 return update;
@@ -245,6 +246,11 @@ export default defineComponent({
         this.editUsername = this.user_info.username;
         this.editTel = this.user_info.telephone;
         this.editEmail = this.user_info.email;
+        this.fname =this.user_info.address?.fullName
+        this.address=this.user_info.address?.streetAddress
+        this.bcountry=this.user_info.address?.country
+        this.zip =this.user_info.address?.zip
+        this.state=this.user_info.address?.state
     },
 
 })
