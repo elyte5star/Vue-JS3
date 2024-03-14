@@ -27,19 +27,19 @@
                         <div class="form-outline">
                             <label class="form-label">New Password</label>
                             <input autocomplete="on" maxlength="20" aria-describedby="passwordHelpBlock" v-model.lazy="newPassword" class="form-control" id="update-password" name="newPassword" type="password" />
-                            <a href="javascript:void(0)" @click="showPassword('update-password')"><i class="bi bi-eye-slash" id="toggleUpdatePassword"></i></a>
+                            <a href="javascript:void(0)" @click="showPassword('update-password','toggleUpdatePassword')"><i class="bi bi-eye-slash" id="toggleUpdatePassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
                                 Your password must be 5-20 characters long, contain letters and numbers, and must not
                                 contain spaces, special characters, or emoji.
                             </div>
                         </div>
-                        <br /><br />
+                        <br />
                         <label class="col-sm-12">Confirm</label>
                         <div class="form-outline">
                             <input v-on:keyup="checkIfpasswordMatch" v-model="matchPassword" class="form-control" id="matchPassword" name="matchingPassword" type="password" />
                         </div>
                         <div class="col-sm-12">
-                            <br /><br />
+                            <br />
                             <button class="btn btn-primary" type="submit">Update Password</button>
                         </div>
                     </form>
@@ -116,17 +116,11 @@ import {
 import type {
     PropType
 } from 'vue'
+import { showPassword } from '@/helpers/script'
 export default {
     name: 'UpdatePassword',
     methods: {
-        showPassword(ele_id: string, ele2_id: string = 'toggleUpdatePassword') {
-            const togglePassword = document.querySelector('#' + ele2_id);
-            const passWord = document.querySelector('#' + ele_id) !;
-            const type = passWord.getAttribute('type') === 'password' ? 'text' : 'password';
-            passWord.setAttribute('type', type);
-            togglePassword?.classList.toggle('bi-eye');
-
-        },
+        
         async deleteUser(userid: string) {
             await this.userStore.deleteUserAccount(userid)
         },
@@ -166,6 +160,7 @@ export default {
     },
     data() {
         return {
+            showPassword,
             matchPassword: null,
             oldPassword: null,
             newPassword: null,

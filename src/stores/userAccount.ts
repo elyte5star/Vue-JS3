@@ -86,7 +86,7 @@ export const userStore = defineStore({
             try {
                 const response = await axiosInstance.post('users/password/change-password', passChange);
                 if (response.data.success) {
-                    this.alertStore.success(response.data.result);
+                    this.alertStore.success(response.data.result +". Please Log in");
                     //return router.replace({ name: 'Confirm', query: { "message": response.data.result } })
                 }
              

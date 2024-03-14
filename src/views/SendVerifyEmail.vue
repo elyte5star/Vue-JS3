@@ -42,7 +42,7 @@
                                     <input v-model="email" id="verifyEmail" type="text"
                                         class="form-control col-md-6 col-sm-6 col-sm-offset-2" name="verifyEmail" />
                                     <input class="btn btn-primary btn-lg col-md-2 col-sm-2" type="submit"
-                                        value="Send Code" />
+                                        value="Send Reset Code" />
                                 </div>
                             </div>
                         </form>
@@ -133,7 +133,7 @@ export default {
             } else if (this.email && is_valid_Email(this.email) && this.passwordReset == 'true') {
                 await this.user_store.sendPasswordResetToken(this.email)
             } else {
-                ; (<HTMLInputElement>document.getElementById('verifyEmail')).focus()
+                (<HTMLInputElement>document.getElementById('verifyEmail')).focus()
                 this.alertStore.error('Empty email Field')
             }
         },
