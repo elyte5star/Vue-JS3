@@ -3,8 +3,6 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 
-import vue3GoogleLogin from 'vue3-google-login'
-
 import router from './router'
 import { createPinia } from 'pinia';
 
@@ -37,7 +35,6 @@ const app = createApp(App);
 
 
 app.use(VueSweetalert2, options);
-app.use(vue3GoogleLogin, { clientId: process.env.VUE_GOOGLE_CLIENT_ID });
 app.use(PaginationBar as any, {
   })
 app.component('EasyDataTable', Vue3EasyDataTable);

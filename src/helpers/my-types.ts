@@ -165,7 +165,7 @@ export interface Item extends Product {
     calculated_price: number
 }
 export type CloudLogin = {
-    type: string
+    authType: string
     token: string | undefined
 }
 export type Sort = {

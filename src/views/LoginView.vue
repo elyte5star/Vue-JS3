@@ -43,7 +43,8 @@
                             </div>
                         </div>
                         <div id="forgetget_password">
-                            <router-link :to="{ name: 'OtpEmail',query: { passwordReset: 'true' } }">Forgot password?</router-link>
+                            <router-link :to="{ name: 'OtpEmail', query: { passwordReset: 'true' } }">Forgot
+                                password?</router-link>
                         </div>
 
                         <!-- Submit button -->
@@ -76,7 +77,8 @@
                     </div>
                     <div v-if="products" class="ibox">
                         <p class="font-bold">Products you may be interested</p>
-                        <div id="recommendation_list" v-for="item in Array.prototype.slice.call(products, 1, 3)" v-bind:key="item.pid" class="ibox-content">
+                        <div id="recommendation_list" v-for="item in Array.prototype.slice.call(products, 1, 3)"
+                            v-bind:key="item.pid" class="ibox-content">
                             <div class="table-responsive">
                                 <table class="table shoping-cart-table">
                                     <tbody>
@@ -120,8 +122,9 @@
 import { userAuthStore } from '@/stores/auth_store'
 import { storeToRefs } from 'pinia'
 import { googleOneTap } from 'vue3-google-login'
-import { isUserNameValid, showPassword} from '@/helpers/script'
+import { isUserNameValid, showPassword } from '@/helpers/script'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
+import { googleProvider } from '@/helpers/gmailAuthConfig'
 import { defineComponent } from 'vue'
 import type { AccountInfo } from '@azure/msal-browser'
 import type { CloudLogin, Product } from '@/helpers/my-types'
@@ -142,6 +145,7 @@ export default defineComponent({
             password: null,
             showPassword,
             authStore: userAuthStore()
+
         }
     },
     methods: {
@@ -149,18 +153,25 @@ export default defineComponent({
             await this.pStore.getProducts()
         },
         async googleLogin(): Promise<void> {
+            const login = googleProvider.useGoogleLogin({
+                flow: 'implicit',
+                onSuccess: (tokenResponse) =>  this.sendGmailToken(tokenResponse.access_token),
+                onError: (err) => this.authStore.alert.error(`Failed to login with google: ${err}`)
+            })
+            login();
+        },
+        async sendGmailToken(tokenStr:string){
             try {
-                const loginResponse = await googleOneTap()
                 const data: CloudLogin = {
-                    type: 'GMAIL',
-                    token: loginResponse.credential
+                    authType: 'GMAIL',
+                    token: tokenStr
                 }
                 await this.authStore.cloudLogin(data)
             } catch (error) {
-                this.authStore.alert.error(`error during authentication: ${error}`)
+                this.authStore.alert.error(`error during Gmail token validation: ${error}`)
             }
-        },
 
+        },
         async msoftLogin(): Promise<void> {
             try {
                 await this.msalInstance.handleRedirectPromise()
@@ -171,7 +182,7 @@ export default defineComponent({
                 }
                 const account: AccountInfo = accounts[0]
                 const data: CloudLogin = {
-                    type: 'MSOFT',
+                    authType: 'MSOFT',
                     token: account.idToken
                 }
                 await this.authStore.cloudLogin(data)
@@ -179,7 +190,7 @@ export default defineComponent({
                 this.authStore.alert.error(`error during authentication: ${error}`)
             }
         },
-        
+
         async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise()
         },
@@ -201,14 +212,14 @@ export default defineComponent({
         },
         invalidFeedback() {
             if (!this.password) {
-            (<HTMLInputElement>document.getElementById('loginUsername')).focus()
+                (<HTMLInputElement>document.getElementById('loginUsername')).focus()
                 this.authStore.alert.error('Password required!');
-               
+
             }
             if (!isUserNameValid(this.username)) {
                 this.authStore.alert.error('Invalid username!');
                 (<HTMLInputElement>document.getElementById('password')).focus();
-             
+
             }
         }
     },
