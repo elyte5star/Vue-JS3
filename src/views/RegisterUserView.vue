@@ -102,8 +102,8 @@
 </template>
 
 <script lang="ts">
+import { googleProvider } from '@/helpers/gmailAuthConfig'
 import { is_Input_Error, showPassword } from '@/helpers/script'
-import { googleOneTap } from 'vue3-google-login'
 import { userStore } from '@/stores/userAccount'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { defineComponent } from 'vue'
@@ -153,21 +153,28 @@ export default defineComponent({
             await this.msalInstance.handleRedirectPromise()
         },
         async googleCreateAccount(): Promise<void> {
+            const login = googleProvider.useGoogleLogin({
+                flow: 'implicit',
+                onSuccess: (tokenResponse) =>  this.sendGmailToken(tokenResponse.access_token),
+                onError: (err) => this.authStore.alert.error(`Failed to login with google: ${err}`)
+            })
+            login();
+        },
+        async sendGmailToken(tokenStr:string){
             try {
-                const loginResponse = await googleOneTap()
                 const data: CloudLogin = {
-                    type: 'GMAIL',
-                    token: loginResponse.credential
+                    authType: 'GMAIL',
+                    token: tokenStr
                 }
                 await this.authStore.cloudLogin(data)
             } catch (error) {
-                this.authStore.alert.error(`error during authentication: ${error}`)
+                this.authStore.alert.error(`error during Gmail token validation: ${error}`)
             }
-        },
 
+        },
         async msoftCreateAccount(): Promise<void> {
             try {
-                await this.msalInstance.handleRedirectPromise()
+                //await this.msalInstance.handleRedirectPromise()
                 await this.msalInstance.loginPopup(loginRequest)
                 const accounts = this.msalInstance.getAllAccounts()
                 if (accounts.length === 0) {
@@ -175,7 +182,7 @@ export default defineComponent({
                 }
                 const account: AccountInfo = accounts[0]
                 const data: CloudLogin = {
-                    type: 'MSOFT',
+                    authType: 'MSOFT',
                     token: account.idToken
                 }
                 await this.authStore.cloudLogin(data)

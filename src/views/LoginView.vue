@@ -121,7 +121,6 @@
 /* eslint-disable */
 import { userAuthStore } from '@/stores/auth_store'
 import { storeToRefs } from 'pinia'
-import { googleOneTap } from 'vue3-google-login'
 import { isUserNameValid, showPassword } from '@/helpers/script'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { googleProvider } from '@/helpers/gmailAuthConfig'
@@ -155,16 +154,17 @@ export default defineComponent({
         async googleLogin(): Promise<void> {
             const login = googleProvider.useGoogleLogin({
                 flow: 'implicit',
-                onSuccess: (tokenResponse) =>  this.sendGmailToken(tokenResponse.access_token),
+                onSuccess: (tokenResponse) => this.sendGmailToken(tokenResponse.access_token),
                 onError: (err) => this.authStore.alert.error(`Failed to login with google: ${err}`)
             })
             login();
         },
-        async sendGmailToken(tokenStr:string){
+        async sendGmailToken(tokenStr: string) {
             try {
                 const data: CloudLogin = {
-                    authType: 'GMAIL',
-                    token: tokenStr
+                    token: tokenStr,
+                    authType: 'GMAIL'
+
                 }
                 await this.authStore.cloudLogin(data)
             } catch (error) {
@@ -174,7 +174,7 @@ export default defineComponent({
         },
         async msoftLogin(): Promise<void> {
             try {
-                await this.msalInstance.handleRedirectPromise()
+                //await this.msalInstance.handleRedirectPromise()
                 await this.msalInstance.loginPopup(loginRequest)
                 const accounts = this.msalInstance.getAllAccounts()
                 if (accounts.length === 0) {
@@ -182,8 +182,8 @@ export default defineComponent({
                 }
                 const account: AccountInfo = accounts[0]
                 const data: CloudLogin = {
-                    authType: 'MSOFT',
-                    token: account.idToken
+                    token: account.idToken,
+                    authType: 'MSOFT'
                 }
                 await this.authStore.cloudLogin(data)
             } catch (error) {
@@ -212,13 +212,15 @@ export default defineComponent({
         },
         invalidFeedback() {
             if (!this.password) {
-                (<HTMLInputElement>document.getElementById('loginUsername')).focus()
+                const ele = document.getElementById('loginUsername') as HTMLInputElement
+                ele.focus();
                 this.authStore.alert.error('Password required!');
 
             }
             if (!isUserNameValid(this.username)) {
                 this.authStore.alert.error('Invalid username!');
-                (<HTMLInputElement>document.getElementById('password')).focus();
+                const ele = document.getElementById('password') as HTMLInputElement;
+                ele.focus();
 
             }
         }
