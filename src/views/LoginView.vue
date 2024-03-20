@@ -121,13 +121,14 @@
 /* eslint-disable */
 import { userAuthStore } from '@/stores/auth_store'
 import { storeToRefs } from 'pinia'
-import { isUserNameValid, showPassword } from '@/helpers/script'
+import { isUserNameValid, showPassword,decodeJwtResponse } from '@/helpers/script'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { googleProvider } from '@/helpers/gmailAuthConfig'
 import { defineComponent } from 'vue'
 import type { AccountInfo } from '@azure/msal-browser'
 import type { CloudLogin, Product } from '@/helpers/my-types'
 import { productStore } from '@/stores/products'
+import type { CredentialResponse } from 'google-oauth-gsi'
 
 export default defineComponent({
     name: 'LoginView',
@@ -152,12 +153,11 @@ export default defineComponent({
             await this.pStore.getProducts()
         },
         async googleLogin(): Promise<void> {
-            const login = googleProvider.useGoogleLogin({
-                flow: 'implicit',
-                onSuccess: (tokenResponse) => this.sendGmailToken(tokenResponse.access_token),
-                onError: (err) => this.authStore.alert.error(`Failed to login with google: ${err}`)
-            })
-            login();
+            const oneTap = googleProvider.useGoogleOneTapLogin({
+                cancel_on_tap_outside: true,
+                onSuccess: (response: CredentialResponse) => this.sendGmailToken(response.credential!!),  
+            });
+            oneTap();
         },
         async sendGmailToken(tokenStr: string) {
             try {
