@@ -128,7 +128,7 @@ import { defineComponent } from 'vue'
 import type { AccountInfo } from '@azure/msal-browser'
 import type { CloudLogin, Product } from '@/helpers/my-types'
 import { productStore } from '@/stores/products'
-import type { CredentialResponse } from 'google-oauth-gsi'
+import type { CredentialResponse, PromptMomentNotification } from 'google-oauth-gsi'
 
 export default defineComponent({
     name: 'LoginView',
@@ -156,8 +156,15 @@ export default defineComponent({
             const oneTap = googleProvider.useGoogleOneTapLogin({
                 cancel_on_tap_outside: true,
                 onSuccess: (response: CredentialResponse) => this.sendGmailToken(response.credential!!),  
+                promptMomentNotification:(notification: PromptMomentNotification) => this.gMailNotification(notification)
             });
             oneTap();
+        },
+        gMailNotification(notification: PromptMomentNotification){
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                this.authStore.alert.error("Login with google not available, continue with another identity provider");
+            }
+
         },
         async sendGmailToken(tokenStr: string) {
             try {
