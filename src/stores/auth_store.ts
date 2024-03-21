@@ -43,15 +43,26 @@ export const userAuthStore = defineStore({
         },
 
         async cloudLogin(userData: CloudLogin) {
-            const response = await axiosInstance.post('auth/get-token', userData);
-            if (response.data.success && response.data.result !== undefined) {
-                this.user = response.data.result;
-                localStorage.setItem('user', JSON.stringify(response.data.result));
-                router.push({ name: 'oneUser', params: { userid: this.user.userid } })
+            try {
+                const response = await axiosInstance.post('auth/get-token', userData);
+                if (response.data.success && response.data.result !== undefined) {
+                    this.user = response.data.result;
+                    localStorage.setItem('user', JSON.stringify(response.data.result));
+                    router.push(this.returnUrl || '/');
 
-            } else {
+                }
                 this.alert.error(response.data.message);
+            } catch (error: any) {
+                if (Object.prototype.hasOwnProperty.call(error.response.data.result, "disabled") && error.response.data.result.disabled) {
+                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
+                } else if (Object.prototype.hasOwnProperty.call(error.response.data.result, "locked") && error.response.data.result.locked) {
+                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
+                } else {
+                    this.alert.error(error.response.data.message + error.response.data.result);
+                }
+
             }
+
         },
         async logout() {
             this.user = null;

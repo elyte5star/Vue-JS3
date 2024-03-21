@@ -153,11 +153,11 @@ export const userStore = defineStore({
                 const response = await axiosInstance.put('users/enable/' + username);
                 if (response.data.success) {
                     this.user = response.data.result
-                    this.alertStore.success("External login : " + this.user?.using2FA);
-                    (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+                    const txt = this.user?.using2FA ? 'External login enabled': 'External login disabled'
+                    this.alertStore.success(txt);
                     return;
                 }
-                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+                
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
                 console.error(error);

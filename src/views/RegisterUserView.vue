@@ -4,19 +4,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <form @submit.prevent="registerUser">
-                        <div class="text-center mb-3">
-                            <p>Sign up with:</p>
-                            <button v-on:click.prevent="msoftCreateAccount" type="button"
-                                class="btn btn-link btn-floating mx-1">
-                                <i class="fa fa-windows"></i>
-                            </button>
-                            <button v-on:click.prevent="googleCreateAccount" type="button"
-                                class="btn btn-link btn-floating mx-1">
-                                <i class="fa fa-google"></i>
-                            </button>
-                        </div>
-
-                        <p class="text-center">or:</p>
+                        <h2>New Account Registration Form</h2>
                         <!-- Username input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="registerUsername">Username:</label>
@@ -33,7 +21,6 @@
                             <label class="form-label" for="registerEmail">Email:</label>
                             <input v-model="registerEmail" type="email" id="registerEmail" class="form-control" />
                         </div>
-
                         <!-- Password input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="registerPassword">Password:</label>
@@ -102,16 +89,14 @@
 </template>
 
 <script lang="ts">
-import { googleProvider } from '@/helpers/gmailAuthConfig'
 import { is_Input_Error, showPassword } from '@/helpers/script'
 import { userStore } from '@/stores/userAccount'
-import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
+import { _msalInstance } from '@/helpers/msoftAuthConfig'
 import { defineComponent } from 'vue'
-import type { AccountInfo } from '@azure/msal-browser'
-import type { CloudLogin, Registration } from '@/helpers/my-types'
+import type { Registration } from '@/helpers/my-types'
 import { userAuthStore } from '@/stores/auth_store'
 import { productStore } from '@/stores/products'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     name: 'RegisterUser',
@@ -141,7 +126,6 @@ export default defineComponent({
         checkIfpasswordMatch() {
             if (this.registerPassword != this.registerRepeatPassword) {
                 this.user_store.alertStore.error('Password does not match!');
-
             } else {
                 this.user_store.alertStore.reset()
             }
@@ -152,44 +136,7 @@ export default defineComponent({
         async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise()
         },
-        async googleCreateAccount(): Promise<void> {
-            const login = googleProvider.useGoogleLogin({
-                flow: 'implicit',
-                onSuccess: (tokenResponse) =>  this.sendGmailToken(tokenResponse.access_token),
-                onError: (err) => this.authStore.alert.error(`Failed to login with google: ${err}`)
-            })
-            login();
-        },
-        async sendGmailToken(tokenStr:string){
-            try {
-                const data: CloudLogin = {
-                    authType: 'GMAIL',
-                    token: tokenStr
-                }
-                await this.authStore.cloudLogin(data)
-            } catch (error) {
-                this.authStore.alert.error(`error during Gmail token validation: ${error}`)
-            }
-
-        },
-        async msoftCreateAccount(): Promise<void> {
-            try {
-                //await this.msalInstance.handleRedirectPromise()
-                await this.msalInstance.loginPopup(loginRequest)
-                const accounts = this.msalInstance.getAllAccounts()
-                if (accounts.length === 0) {
-                    return this.msalInstance.loginRedirect(loginRequest)
-                }
-                const account: AccountInfo = accounts[0]
-                const data: CloudLogin = {
-                    authType: 'MSOFT',
-                    token: account.idToken
-                }
-                await this.authStore.cloudLogin(data)
-            } catch (error) {
-                this.authStore.alert.error(`error during authentication: ${error}`)
-            }
-        },
+        
         async registerUser(): Promise<void> {
             if (
                 !is_Input_Error(

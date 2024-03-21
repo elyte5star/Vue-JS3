@@ -121,7 +121,7 @@
 /* eslint-disable */
 import { userAuthStore } from '@/stores/auth_store'
 import { storeToRefs } from 'pinia'
-import { isUserNameValid, showPassword,decodeJwtResponse } from '@/helpers/script'
+import { isUserNameValid, showPassword, decodeJwtResponse } from '@/helpers/script'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { googleProvider } from '@/helpers/gmailAuthConfig'
 import { defineComponent } from 'vue'
@@ -155,29 +155,24 @@ export default defineComponent({
         async googleLogin(): Promise<void> {
             const oneTap = googleProvider.useGoogleOneTapLogin({
                 cancel_on_tap_outside: true,
-                onSuccess: (response: CredentialResponse) => this.sendGmailToken(response.credential!!),  
-                promptMomentNotification:(notification: PromptMomentNotification) => this.gMailNotification(notification)
+                onSuccess: (response: CredentialResponse) => this.sendGmailToken(response.credential!!),
+                promptMomentNotification: (notification: PromptMomentNotification) => this.gMailNotification(notification)
             });
             oneTap();
         },
-        gMailNotification(notification: PromptMomentNotification){
+        gMailNotification(notification: PromptMomentNotification) {
             if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
                 this.authStore.alert.error("Login with google not available, continue with another identity provider");
             }
 
         },
-        async sendGmailToken(tokenStr: string) {
-            try {
-                const data: CloudLogin = {
-                    token: tokenStr,
-                    authType: 'GMAIL'
+        async sendGmailToken(idToken: string) {
+            const data: CloudLogin = {
+                token: idToken,
+                authType: 'GMAIL'
 
-                }
-                await this.authStore.cloudLogin(data)
-            } catch (error) {
-                this.authStore.alert.error(`error during Gmail token validation: ${error}`)
             }
-
+            await this.authStore.cloudLogin(data);
         },
         async msoftLogin(): Promise<void> {
             try {

@@ -43,10 +43,14 @@ export default defineComponent({
             const textHour = Math.floor((counter % day) / hour);
             const textMinute = Math.floor((counter % hour) / minute);
             const textSecond = Math.floor((counter % minute) / second);
-            (<HTMLInputElement>document.querySelector(".day")).innerText = textDay + ' Days';
-            (<HTMLInputElement>document.querySelector(".hour")).innerText = textHour + ' Hours';
-            (<HTMLInputElement>document.querySelector(".minute")).innerText = textMinute + ' Minutes';
-            (<HTMLInputElement>document.querySelector(".second")).innerText = textSecond + ' Seconds';
+            const days = document.querySelector(".day") as HTMLInputElement;
+            days.innerHTML =  textDay + ' Days';
+            const hours = document.querySelector(".hour") as HTMLInputElement;
+            hours.innerHTML = textHour + ' Hours';
+            const minutes = document.querySelector(".minute") as HTMLInputElement;
+            minutes.innerHTML = textMinute + ' Minutes';
+            const seconds = document.querySelector(".second") as HTMLInputElement;
+            seconds.innerText = textSecond + ' Seconds';
 
         },
 
