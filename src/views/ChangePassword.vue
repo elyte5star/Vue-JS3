@@ -13,8 +13,8 @@
                                 @click="showPassword('changePassword', 'toggleChangePassword')"><i
                                     class="bi bi-eye-slash" id="toggleChangePassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Your password must be 8-30 characters long, contain letters and numbers,
-                                one special characters, one uppercase.
+                                Password must be at least 8 characters in length, must contain at least 1 uppercase characters.
+                                must contain at least 1 digit characters, must contain at least 1 special characters.
                             </div>
                         </div>
                         <div class="form-outline mb-4">
@@ -25,8 +25,8 @@
                                 @click="showPassword('changePasswordRepeat', 'toggleChangePasswordRepeat')"><i
                                     class="bi bi-eye-slash" id="toggleChangePassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Your password must be 8-30 characters long, contain letters and numbers,
-                                one special characters, one uppercase.
+                                Password must be at least 8 characters in length, must contain at least 1 uppercase characters.
+                                must contain at least 1 digit characters, must contain at least 1 special characters.
                             </div>
                         </div>
                         <label class="col-sm-2">Your token is:</label>

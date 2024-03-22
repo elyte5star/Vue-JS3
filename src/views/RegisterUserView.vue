@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <form @submit.prevent="registerUser">
-                        <h2>New Account Registration Form</h2>
+                        <p  class="text-center">New Account Registration Form</p>
                         <!-- Username input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="registerUsername">Username:</label>
@@ -30,8 +30,8 @@
                                 @click="showPassword('registerPassword', 'toggleRegisterPassword')"><i
                                     class="bi bi-eye-slash" id="toggleRegisterPassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Your password must be 8-30 characters long, contain letters and numbers,
-                                one special characters, one uppercase.
+                                Password must be at least 8 characters in length, must contain at least 1 uppercase characters.
+                                must contain at least 1 digit characters, must contain at least 1 special characters.
                             </div>
                         </div>
 
@@ -45,8 +45,8 @@
                                 @click="showPassword('registerRepeatPassword', 'toggleRegisterRepeatPassword')"><i
                                     class="bi bi-eye-slash" id="toggleRegisterRepeatPassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Your password must be 5-20 characters long, contain letters and numbers, and must
-                                not contain spaces, special characters, or emoji.
+                                Password must be at least 8 characters in length, must contain at least 1 uppercase characters.
+                                must contain at least 1 digit characters, must contain at least 1 special characters.
                             </div>
                         </div>
                         <!-- Telephone input -->
