@@ -58,7 +58,7 @@ export const userAuthStore = defineStore({
                 } else if (Object.prototype.hasOwnProperty.call(error.response.data.result, "locked") && error.response.data.result.locked) {
                     router.replace({ name: 'OtpEmail', query: error.response.data.result })
                 } else {
-                    this.alert.error(error.response.data.message + error.response.data.result);
+                    this.alert.error(error.response.data.message);
                 }
 
             }
