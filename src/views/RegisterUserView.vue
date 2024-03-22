@@ -30,16 +30,17 @@
                                 @click="showPassword('registerPassword', 'toggleRegisterPassword')"><i
                                     class="bi bi-eye-slash" id="toggleRegisterPassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Your password must be 5-20 characters long, contain letters and numbers, and must
-                                not contain spaces, special characters, or emoji.
+                                Your password must be 8-30 characters long, contain letters and numbers,
+                                one special characters, one uppercase.
                             </div>
                         </div>
 
                         <!-- Repeat Password input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="registerRepeatPassword">Repeat password:</label>
-                            <input v-on:keyup="checkIfpasswordMatch" v-model="registerRepeatPassword" type="password" id="registerRepeatPassword"
-                                class="form-control" aria-describedby="passwordHelpBlock" autocomplete="on" />
+                            <input v-on:keyup="checkIfpasswordMatch" v-model="registerRepeatPassword" type="password"
+                                id="registerRepeatPassword" class="form-control" aria-describedby="passwordHelpBlock"
+                                autocomplete="on" />
                             <a href="javascript:void(0)"
                                 @click="showPassword('registerRepeatPassword', 'toggleRegisterRepeatPassword')"><i
                                     class="bi bi-eye-slash" id="toggleRegisterRepeatPassword"></i></a>
@@ -81,7 +82,7 @@
                             </span>
                         </div>
                     </div>
-  
+
                 </div>
             </div>
         </div>
@@ -115,7 +116,7 @@ export default defineComponent({
             registerUsername: null,
             showPassword,
             authStore: userAuthStore(),
-            user_store:userStore()
+            user_store: userStore()
         }
     },
     async created() {
@@ -136,7 +137,7 @@ export default defineComponent({
         async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise()
         },
-        
+
         async registerUser(): Promise<void> {
             if (
                 !is_Input_Error(

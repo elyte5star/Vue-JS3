@@ -23,10 +23,7 @@
                             <label class="form-label" for="loginUsername">Username:</label>
                             <input type="text" id="loginUsername" v-model="username" class="form-control"
                                 aria-describedby="usernameHelpBlock" maxlength="20" />
-                            <div id="usernameHelpBlock" class="form-text">
-                                Usernames must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -
-                                Dots(.) - Underscores(_)
-                            </div>
+               
                         </div>
 
                         <!-- Password input -->
@@ -37,10 +34,7 @@
                                 maxlength="20" />
                             <a href="javascript:void(0)" @click="showPassword('password')"><i class="bi bi-eye-slash"
                                     id="toggleLoginPassword"></i></a>
-                            <div id="passwordHelpBlock" class="form-text">
-                                Your password must be 5-20 characters long, contain letters and numbers, and must
-                                not contain spaces, special characters, or emoji.
-                            </div>
+    
                         </div>
                         <div id="forgetget_password">
                             <router-link :to="{ name: 'OtpEmail', query: { passwordReset: 'true' } }">Forgot

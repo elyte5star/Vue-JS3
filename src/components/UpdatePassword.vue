@@ -29,8 +29,8 @@
                             <input autocomplete="on" maxlength="20" aria-describedby="passwordHelpBlock" v-model.lazy="newPassword" class="form-control" id="update-password" name="newPassword" type="password" />
                             <a href="javascript:void(0)" @click="showPassword('update-password','toggleUpdatePassword')"><i class="bi bi-eye-slash" id="toggleUpdatePassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Your password must be 5-20 characters long, contain letters and numbers, and must not
-                                contain spaces, special characters, or emoji.
+                                Your password must be 8-30 characters long, contain letters and numbers,
+                                one special characters, one uppercase.
                             </div>
                         </div>
                         <br />
