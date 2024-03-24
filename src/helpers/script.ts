@@ -122,7 +122,7 @@ export const show_add_entry = (id: string) => {
 }
 
 export const hide_add_entry = (id: string) => {
-    let element = (<HTMLInputElement>document.getElementById(id));
+    const element = document.getElementById(id) as HTMLInputElement;
     element.style.display = "none";
 }
 
@@ -168,8 +168,8 @@ export const is_Input_Error = (name: string | null, email: string | null, passwo
     else if (!password) {
         alertStore.error("Empty Password Field!");
     }
-    else if (password.length < 5) {
-        alertStore.error("Invalid password, must be more 5 or more characters!");
+    else if (password.length < 8) {
+        alertStore.error("Invalid password, must be more 8 or more characters!");
     }
     else if (password !== password_) {
         alertStore.error("Password mismatch!");
@@ -205,6 +205,7 @@ function mark_text() {
     while ((match = patt.exec(strSearch)) !== null) {
         matches.push(match[1]);
     }
+    
     let txt = strSearch.replace(patt, "");
     matches = matches.concat(txt.trim().split(" "));
     matches.forEach(function (term) {

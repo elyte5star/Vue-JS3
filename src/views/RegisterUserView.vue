@@ -161,7 +161,6 @@ export default defineComponent({
                 this.registerPassword = null
                 this.registerRepeatPassword = null
                 this.registerTel = null
-                //(<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
             }
         }
     }
