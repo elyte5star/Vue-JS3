@@ -46,7 +46,7 @@ export const userStore = defineStore({
                 token = token.trim();
                 const response = await axiosInstance.get('users/signup/verify-otp', { params: { "otp": token } });
                 if (response.data.success) {
-                    this.alertStore.success(response.data.result);
+                    this.alertStore.success(response.data.result + ".Please, login.");
                 }
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
@@ -178,7 +178,6 @@ export const userStore = defineStore({
                 }
 
             } catch (error: any) {
-                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
                 this.alertStore.error(error.response.data.message)
                 console.error(error);
             }
