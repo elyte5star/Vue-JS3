@@ -4,7 +4,7 @@
             <nav>
                 <ul id="nav_items">
                     <li><router-link :to="{ name: 'Home' }"><i class="fa fa-fw fa-home"></i>Home</router-link></li>
-                    <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting" v-html="greeting"></router-link>
+                    <li v-show="greeting"><router-link :to="{ name: 'Home' }" id="greeting"><span v-html="greeting"></span></router-link>
                     </li>
                     <li v-if="version"><a href="javascript:void(0)"><i class="fa fa-code-fork"></i>Vue version {{ version
                     }}</a></li>
@@ -52,7 +52,7 @@ export default defineComponent({
             type: String
         }
     },
-    setup(props, ctx) {
+    setup() {
         const cartStore = userCartStore()
         const authStore = userAuthStore()
         const { user } = storeToRefs(authStore);

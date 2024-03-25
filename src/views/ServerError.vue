@@ -32,7 +32,7 @@ export default defineComponent({
     },
     methods: {
         countDown() {
-            this.countDay = new Date('December 15, 2024 00:00:00');
+            this.countDay = new Date('June 15, 2024 00:00:00');
             const now = new Date();
             const counter: number = Number(this.countDay) - Number(now);
             const second = 1000;
@@ -43,14 +43,10 @@ export default defineComponent({
             const textHour = Math.floor((counter % day) / hour);
             const textMinute = Math.floor((counter % hour) / minute);
             const textSecond = Math.floor((counter % minute) / second);
-            const days = document.querySelector(".day") as HTMLInputElement;
-            days.innerHTML =  textDay + ' Days';
-            const hours = document.querySelector(".hour") as HTMLInputElement;
-            hours.innerHTML = textHour + ' Hours';
-            const minutes = document.querySelector(".minute") as HTMLInputElement;
-            minutes.innerHTML = textMinute + ' Minutes';
-            const seconds = document.querySelector(".second") as HTMLInputElement;
-            seconds.innerText = textSecond + ' Seconds';
+            (document.querySelector(".day") as HTMLInputElement)!!.innerText = textDay + ' Days';
+            (document.querySelector(".hour") as HTMLInputElement)!!.innerText = textHour + ' Hours';
+            (document.querySelector(".minute") as HTMLInputElement)!!.innerText = textMinute + ' Minutes';
+            (document.querySelector(".second") as HTMLInputElement)!!.innerText = textSecond + ' Seconds';
 
         },
 
