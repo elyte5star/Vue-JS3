@@ -26,7 +26,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
  - Clone project with
 
   ```
-  git clone git@github.com:elyte5star/e-commerce.git
+  git clone git@github.com:elyte5star/Vue-JS3.git
   ```
 
   - Create file .env and set values for the environment variables below:
