@@ -1,6 +1,7 @@
 
 import { userAlertStore } from "@/stores/alert";
 import type { Product } from "./my-types";
+import Mark from 'mark.js'
 
 
 /* eslint-disable */
@@ -17,12 +18,12 @@ export function getRandomItem(arr: Array<Product>) {
     // get random index value
     let randomIndex = Math.floor(Math.random() * arr.length)
     // get random item
-    const item:Product = arr[randomIndex]
+    const item: Product = arr[randomIndex]
 
     return item
 }
 
-export function getRandomIndex(length:number) {
+export function getRandomIndex(length: number) {
     // get random index value
     let randomIndex = Math.floor(Math.random() * length)
     return randomIndex
@@ -198,37 +199,38 @@ function checkString(str: string, ele_txt: string) {
 
 /* Mark terms functions */
 function mark_text() {
-    let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
+    let strSearch = (document.getElementById("search-icon") as HTMLInputElement).value;
     let patt = /"(.*?)"/gi;
     let matches = new Array();
     let match = null;
     while ((match = patt.exec(strSearch)) !== null) {
         matches.push(match[1]);
     }
-    
+
     let txt = strSearch.replace(patt, "");
     matches = matches.concat(txt.trim().split(" "));
     matches.forEach(function (term) {
         let regex_text = new RegExp("\\b(" + term + ")\\b", "i"); // RegExp
-        let headings = document.querySelectorAll(".prod_right h3,h4");
+        let headings = document.querySelectorAll(".prod_right h3,h4") as NodeListOf<Element>;
         headings.forEach(function (txt) {
             let instance = new Mark(txt);
-            instance.markRegExp(regex_text, { className: "orange", accuracy: "exactly" });
+            instance.markRegExp(regex_text, { className: "orange"});
 
         })
     });
 }
 
 export const filterEntries = () => {
-    let strSearch = (<HTMLInputElement>document.getElementById("search-icon")).value;
+    let strSearch = (document.getElementById("search-icon") as HTMLInputElement).value;
     document.querySelectorAll("article.framed").forEach(
         function (article_ele) {
-            let art = (<HTMLInputElement>document.getElementById(article_ele.id));
+            let art = (document.getElementById(article_ele.id) as HTMLInputElement);
             let h = article_ele.querySelectorAll("h3,h4");
             if (strSearch.length > 0 && !checkString(strSearch, h[0].innerHTML) && !checkString(strSearch, h[1].innerHTML)) {
                 art.style.display = "none";
             } else if (strSearch == "") {
-                let instance = new Mark(document.querySelectorAll(".prod_right"));
+                const context = document.querySelectorAll(".prod_right");
+                let instance = new Mark(context);
                 instance.unmark();
                 art.style.display = "";
             } else {
