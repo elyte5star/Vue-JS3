@@ -65,8 +65,8 @@
                             <div class="row">
                                 <div class="col-md-6"><label class="form-label" for="state"><i class="fa fa-globe"
                                             aria-hidden="true"></i> Country:</label>
-                                    <select v-model="bcountry" class="form-select" id="country" name="country">
-                                        <option v-if="countries" v-for="country in countries" :key="country.text"
+                                    <select v-if="countries" v-model="bcountry" class="form-select" id="country" name="country">
+                                        <option v-for="country in countries" :key="country.text"
                                             :value=country.value>{{ country.text }}</option>
                                     </select>
                                 </div>

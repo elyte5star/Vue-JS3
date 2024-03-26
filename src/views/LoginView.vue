@@ -23,7 +23,7 @@
                             <label class="form-label" for="loginUsername">Username:</label>
                             <input type="text" id="loginUsername" v-model="username" class="form-control"
                                 aria-describedby="usernameHelpBlock" maxlength="20" />
-               
+
                         </div>
 
                         <!-- Password input -->
@@ -34,7 +34,7 @@
                                 maxlength="20" />
                             <a href="javascript:void(0)" @click="showPassword('password')"><i class="bi bi-eye-slash"
                                     id="toggleLoginPassword"></i></a>
-    
+
                         </div>
                         <div id="forgetget_password">
                             <router-link :to="{ name: 'OtpEmail', query: { passwordReset: 'true' } }">Forgot
@@ -135,7 +135,7 @@ export default defineComponent({
         return {
             user: {},
             msalInstance: _msalInstance,
-            username: null,
+            username: null || '',
             password: null,
             showPassword,
             authStore: userAuthStore()
@@ -193,31 +193,26 @@ export default defineComponent({
         async onSubmitLogin(): Promise<void> {
             if (isUserNameValid(this.username) && this.password) {
                 let form = new FormData()
-                form.append('username', String(this.username))
+                form.append('username', this.username)
                 form.append('password', this.password)
                 const userData = new URLSearchParams()
                 for (const [key, value] of form) {
                     userData.append(key, value as string)
                 }
                 await this.authStore.login(userData)
-                this.username = null
+                this.username = ''
                 this.password = null
             } else {
                 this.invalidFeedback()
             }
         },
         invalidFeedback() {
-            if (!this.password) {
-                const ele = document.getElementById('loginUsername') as HTMLInputElement
-                ele.focus();
-                this.authStore.alert.error('Password required!');
-
-            }
             if (!isUserNameValid(this.username)) {
                 this.authStore.alert.error('Invalid username!');
-                const ele = document.getElementById('password') as HTMLInputElement;
-                ele.focus();
-
+                (document.getElementById('loginUsername') as HTMLInputElement).focus();
+            } else {
+                (document.getElementById('password') as HTMLInputElement).focus();
+                this.authStore.alert.error('Password required!');
             }
         }
     },
