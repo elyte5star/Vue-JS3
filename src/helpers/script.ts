@@ -213,7 +213,7 @@ function mark_text() {
         let regex_text = new RegExp("\\b(" + term + ")\\b", "i"); // RegExp
         let headings = document.querySelectorAll(".prod_right h3,h4") as NodeListOf<Element>;
         headings.forEach(function (txt) {
-            let instance = new Mark(txt);
+            let instance = new Mark(txt as HTMLElement);
             instance.markRegExp(regex_text, { className: "orange"});
 
         })
