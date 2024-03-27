@@ -15,12 +15,12 @@ export const axiosInstance: AxiosInstance = axios.create({
 });
 
 function authHeader(url: string): AuthHeader | {} {
-    const authStorage: any = localStorage.getItem('user');
-    const user = JSON.parse(authStorage);
-    const isLoggedIn = !!user?.access_token;
+    const authStorage: any = localStorage.getItem('userLoggedIn');
+    const userLoggedIn = JSON.parse(authStorage);
+    const isLoggedIn = !!userLoggedIn?.access_token;
     const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL ?? "");
     if (isLoggedIn && isApiUrl) {
-        return { Authorization: 'Bearer ' + user.access_token, 'Content-Type': 'application/json', Accept: 'application/json' };
+        return { Authorization: 'Bearer ' + userLoggedIn.access_token, 'Content-Type': 'application/json', Accept: 'application/json' };
     } else {
         return {};
     }
@@ -54,7 +54,7 @@ axiosInstance.interceptors.response.use(function (response) {
 
     isloading.setLoading(false);
 
-    const { user, logout } = userAuthStore()
+    const { userLoggedIn, logout } = userAuthStore()
 
     if (!error.response) {
 
@@ -88,7 +88,7 @@ axiosInstance.interceptors.response.use(function (response) {
 
     } else {
 
-        if ([401, 403].includes(error.response.status) && user) {
+        if ([401, 403].includes(error.response.status) && userLoggedIn) {
 
             Swal.fire({
                 icon: 'warning',
