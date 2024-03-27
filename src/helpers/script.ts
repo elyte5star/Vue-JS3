@@ -139,7 +139,7 @@ export function isValidTel(tel: string | null) {
 }
 
 export function validateFullName(fullName: string | null) {
-    let regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
+    const regName = new RegExp(/^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/i);
     return regName.test(fullName as string);
 
 }
@@ -203,18 +203,18 @@ function mark_text() {
     let patt = /"(.*?)"/gi;
     let matches = new Array();
     let match = null;
-    while ((match = patt.exec(strSearch)) !== null) {
+    while ((match = patt.exec(strSearch.trim())) !== null) {
         matches.push(match[1]);
     }
 
     let txt = strSearch.replace(patt, "");
     matches = matches.concat(txt.trim().split(" "));
     matches.forEach(function (term) {
-        let regex_text = new RegExp("\\b(" + term + ")\\b", "i"); // RegExp
-        let headings = document.querySelectorAll(".prod_right h3,h4") as NodeListOf<Element>;
+        const regex_text = new RegExp("\\b(" + term + ")\\b", "i"); // RegExp
+        const headings = document.querySelectorAll(".prod_right h3,h4") as NodeListOf<Element>;
         headings.forEach(function (txt) {
             let instance = new Mark(txt as HTMLElement);
-            instance.markRegExp(regex_text, { className: "orange"});
+            instance.markRegExp(regex_text, { className: "orange" });
 
         })
     });

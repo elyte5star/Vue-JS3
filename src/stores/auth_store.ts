@@ -11,12 +11,12 @@ import type { CloudLogin, tokenData } from '@/helpers/my-types';
 import { URLSearchParams } from "url";
 
 
-const user = localStorage.getItem('user')
+const userLoggedIn = localStorage.getItem('userLoggedIn')
 
 export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
-        user: user ? JSON.parse(user) : null as tokenData | null,
+        userLoggedIn: userLoggedIn ? JSON.parse(userLoggedIn) : null as tokenData | null,
         returnUrl: '', alert: userAlertStore(),
     }),
     actions: {
@@ -24,8 +24,8 @@ export const userAuthStore = defineStore({
             try {
                 const response = await axiosInstance.post('auth/form-login', userData);
                 if (response.data.success && response.data.result !== undefined) {
-                    this.user = response.data.result;
-                    localStorage.setItem('user', JSON.stringify(response.data.result));
+                    this.userLoggedIn = response.data.result;
+                    localStorage.setItem('userLoggedIn', JSON.stringify(response.data.result));
                     router.push(this.returnUrl || '/');
                 } else {
                     this.alert.error(response.data.message);
@@ -46,8 +46,8 @@ export const userAuthStore = defineStore({
             try {
                 const response = await axiosInstance.post('auth/get-token', userData);
                 if (response.data.success && response.data.result !== undefined) {
-                    this.user = response.data.result;
-                    localStorage.setItem('user', JSON.stringify(response.data.result));
+                    this.userLoggedIn = response.data.result;
+                    localStorage.setItem('userLoggedIn', JSON.stringify(response.data.result));
                     router.push(this.returnUrl || '/');
 
                 }
@@ -65,8 +65,8 @@ export const userAuthStore = defineStore({
 
         },
         async logout() {
-            this.user = null;
-            localStorage.removeItem('user');
+            this.userLoggedIn = null;
+            localStorage.removeItem('userLoggedIn');
             router.push({ name: 'Login' });
             return true;
         }

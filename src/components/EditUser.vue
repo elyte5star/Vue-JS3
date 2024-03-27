@@ -44,11 +44,11 @@
                                 <input v-model="editTel" type="tel" id="editTel" class="form-control" maxlength="20" />
                             </div>
                             <hr class="line">
-                            <p class="text-center">Home Address</p>
+                            <p class="text-center">Billing Address</p>
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="fname"><i class="fa fa-user"></i> Full Name:</label>
                                 <input v-model="fname" class="form-control billing-inputs" type="text" id="fname"
-                                    name="fullname" placeholder="Ese Niccolio">
+                                    name="fullname" placeholder="Ese Niccolio Rain">
                             </div>
                             <div>
                                 <label class="form-label" for="adr"> <i class="fa fa-address-card-o"></i>
@@ -65,9 +65,10 @@
                             <div class="row">
                                 <div class="col-md-6"><label class="form-label" for="state"><i class="fa fa-globe"
                                             aria-hidden="true"></i> Country:</label>
-                                    <select v-if="countries" v-model="bcountry" class="form-select" id="country" name="country">
-                                        <option v-for="country in countries" :key="country.text"
-                                            :value=country.value>{{ country.text }}</option>
+                                    <select v-if="countries" v-model="bcountry" class="form-select" id="country"
+                                        name="country">
+                                        <option v-for="country in countries" :key="country.text" :value=country.value>{{
+        country.text }}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6"> <label class="form-label" for="zip"><i class="fa fa-map-pin"
@@ -162,9 +163,6 @@ import type {
     User
 } from "@/helpers/my-types";
 import {
-    userAlertStore
-} from '@/stores/alert';
-import {
     postcodeValidator,
     postcodeValidatorExistsForCountry
 } from 'postcode-validator';
@@ -172,7 +170,7 @@ import {
     countries,
     validateFullName,
     is_valid_Email,
-    isObjEmpty
+    isObjEmpty, isValidTel
 } from '@/helpers/script';
 export default defineComponent({
     name: 'EditUser',
@@ -209,6 +207,28 @@ export default defineComponent({
             if (!isObjEmpty(address)) {
                 await this.userStore.updateUserById(this.user_info.userid, address);
                 return;
+            }
+            this.invalidFeedback();
+
+
+        },
+        invalidFeedback() {
+            if (!this.editEmail || !is_valid_Email(this.editEmail)) {
+                this.userStore.alertStore.error("Invalid email address!");
+                (document.getElementById('editEmail') as HTMLInputElement).focus();
+            } else if (!this.editTel || !isValidTel(this.editTel)) {
+                this.userStore.alertStore.error("Enter valid tel!");
+                (document.getElementById('editTel') as HTMLInputElement).focus();
+            } else if (!this.fname || !validateFullName(this.fname)) {
+                this.userStore.alertStore.error("Invalid full name!");
+                (document.getElementById('fname') as HTMLInputElement).focus();
+            } else if (!this.address) {
+                this.userStore.alertStore.error("Invalid billing address!");
+                (document.getElementById('adr') as HTMLInputElement).focus();
+            }
+            else {
+                this.userStore.alertStore.error("Please enter valid state!");
+                (document.getElementById('state') as HTMLInputElement).focus();
             }
 
 

@@ -168,10 +168,10 @@ export const userStore = defineStore({
             try {
                 const response = await axiosInstance.put('users/' + userid, new_data);
                 if (response.data.success) {
-                    if (userid === this.authStore.user.userid) {
-                        const user = { ...this.authStore.user, ...new_data };
-                        localStorage.setItem('user', JSON.stringify(user));
-                        this.authStore.user = user;
+                    if (userid === this.authStore.userLoggedIn.userid) {
+                        const user = { ...this.authStore.userLoggedIn, ...new_data };
+                        localStorage.setItem('userLoggedIn', JSON.stringify(user));
+                        this.authStore.userLoggedIn = user;
                         this.user =user
                     }
                     this.alertStore.success(response.data.message || 'Operation unsuccessful');
@@ -208,7 +208,7 @@ export const userStore = defineStore({
                         }
                         // remove user from list after deleted
                         this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
-                        if (userid === this.authStore.user.userid) this.authStore.logout();
+                        if (userid === this.authStore.userLoggedIn.userid) this.authStore.logout();
                         Swal.fire('Deleted!', 'Your account has been deleted.', 'success');
 
                     } catch (error: any) {

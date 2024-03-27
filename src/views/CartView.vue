@@ -22,7 +22,8 @@
                                                 </td>
                                                 <td class="desc">
                                                     <h3>
-                                                        <router-link :to="{ name: 'oneProduct', params: { pid: item.pid } }"
+                                                        <router-link
+                                                            :to="{ name: 'oneProduct', params: { pid: item.pid } }"
                                                             class="text-navy">
                                                             {{ item.name }}
                                                         </router-link>
@@ -36,11 +37,13 @@
                                                     </dl>
 
                                                     <div class="m-t-sm">
-                                                        <a href="#" class="text-muted"><i class="fa fa-gift"></i> Add gift
+                                                        <a href="#" class="text-muted"><i class="fa fa-gift"></i> Add
+                                                            gift
                                                             package</a>
                                                         |
                                                         <a href="javascript:void(0)" v-on:click="removeFromCart(item)"
-                                                            class="text-muted"><i class="fa fa-trash"></i> Remove item</a>
+                                                            class="text-muted"><i class="fa fa-trash"></i> Remove
+                                                            item</a>
                                                     </div>
                                                 </td>
 
@@ -91,9 +94,9 @@
                                 <div class="payment-info">
                                     <form @submit.prevent="makeReservation" class="payment-form">
                                         <div class="d-flex justify-content-between">
-                                            <span>Payment details</span><img v-if="user" class="rounded"
-                                                :src="'src/assets/images/' + userImage" v-bind:alt="user.username"
-                                                width="30" />
+                                            <span>Payment details</span><img v-if="userLoggedIn" class="rounded"
+                                                :src="'src/assets/images/' + userImage"
+                                                v-bind:alt="userLoggedIn.username" width="30" />
                                         </div>
                                         <div id="part-1">
                                             <span class="type d-block mt-3 mb-1">Card type</span>
@@ -107,13 +110,15 @@
 
                                                 <label class="radio">
                                                     <input v-model="card" type="radio" name="card" value="visa" />
-                                                    <span><img width="30" :src="'src/assets/images/credit_cards/visa.png'"
+                                                    <span><img width="30"
+                                                            :src="'src/assets/images/credit_cards/visa.png'"
                                                             alt="visarcard" /></span>
                                                 </label>
 
                                                 <label class="radio">
                                                     <input v-model="card" type="radio" name="card" value="amex" />
-                                                    <span><img width="30" :src="'src/assets/images/credit_cards/amex.png'"
+                                                    <span><img width="30"
+                                                            :src="'src/assets/images/credit_cards/amex.png'"
                                                             alt="amex" /></span>
                                                 </label>
 
@@ -126,13 +131,13 @@
 
                                             <div>
                                                 <label class="credit-card-label">Name on card:</label><input type="text"
-                                                    id="nameCard" class="form-control credit-inputs" v-model="nameOnCard"
-                                                    placeholder="Ese Niccolio" />
+                                                    id="nameCard" class="form-control credit-inputs"
+                                                    v-model="nameOnCard" placeholder="Ese Niccolio" />
                                             </div>
                                             <div>
                                                 <label for="cardNum" class="credit-card-label">Card number:</label>
-                                                <input type="tel" class="form-control credit-inputs" v-model="cardNumber"
-                                                    pattern="[0-9]*" id="cardNum" maxlength="16"
+                                                <input type="tel" class="form-control credit-inputs"
+                                                    v-model="cardNumber" pattern="[0-9]*" id="cardNum" maxlength="16"
                                                     placeholder="0000000000000000" minlength="16" />
                                             </div>
                                             <div class="row">
@@ -144,8 +149,8 @@
                                                 <div class="col-md-6">
                                                     <label for="cvv-num" class="credit-card-label">CVV</label><input
                                                         type="tel" id="cvv-num" v-model="cardCvv"
-                                                        class="form-control credit-inputs" placeholder="342" minlength="3"
-                                                        pattern="[0-9]*" maxlength="3" />
+                                                        class="form-control credit-inputs" placeholder="342"
+                                                        minlength="3" pattern="[0-9]*" maxlength="3" />
                                                 </div>
                                             </div>
                                         </div>
@@ -168,19 +173,21 @@
                                             <label class="billing-label" for="adr">
                                                 <i class="fa fa-address-card-o"></i> Address:</label>
                                             <input v-model="baddress" class="form-control billing-inputs" type="text"
-                                                id="adr" name="address" placeholder="542 W. 15th Street" maxlength="20" />
+                                                id="adr" name="address" placeholder="542 W. 15th Street"
+                                                maxlength="20" />
                                         </div>
                                         <div>
                                             <label class="billing-label" for="city"><i class="fa fa-institution"></i>
                                                 City:</label>
-                                            <input v-model="bcity" class="form-control billing-inputs" type="text" id="city"
-                                                name="city" placeholder="Lagos or St. Laos" maxlength="16" />
+                                            <input v-model="bcity" class="form-control billing-inputs" type="text"
+                                                id="city" name="city" placeholder="Lagos or St. Laos" maxlength="16" />
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label class="billing-label" for="state"> Country:</label>
-                                                <select v-model="bcountry" class="form-select" id="country" name="country">
-                                                    <option v-if="countries" v-for="country in countries"
+                                                <select  v-if="countries" v-model="bcountry" class="form-select" id="country"
+                                                    name="country">
+                                                    <option v-for="country in countries"
                                                         :key="country.text" :value="country.value">
                                                         {{ country.text }}
                                                     </option>
@@ -207,7 +214,8 @@
                                             <hr class="line" />
                                             <span>Shipping Address</span>
                                             <div>
-                                                <label class="billing-label" for="sfname"><i class="fa fa-user"></i> Full
+                                                <label class="billing-label" for="sfname"><i class="fa fa-user"></i>
+                                                    Full
                                                     Name:</label>
                                                 <input v-model="sfname" class="form-control billing-inputs" type="text"
                                                     id="sfname" name="fullname" placeholder="Ese Niccolio" />
@@ -222,12 +230,13 @@
                                             <div>
                                                 <label class="billing-label" for="sadr">
                                                     <i class="fa fa-address-card-o"></i> Address:</label>
-                                                <input v-model="saddress" class="form-control billing-inputs" type="text"
-                                                    id="sadr" name="address" placeholder="542 W. 15th Street"
-                                                    maxlength="20" />
+                                                <input v-model="saddress" class="form-control billing-inputs"
+                                                    type="text" id="sadr" name="address"
+                                                    placeholder="542 W. 15th Street" maxlength="20" />
                                             </div>
                                             <div>
-                                                <label class="billing-label" for="scity"><i class="fa fa-institution"></i>
+                                                <label class="billing-label" for="scity"><i
+                                                        class="fa fa-institution"></i>
                                                     City:</label>
                                                 <input v-model="scity" class="form-control billing-inputs" type="text"
                                                     id="scity" name="scity" placeholder="Warri or St. Laos"
@@ -236,9 +245,9 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label class="billing-label" for="state"> Country:</label>
-                                                    <select v-model="scountry" class="form-select" id="scountry"
+                                                    <select  v-if="countries" v-model="scountry" class="form-select" id="scountry"
                                                         name="country">
-                                                        <option v-if="countries" v-for="country in countries"
+                                                        <option v-for="country in countries"
                                                             :key="country.text" :value="country.value">
                                                             {{ country.text }}
                                                         </option>
@@ -246,8 +255,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="billing-label" for="szip"> Zip:</label>
-                                                    <input v-model="szip" class="form-control billing-inputs" type="text"
-                                                        id="szip" name="zip" placeholder="10001" />
+                                                    <input v-model="szip" class="form-control billing-inputs"
+                                                        type="text" id="szip" name="zip" placeholder="10001" />
                                                 </div>
                                             </div>
                                             <br />
@@ -356,11 +365,11 @@ export default defineComponent({
     name: 'CartView',
     setup() {
         const authStore = userAuthStore()
-        const { user } = storeToRefs(authStore)
+        const { userLoggedIn } = storeToRefs(authStore)
         const cartStore = userCartStore()
         const { cart, itemsInCart } = storeToRefs(cartStore)
         return {
-            user,
+            userLoggedIn,
             cartStore,
             cart,
             itemsInCart
@@ -398,7 +407,7 @@ export default defineComponent({
             this.cartStore.removeFromCart(item)
         },
         showShippingAddress() {
-            const shipDiv = <HTMLInputElement>document.getElementById('part-2')
+            const shipDiv = document.getElementById('part-2') as HTMLElement;
             if (this.bsameadr) {
                 shipDiv.style.display = ''
             } else {
@@ -485,71 +494,67 @@ export default defineComponent({
         },
         checkPostCodeAndCountry(countryCode: string | null, zip: string | null): boolean {
             if (!postcodeValidatorExistsForCountry(countryCode as string)) {
-                this.alertStore.error('No valid postcode for the selected country!')
-                    ; (<HTMLInputElement>document.getElementById('country')).focus()
-                return false
+                this.alertStore.error("No valid postcode for the selected country!");
+                (document.getElementById('country') as HTMLInputElement).focus();
+                return false;
+
             } else if (!postcodeValidator(zip as string, countryCode as string)) {
-                this.alertStore.error('Invalid postcode for the selected country!')
-                    ; (<HTMLInputElement>document.getElementById('zip')).focus()
-                return false
+                this.alertStore.error("Invalid postcode for the selected country!");
+                (document.getElementById('zip') as HTMLInputElement).focus();
+                return false;
+
             } else {
-                return true
+                return true;
             }
+
         },
         invalidFeedback() {
+
+            //Card validation Error;
             if (!this.card) {
                 this.alertStore.error('Card type required')
             } else if (!validateFullName(this.nameOnCard)) {
-                ; (<HTMLInputElement>document.getElementById('nameCard')).focus()
-                this.alertStore.error('Enter card holder full name (first & last name).')
+                (document.getElementById('nameCard') as HTMLInputElement).focus()
+                this.alertStore.error('Enter valid card holder full name.')
             } else if (!hasOnlyDigits(this.cardNumber)) {
-                ; (<HTMLInputElement>document.getElementById('cardNum')).focus()
-                this.alertStore.error('Card number required')
+                (document.getElementById('cardNum') as HTMLInputElement).focus()
+                this.alertStore.error('Valid Card number required')
             } else if (!this.expirationValidation(this.expiryDate)) {
+                (document.getElementById('expiryDate') as HTMLInputElement).focus()
                 this.alertStore.error('Please select a valid expiry date')
-                    ; (<HTMLInputElement>document.getElementById('expiryDate')).focus()
             } else if (!hasOnlyDigits(this.cardCvv)) {
-                ; (<HTMLInputElement>document.getElementById('cvv-num')).focus()
+                (document.getElementById('cvv-num') as HTMLInputElement).focus()
                 this.alertStore.error('CVV number required')
 
                 //Billing Address;
             } else if (!validateFullName(this.bfname)) {
-                ; (<HTMLInputElement>document.getElementById('fname')).focus()
+                (document.getElementById('fname') as HTMLInputElement).focus()
                 this.alertStore.error('Enter full name (first & last name)(Billing).')
             } else if (!is_valid_Email(this.bemail)) {
-                ; (<HTMLInputElement>document.getElementById('email')).focus()
+                (document.getElementById('email') as HTMLInputElement).focus()
                 this.alertStore.error('Enter valid email (Billing).')
             } else if (!this.baddress) {
-                ; (<HTMLInputElement>document.getElementById('adr')).focus()
+                (document.getElementById('adr') as HTMLInputElement).focus()
                 this.alertStore.error('Billing Address required')
             } else if (!this.bcity) {
-                ; (<HTMLInputElement>document.getElementById('city')).focus()
+                (document.getElementById('city') as HTMLInputElement).focus()
                 this.alertStore.error('City required (Billing)')
-            } else if (!this.checkPostCodeAndCountry(this.bcountry, this.bzip)) {
-                return true
             }
             //Shipping Address;
             else if (!this.bsameadr && !validateFullName(this.sfname)) {
-                ; (<HTMLInputElement>document.getElementById('sfname')).focus()
-                this.alertStore.error('Enter full name (first & last name).Shipping')
+                (document.getElementById('sfname') as HTMLInputElement).focus()
+                this.alertStore.error('Enter full name Shipping')
             } else if (!this.bsameadr && !is_valid_Email(this.semail)) {
-                ; (<HTMLInputElement>document.getElementById('semail')).focus()
+                (document.getElementById('semail') as HTMLInputElement).focus()
                 this.alertStore.error('Enter valid email.')
             } else if (!this.bsameadr && !this.saddress) {
-                ; (<HTMLInputElement>document.getElementById('sadr')).focus()
+                (document.getElementById('sadr') as HTMLInputElement).focus()
                 this.alertStore.error('Shipping Address required')
             } else if (!this.bsameadr && !this.scity) {
-                ; (<HTMLInputElement>document.getElementById('scity')).focus()
+                (document.getElementById('scity') as HTMLInputElement).focus()
                 this.alertStore.error('City required')
-            } else if (!this.bsameadr && !this.checkPostCodeAndCountry(this.scountry, this.szip)) {
-                return true
             }
 
-            // no error
-            else {
-                return false
-            }
-            return true
         },
         async makeReservation(): Promise<void> {
             this.alertStore.reset()
@@ -594,7 +599,7 @@ export default defineComponent({
             return Math.round((amount + Number.EPSILON) * 100) / 100
         },
         userImage() {
-            return this.user.admin ? 'admin-icon.png' : 'user-icon.png'
+            return this.userLoggedIn.admin ? 'admin-icon.png' : 'user-icon.png'
         },
         emptyCartImage() {
             return new URL('../../src/images/emptyCart.png', import.meta.url).href

@@ -9,11 +9,11 @@
                     <li v-if="version"><a href="javascript:void(0)"><i class="fa fa-code-fork"></i>Vue version {{ version
                     }}</a></li>
 
-                    <li v-if="user"><router-link :to="{ name: 'oneUser', params: { userid: user.userid } }"><i
+                    <li v-if="userLoggedIn"><router-link :to="{ name: 'oneUser', params: { userid: userLoggedIn.userid } }"><i
                                 class="fa fa-user-circle" style="font-size: 25px"></i>Logged
-                            in as {{ user.username
+                            in as {{ userLoggedIn.username
                             }}</router-link></li>
-                    <li v-if="!!user?.admin"><a href="/admin"><i class="fa fa-cogs"></i>Admin page</a></li>
+                    <li v-if="!!userLoggedIn?.admin"><a href="/admin"><i class="fa fa-cogs"></i>Admin page</a></li>
 
                     <li><router-link to="/cart"><i class="fa fa-shopping-cart" style="font-size: 25px"></i>Cart<span
                                 id="items">{{
@@ -22,9 +22,9 @@
                     <li><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments">Contact
                                 us</i></router-link>
                     </li>
-                    <li v-if="user"><a href="javascript:void(0)" v-on:click="logout()"><i
+                    <li v-if="userLoggedIn"><a href="javascript:void(0)" v-on:click="logout()"><i
                                 class="fa fa-sign-out"></i>Logout</a></li>
-                    <li v-if="!user"><router-link :to="{ name: 'Login' }"><i class="fa fa-sign-in"></i>Login</router-link>
+                    <li v-if="!userLoggedIn"><router-link :to="{ name: 'Login' }"><i class="fa fa-sign-in"></i>Login</router-link>
                     </li>
                 </ul>
 
@@ -55,10 +55,10 @@ export default defineComponent({
     setup() {
         const cartStore = userCartStore()
         const authStore = userAuthStore()
-        const { user } = storeToRefs(authStore);
+        const { userLoggedIn } = storeToRefs(authStore);
         const { itemsInCart } = storeToRefs(cartStore);
         return {
-            user, itemsInCart, authStore
+            userLoggedIn, itemsInCart, authStore
         }
     },
 
@@ -73,8 +73,6 @@ export default defineComponent({
         }
 
     }
-
-
 })
 
 </script>
