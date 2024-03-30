@@ -43,7 +43,7 @@ export default defineComponent({
   },
 
   created() {
-    this.getAllProducts();
+    //this.getAllProducts();
   },
 
 })

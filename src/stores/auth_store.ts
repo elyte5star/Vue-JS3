@@ -33,8 +33,8 @@ export const userAuthStore = defineStore({
             } catch (error: any) {
                 if (Object.prototype.hasOwnProperty.call(error.response.data.result, "disabled") && error.response.data.result.disabled) {
                     router.replace({ name: 'OtpEmail', query: error.response.data.result })
-                } else if (Object.prototype.hasOwnProperty.call(error.response.data.result, "locked") && error.response.data.result.locked) {
-                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
+                // } else if (Object.prototype.hasOwnProperty.call(error.response.data.result, "locked") && error.response.data.result.locked) {
+                //     router.replace({ name: 'OtpEmail', query: error.response.data.result })
                 } else {
                     this.alert.error(error.response.data.message);
                 }

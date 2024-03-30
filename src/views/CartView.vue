@@ -94,9 +94,9 @@
                                 <div class="payment-info">
                                     <form @submit.prevent="makeReservation" class="payment-form">
                                         <div class="d-flex justify-content-between">
-                                            <span>Payment details</span><img v-if="userLoggedIn" class="rounded"
+                                            <span>Payment details</span><img v-if="user" class="rounded"
                                                 :src="'src/assets/images/' + userImage"
-                                                v-bind:alt="userLoggedIn.username" width="30" />
+                                                v-bind:alt="user.username" width="30" />
                                         </div>
                                         <div id="part-1">
                                             <span class="type d-block mt-3 mb-1">Card type</span>
@@ -185,10 +185,10 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label class="billing-label" for="state"> Country:</label>
-                                                <select  v-if="countries" v-model="bcountry" class="form-select" id="country"
-                                                    name="country">
-                                                    <option v-for="country in countries"
-                                                        :key="country.text" :value="country.value">
+                                                <select v-if="countries" v-model="bcountry" class="form-select"
+                                                    id="country" name="country">
+                                                    <option v-for="country in countries" :key="country.text"
+                                                        :value="country.value">
                                                         {{ country.text }}
                                                     </option>
                                                 </select>
@@ -245,10 +245,10 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label class="billing-label" for="state"> Country:</label>
-                                                    <select  v-if="countries" v-model="scountry" class="form-select" id="scountry"
-                                                        name="country">
-                                                        <option v-for="country in countries"
-                                                            :key="country.text" :value="country.value">
+                                                    <select v-if="countries" v-model="scountry" class="form-select"
+                                                        id="scountry" name="country">
+                                                        <option v-for="country in countries" :key="country.text"
+                                                            :value="country.value">
                                                             {{ country.text }}
                                                         </option>
                                                     </select>
@@ -342,11 +342,12 @@
             </div>
         </div>
     </div>
-    <router-view></router-view>
+   <div>{{ user }}</div>
 </template>
 
 <script lang="ts">
 import { userCartStore } from '@/stores/cart'
+import { userStore } from '@/stores/userAccount'
 import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
 import {
@@ -365,11 +366,14 @@ export default defineComponent({
     name: 'CartView',
     setup() {
         const authStore = userAuthStore()
-        const { userLoggedIn } = storeToRefs(authStore)
+        const user_store = userStore()
+        const { user} = storeToRefs(user_store)
         const cartStore = userCartStore()
         const { cart, itemsInCart } = storeToRefs(cartStore)
+        
         return {
-            userLoggedIn,
+            user,
+            user_store,
             cartStore,
             cart,
             itemsInCart
@@ -379,13 +383,13 @@ export default defineComponent({
     data() {
         return {
             recommendationList: [],
-            bfname: null,
+            bfname: "" ,
             bsameadr: false,
-            bemail: null,
-            bcountry: null,
-            bzip: null,
-            bcity: null,
-            baddress: null,
+            bemail: '',
+            bcountry: '',
+            bzip: '',
+            bcity: '',
+            baddress: '',
             isDisabled: true,
             card: null,
             expiryDate: null,
@@ -402,7 +406,23 @@ export default defineComponent({
             saddress: null
         }
     },
+   async created() {
+        // fetch the data when the view is created and the data is
+        // already being observed
+        this.fetchUserData()
+        this.bfname =this.user?.address?.fullName as string
+        this.bemail= this.user?.email as string
+        this.baddress =this.user?.address?.streetAddress as string
+        this.bcountry=this.user?.address?.country as string
+        this.bzip=this.user?.address?.zip as string
+        this.bcity=this.user?.address?.state as string
+    },
     methods: {
+        async fetchUserData():Promise<void> {
+            const userId = this.$route.query.userid
+            await this.user_store.getUserById(userId as string);
+           
+        },
         removeFromCart(item: Item) {
             this.cartStore.removeFromCart(item)
         },
@@ -436,7 +456,7 @@ export default defineComponent({
                 this.scity &&
                 this.checkPostCodeAndCountry(this.scountry, this.szip)
             ) {
-                const billingAddress = {
+                const shippingAddress = {
                     sfname: this.sfname,
                     semail: this.semail,
                     saddress: this.saddress,
@@ -445,7 +465,7 @@ export default defineComponent({
                     scity: this.scity
                 }
 
-                return billingAddress
+                return shippingAddress
             }
 
             return {}
@@ -458,7 +478,7 @@ export default defineComponent({
                 this.bcity &&
                 this.checkPostCodeAndCountry(this.bcountry, this.bzip)
             ) {
-                const shippingAddress = {
+                const billingAddress = {
                     bfname: this.bfname,
                     bemail: this.bemail,
                     baddress: this.baddress,
@@ -467,7 +487,7 @@ export default defineComponent({
                     bcity: this.bcity
                 }
 
-                return shippingAddress
+                return billingAddress
             }
 
             return {}
@@ -512,7 +532,7 @@ export default defineComponent({
 
             //Card validation Error;
             if (!this.card) {
-                this.alertStore.error('Card type required')
+                this.alertStore.error('Card type required')    
             } else if (!validateFullName(this.nameOnCard)) {
                 (document.getElementById('nameCard') as HTMLInputElement).focus()
                 this.alertStore.error('Enter valid card holder full name.')
@@ -599,7 +619,7 @@ export default defineComponent({
             return Math.round((amount + Number.EPSILON) * 100) / 100
         },
         userImage() {
-            return this.userLoggedIn.admin ? 'admin-icon.png' : 'user-icon.png'
+            return this.user?.admin ? 'admin-icon.png' : 'user-icon.png'
         },
         emptyCartImage() {
             return new URL('../../src/images/emptyCart.png', import.meta.url).href

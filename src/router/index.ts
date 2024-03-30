@@ -71,7 +71,7 @@ const routes = [
   {
     path: '/cart',
     name: 'Cart',
-    component: CartView
+    component: CartView,
   },
   {
     path: '/errorpage',
