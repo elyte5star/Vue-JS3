@@ -4,6 +4,7 @@ import { userAuthStore } from '@/stores/auth_store'
 import router from '@/router/index'
 import type { User, Enquiry, Booking, Registration, PasswordChange, UpdateUserPassword, ModifyUserInfo} from '@/helpers/my-types';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
+import logger from '@/helpers/logger';
 
 import { userAlertStore } from './alert';
 export const userStore = defineStore({
@@ -17,11 +18,12 @@ export const userStore = defineStore({
                 const response = await axiosInstance.get('users');
                 if (response.data.success) {
                     this.users = response.data.result;
+                    return;
                 }
 
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.log(error);
+                logger.error(error);
             }
         },
         async reSendOtpEmail(email: string) {
@@ -30,14 +32,12 @@ export const userStore = defineStore({
                 if (response.data.success) {
                     this.emailSent = true;
                     this.alertStore.success(response.data.result);
+                    return;
                     //return router.replace({ name: 'Confirm', query: response.data.result })
-                } else {
-                    this.alertStore.error(response.data.result);
-                }
-
+                } 
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.log(error);
+                logger.error(error);
             }
 
         },
@@ -50,7 +50,7 @@ export const userStore = defineStore({
                 }
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.error(error);
+                logger.error(error);
 
             }
         },
@@ -60,12 +60,12 @@ export const userStore = defineStore({
                 token = token.trim();
                 const response = await axiosInstance.get('users/reset/confirm-token', { params: { "token": token } });
                 if (response.data.success) {
-                    return router.replace({ name: 'ChangePassword', query: { resetToken: token } })
+                    return router.replace({ name: 'ChangePassword', query: { resetToken: token } });
                 }
                
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.error(error);
+                logger.error(error);
 
             }
         },
@@ -77,8 +77,8 @@ export const userStore = defineStore({
                     return router.replace({ name: 'OtpEmail', query: response.data.result })
                 }
             } catch (error: any) {
-                this.alertStore.error(error.response.data.message || 'Registration unsuccessful!');
-                console.error(error);
+                this.alertStore.error(error.response.data.message)
+                logger.error(error);
             }
 
         },
@@ -92,6 +92,7 @@ export const userStore = defineStore({
              
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message || 'Password Change unsuccessful!');
+                logger.error(error);
             }
 
         },
@@ -104,7 +105,7 @@ export const userStore = defineStore({
                 }
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message || 'Password Change unsuccessful!');
-                console.error(error);
+                logger.error(error);
             }
 
         },
@@ -115,9 +116,10 @@ export const userStore = defineStore({
                     this.alertStore.success('Your enquiry is submitted!' + " Please contact us with this number " + response.data.result);
                     return;
                 }
-                this.alertStore.error(response.data.message || 'Operation unsuccessful'); 
+               
             } catch (error: any) {
-                console.log(error);
+                this.alertStore.error(error.response.data.message || 'Operation unsuccessful'); 
+                logger.error(error);
             }
 
         },
@@ -127,11 +129,12 @@ export const userStore = defineStore({
                 if (response.data.success) {
                     this.alertStore.success('Your password change request was submitted!' + " Please check your email ");
                     this.emailSent = true;
+                    return;
                 }
                
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.log(error);
+                logger.error(error);
             }
         },
         async getUserById(userid: string) {
@@ -144,7 +147,7 @@ export const userStore = defineStore({
                 }
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.error(error);
+                logger.error(error);
             }
 
         },
@@ -160,7 +163,7 @@ export const userStore = defineStore({
                 
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.error(error);
+                logger.error(error);
             }
 
         },
@@ -179,7 +182,7 @@ export const userStore = defineStore({
 
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
-                console.error(error);
+                logger.error(error);
             }
 
         },
@@ -202,17 +205,18 @@ export const userStore = defineStore({
                 if (result.isConfirmed) {
                     try {
                         const response = await axiosInstance.delete('users/' + userid);
-                        if (!response.data.success) {
-                            this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                            return;
-                        }
+                        if (response.data.success) {
                         // remove user from list after deleted
                         this.users = this.users.filter(x => x.userid !== userid);//Shallow copy
                         if (userid === this.authStore.userLoggedIn.userid) this.authStore.logout();
-                        Swal.fire('Deleted!', 'Your account has been deleted.', 'success');
+                            Swal.fire('Deleted!', 'Your account has been deleted.', 'success');
+                            return;
+                        }
+                       
 
                     } catch (error: any) {
-                        console.log(error);
+                        this.alertStore.error(error.response.data.message)
+                        logger.error(error);
                     }
 
                 }

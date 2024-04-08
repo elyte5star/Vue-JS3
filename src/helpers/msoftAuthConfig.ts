@@ -12,6 +12,8 @@ import * as msal from "@azure/msal-browser";
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md
  */
 
+import logger from "./logger";
+
 
 const msalConfig: msal.Configuration = {
     auth: {
@@ -32,16 +34,16 @@ const msalConfig: msal.Configuration = {
                 }
                 switch (level) {
                     case msal.LogLevel.Error:
-                        console.error(message);
+                        logger.error(message)
                         return;
                     case msal.LogLevel.Info:
-                        console.info(message);
-                        return;
+                       
+                        logger.info(message);
                     case msal.LogLevel.Verbose:
-                        console.debug(message);
+                        logger.debug(message)
                         return;
                     case msal.LogLevel.Warning:
-                        console.warn(message);
+                        logger.warn(message);
                         return;
                 }
             },

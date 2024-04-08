@@ -3,6 +3,7 @@ import { userAlertStore } from "@/stores/alert";
 import type { Product } from "./my-types";
 import Mark from 'mark.js'
 
+import logger from "./logger";
 
 /* eslint-disable */
 
@@ -43,7 +44,7 @@ export const decodeJwtResponse = (token: string) => {
             })
             .join("")
     );
-    console.log(JSON.parse(jsonPayload));
+    logger.info(JSON.parse(jsonPayload));
     return JSON.parse(jsonPayload);
 }
 

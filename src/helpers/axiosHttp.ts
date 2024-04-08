@@ -7,6 +7,8 @@ import type { AuthHeader } from "./my-types";
 
 import router from "@/router/index";
 
+import logger from "./logger";
+
 
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -34,7 +36,7 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 },
     function (error) {
-        console.log('Request Error');
+        logger.error('Request Error');
         return Promise.reject(error);
 
     }
@@ -81,7 +83,7 @@ axiosInstance.interceptors.response.use(function (response) {
 
         } else {
 
-            console.log(error);
+            logger.error(error);
             return Promise.reject(error);
 
         }

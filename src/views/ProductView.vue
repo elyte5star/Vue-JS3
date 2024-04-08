@@ -212,6 +212,7 @@ import type { CreateReview, Item } from '@/helpers/my-types';
 import { is_valid_Email } from '@/helpers/script';
 import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia';
+import logger from '@/helpers/logger';
 
 import moment from 'moment'
 
@@ -303,7 +304,7 @@ export default defineComponent({
     watch: {
         async stockQuantity(newVal) {
 
-            console.log(newVal, "this changed");
+            logger.info(newVal, "this changed");
 
         }
     },

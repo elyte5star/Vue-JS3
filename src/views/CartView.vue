@@ -95,8 +95,8 @@
                                     <form @submit.prevent="makeReservation" class="payment-form">
                                         <div class="d-flex justify-content-between">
                                             <span>Payment details</span><img v-if="user" class="rounded"
-                                                :src="'src/assets/images/' + userImage"
-                                                v-bind:alt="user.username" width="30" />
+                                                :src="'src/assets/images/' + userImage" v-bind:alt="user.username"
+                                                width="30" />
                                         </div>
                                         <div id="part-1">
                                             <span class="type d-block mt-3 mb-1">Card type</span>
@@ -342,7 +342,6 @@
             </div>
         </div>
     </div>
-   <div>{{ user }}</div>
 </template>
 
 <script lang="ts">
@@ -367,10 +366,10 @@ export default defineComponent({
     setup() {
         const authStore = userAuthStore()
         const user_store = userStore()
-        const { user} = storeToRefs(user_store)
+        const { user } = storeToRefs(user_store)
         const cartStore = userCartStore()
         const { cart, itemsInCart } = storeToRefs(cartStore)
-        
+
         return {
             user,
             user_store,
@@ -383,7 +382,7 @@ export default defineComponent({
     data() {
         return {
             recommendationList: [],
-            bfname: "" ,
+            bfname: "",
             bsameadr: false,
             bemail: '',
             bcountry: '',
@@ -406,22 +405,22 @@ export default defineComponent({
             saddress: null
         }
     },
-   async created() {
+    async created() {
         // fetch the data when the view is created and the data is
         // already being observed
         this.fetchUserData()
-        this.bfname =this.user?.address?.fullName as string
-        this.bemail= this.user?.email as string
-        this.baddress =this.user?.address?.streetAddress as string
-        this.bcountry=this.user?.address?.country as string
-        this.bzip=this.user?.address?.zip as string
-        this.bcity=this.user?.address?.state as string
+        this.bfname = this.user?.address?.fullName as string
+        this.bemail = this.user?.email as string
+        this.baddress = this.user?.address?.streetAddress as string
+        this.bcountry = this.user?.address?.country as string
+        this.bzip = this.user?.address?.zip as string
+        this.bcity = this.user?.address?.state as string
     },
     methods: {
-        async fetchUserData():Promise<void> {
+        async fetchUserData(): Promise<void> {
             const userId = this.$route.query.userid
             await this.user_store.getUserById(userId as string);
-           
+
         },
         removeFromCart(item: Item) {
             this.cartStore.removeFromCart(item)
@@ -532,7 +531,7 @@ export default defineComponent({
 
             //Card validation Error;
             if (!this.card) {
-                this.alertStore.error('Card type required')    
+                this.alertStore.error('Card type required')
             } else if (!validateFullName(this.nameOnCard)) {
                 (document.getElementById('nameCard') as HTMLInputElement).focus()
                 this.alertStore.error('Enter valid card holder full name.')

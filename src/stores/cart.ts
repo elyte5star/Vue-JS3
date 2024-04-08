@@ -15,6 +15,8 @@ import { sleep } from '@/helpers/script';
 
 import { userAlertStore } from './alert';
 
+import logger from '@/helpers/logger';
+
 import router from '@/router/index';
 
 const countTime = import.meta.env.VITE_APP_WAIT_TIME;
@@ -95,7 +97,7 @@ export const userCartStore = defineStore({
                 let finished = false;
                 if (!response.data.success) {
                     this.alertStore.error("Couldnt create reservation!.");
-                    console.error(response.data.message)
+                    logger.error(response.data.message)
                     return null;
                 }
                 for (let i = 0; i < 5; i++) {
@@ -105,12 +107,12 @@ export const userCartStore = defineStore({
                         finished = true;
                         break;
                     }
-                    console.log(`Waiting ${(i * this.countTime)/1000} seconds...`);
+                    logger.warn(`Waiting ${(i * this.countTime)/1000} seconds...`);
                     await sleep(i * this.countTime);
                 }
                 if (!finished) {
                     this.alertStore.error("Timeout!");
-                    console.error("Timeout! check the worker server!.")
+                    logger.error("Timeout! check the worker server!.")
                     return null;
                 }
                 const getBookingResponse = await axiosInstance.get("qbooking/" + job_id);
@@ -124,7 +126,7 @@ export const userCartStore = defineStore({
                 }
 
             } catch (error: any) {
-                console.error(error);
+                logger.error(error);
             }
 
         }

@@ -4,6 +4,8 @@ import { userAlertStore } from './alert';
 import { axiosInstance } from '@/helpers/axiosHttp';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import type { Product, Review, ProductsResponse, ProductsQuery, CreateReview} from '@/helpers/my-types';
+import logger from '@/helpers/logger';
+
 
 export const productStore = defineStore({
     id: 'products',
@@ -14,16 +16,17 @@ export const productStore = defineStore({
         async getProducts(data?: ProductsQuery):Promise<void> {
             try {
                 const response = await axiosInstance.get('products', { params: data });
-                if (!response.data.success) {
-                    console.error(response.data.message);
+                if (response.data.success) {
+                    this.productsRes = response.data.result
+                    this.products = this.productsRes?.products!
+                    this.numberOfElements = this.productsRes?.numberOfElements!
+                    this.pageNum = this.productsRes?.number!   
                     return;
                 }
-                this.productsRes = response.data.result
-                this.products = this.productsRes?.products!
-                this.numberOfElements = this.productsRes?.numberOfElements!
-                this.pageNum = this.productsRes?.number!   
+                
             } catch (error: any) {
-                console.log(error);
+                this.alertStore.error(error.response.data.message|| 'Operation unsuccessful');
+                logger.error(error);
             }
 
         },
@@ -31,14 +34,13 @@ export const productStore = defineStore({
         async submitReview(review: CreateReview):Promise<void> {
             try {
                 const response = await axiosInstance.post('products/create/review', review);
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                if (response.data.success) {
+                    this.alertStore.success('Good job!' + " Yor review has been saved!");
                     return;
                 }
-                this.alertStore.success('Good job!' + " Yor review has been saved!");
-
             } catch (error: any) {
-                console.log(error);
+                this.alertStore.error(error.response.data.message|| 'Operation unsuccessful');
+                logger.error(error);
             }
 
         },
@@ -46,16 +48,17 @@ export const productStore = defineStore({
         async getProductById(pid: string):Promise<void>  {
             try {
                 const response = await axiosInstance.get('products/' + pid);
-                if (!response.data.success) {
-                    this.alertStore.error(response.data.message || 'Operation unsuccessful');
-                    return;
-                }
-                this.product = response.data.result;
+                if (response.data.success) {
+                    this.product = response.data.result;
                 this.stockQuantity = this.product?.stock_quantity!;
                 this.reviews = this.product?.reviews!;
+                return;
 
+                }
+                
             } catch (error: any) {
-                console.log(error);
+                this.alertStore.error(error.response.data.message|| 'Operation unsuccessful');
+                logger.error(error);
             }
         },
         async deleteProductById(pid: string) :Promise<void>{
@@ -72,15 +75,16 @@ export const productStore = defineStore({
                 if (result.isConfirmed) {
                     try {
                         const response = await axiosInstance.delete('products/' + pid);
-                        if (!response.data.success) {
-                            this.alertStore.error(response.data.message || 'Operation unsuccessful');
+                        if (response.data.success) {
+                            this.products = this.products.filter(x => x.pid !== pid);//Shallow copy
+                            this.alertStore.success('The product has been deleted.');
                             return;
                         }
-                        this.products = this.products.filter(x => x.pid !== pid);//Shallow copy
-                        this.alertStore.success('The product has been deleted.');
+                       
 
                     } catch (error: any) {
-                        console.log(error);
+                        this.alertStore.error(error.response.data.message|| 'Operation unsuccessful');
+                        logger.error(error);
                     }
 
                 }
@@ -91,16 +95,17 @@ export const productStore = defineStore({
         async sortProductsBykey(data?: ProductsQuery) {
             try {
                 const response = await axiosInstance.get('products', { params: data });
-                if (!response.data.success) {
-                    console.error(response.data.message);
+                if (response.data.success) {
+                    this.productsRes = response.data.result
+                    this.products = this.productsRes?.products!
+                    this.numberOfElements = this.productsRes?.numberOfElements!
+                    this.pageNum = this.productsRes?.number!   
                     return;
                 }
-                this.productsRes = response.data.result
-                this.products = this.productsRes?.products!
-                this.numberOfElements = this.productsRes?.numberOfElements!
-                this.pageNum = this.productsRes?.number!   
+                
             } catch (error: any) {
-                console.log(error);
+                this.alertStore.error(error.response.data.message|| 'Operation unsuccessful');
+                logger.error(error);
             }
         }
 
