@@ -93,17 +93,13 @@ export const userCartStore = defineStore({
         async checkOutQueue(bookingDetails: userReservation) {
             try {
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);
-                const job_id = response.data.job_id;
+                const jobId = response.data.result;
                 let finished = false;
-                if (!response.data.success) {
-                    this.alertStore.error("Couldnt create reservation!.");
-                    logger.error(response.data.message)
-                    return null;
-                }
+                logger.info(response.data);
+                
                 for (let i = 0; i < 5; i++) {
-                    const job_response = await axiosInstance.get("job/" + job_id);
-
-                    if (job_response.data.job.job_status.is_finished) {
+                    const job_response = await axiosInstance.get("job/" +  jobId);
+                    if (job_response.data.result.job_status.is_finished) {
                         finished = true;
                         break;
                     }
@@ -115,14 +111,15 @@ export const userCartStore = defineStore({
                     logger.error("Timeout! check the worker server!.")
                     return null;
                 }
-                const getBookingResponse = await axiosInstance.get("qbooking/" + job_id);
+                const getBookingResponse = await axiosInstance.get("qbooking/" +  jobId);
 
                 if (getBookingResponse.data.success) {
-                    router.push({ name: 'Confirm', query: { oid: getBookingResponse.data.result_data.oid } });
+                    router.push({ name: 'Confirm', query: { oid: getBookingResponse.data.result.oid } });
                     this.clearCart();
 
                 } else {
                     this.alertStore.error(response.data.message);
+                    logger.error(response.data.message)
                 }
 
             } catch (error: any) {

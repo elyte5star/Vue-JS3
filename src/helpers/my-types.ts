@@ -29,7 +29,7 @@ export interface User {
     lastModifiedAt: Date
     userid: string
     username: string
-    email: string
+    email: string 
     accountNonLocked: boolean
     failedAttempt: number
     lockTime: Date
@@ -51,6 +51,12 @@ export type CreditCard = {
     nameOnCard: null
 
 }
+
+export type PaymentDetails ={
+    cardDetails:CreditCard
+    billingAddress:BillingAddress
+}
+
 export type UpdateUserPassword={
     newPassword:string | null
     oldPassword: string | null
@@ -88,12 +94,12 @@ export interface AuthHeader extends AxiosRequestHeaders {
     'Content-Type': string;
 }
 
-export type userReservation = {
-    total_price: number;
+export type UserReservation = {
+    totalPrice: number;
     cart: Array<Item>;
-    payment_details: CreditCard;
-    billing_address: BillingAddress;
-    shipping_details?: Address;
+    userid:string | undefined;
+    paymentDetails: PaymentDetails;
+    shippingAddress?: Address;
 
 }
 

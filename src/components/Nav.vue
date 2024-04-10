@@ -15,7 +15,7 @@
                             }}</router-link></li>
                     <li v-if="!!userLoggedIn?.admin"><router-link :to="{ name: 'Admin' }"><i class="fa fa-cogs"></i>Admin page</router-link></li>
 
-                    <li><router-link :to="{ name: 'Cart',query: { userid: userLoggedIn?.userid } }"><i class="fa fa-shopping-cart" style="font-size: 25px"></i>Cart<span
+                    <li><router-link :to="{ name: 'Cart',query: { userid: userLoggedIn?.userid }}"><i class="fa fa-shopping-cart" style="font-size: 25px"></i>Cart<span
                                 id="items">{{
                                     itemsInCart }}</span></router-link></li>
 

@@ -16,7 +16,7 @@
                                             <tr>
                                                 <td :style="{ width: '90px' }">
                                                     <div class="cart-product-imitation">
-                                                        <img :src="'src/assets/images/products/' + item.image"
+                                                        <img :src="fetchImage('/products/' + item.image)"
                                                             v-bind:alt="item.name" />
                                                     </div>
                                                 </td>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             <div v-if="!itemsInCart" class="col-sm-12 empty-cart-cls text-center">
-                                <img :src="'src/assets/images/emptyCart.png'" width="130" height="130"
+                                <img :src="fetchImage('emptyCart.png')" width="130" height="130"
                                     class="img-fluid mb-4 mr-3" alt="empty_cart_icon" />
                                 <h3><strong>Your Cart is Empty</strong></h3>
                                 <h4>Add something to make me happy :)</h4>
@@ -95,7 +95,7 @@
                                     <form @submit.prevent="makeReservation" class="payment-form">
                                         <div class="d-flex justify-content-between">
                                             <span>Payment details</span><img v-if="user" class="rounded"
-                                                :src="'src/assets/images/' + userImage" v-bind:alt="user.username"
+                                                :src="fetchImage(userImage)" v-bind:alt="user.username"
                                                 width="30" />
                                         </div>
                                         <div id="part-1">
@@ -104,27 +104,27 @@
                                                 <label class="radio"><input v-model="card" type="radio" name="card"
                                                         value="mastercard" id="mc" />
                                                     <span><img width="30"
-                                                            :src="'src/assets/images/credit_cards/mastercard.png'"
+                                                            :src="fetchImage('/credit_cards/mastercard.png')"
                                                             alt="mastercard" /></span>
                                                 </label>
 
                                                 <label class="radio">
                                                     <input v-model="card" type="radio" name="card" value="visa" />
                                                     <span><img width="30"
-                                                            :src="'src/assets/images/credit_cards/visa.png'"
+                                                            :src="fetchImage('/credit_cards/visa.png')"
                                                             alt="visarcard" /></span>
                                                 </label>
 
                                                 <label class="radio">
                                                     <input v-model="card" type="radio" name="card" value="amex" />
                                                     <span><img width="30"
-                                                            :src="'src/assets/images/credit_cards/amex.png'"
+                                                            :src="fetchImage('/credit_cards/amex.png')"
                                                             alt="amex" /></span>
                                                 </label>
 
                                                 <label class="radio"><input v-model="card" type="radio" name="card"
                                                         value="paypal" /><span><img width="30"
-                                                            :src="'src/assets/images/credit_cards/paypal.png'"
+                                                            :src="fetchImage('/credit_cards/paypal.png')"
                                                             alt="paypal" /></span>
                                                 </label>
                                             </div>
@@ -347,7 +347,6 @@
 <script lang="ts">
 import { userCartStore } from '@/stores/cart'
 import { userStore } from '@/stores/userAccount'
-import { userAuthStore } from '@/stores/auth_store'
 import { userAlertStore } from '@/stores/alert'
 import {
     countries,
@@ -356,7 +355,7 @@ import {
     is_valid_Email,
     isObjEmpty
 } from '@/helpers/script'
-import type { Item, CreditCard, Address, userReservation, BillingAddress } from '@/helpers/my-types'
+import type { Item, CreditCard, Address, UserReservation, BillingAddress, PaymentDetails, UserAddress } from '@/helpers/my-types'
 import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator'
 import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -364,12 +363,10 @@ import { storeToRefs } from 'pinia'
 export default defineComponent({
     name: 'CartView',
     setup() {
-        const authStore = userAuthStore()
         const user_store = userStore()
         const { user } = storeToRefs(user_store)
         const cartStore = userCartStore()
         const { cart, itemsInCart } = storeToRefs(cartStore)
-
         return {
             user,
             user_store,
@@ -403,24 +400,25 @@ export default defineComponent({
             szip: null,
             scity: null,
             saddress: null
+           
         }
     },
     async created() {
-        // fetch the data when the view is created and the data is
-        // already being observed
-        this.fetchUserData()
-        this.bfname = this.user?.address?.fullName as string
+        const userId = this.$route.query.userid
+        await this.user_store.getUserById(userId as string);
+        this.bfname = this.user?.address.fullName as string
         this.bemail = this.user?.email as string
-        this.baddress = this.user?.address?.streetAddress as string
-        this.bcountry = this.user?.address?.country as string
+        this.baddress = this.user?.address.streetAddress as string
+        this.bcountry = this.user?.address.country as string
         this.bzip = this.user?.address?.zip as string
-        this.bcity = this.user?.address?.state as string
+        this.bcity = this.user?.address.state as string
+        
     },
+    
     methods: {
-        async fetchUserData(): Promise<void> {
-            const userId = this.$route.query.userid
-            await this.user_store.getUserById(userId as string);
 
+        fetchImage(imageName:string){
+            return new URL('../../src/assets/images/' + imageName, import.meta.url).href
         },
         removeFromCart(item: Item) {
             this.cartStore.removeFromCart(item)
@@ -577,31 +575,32 @@ export default defineComponent({
         },
         async makeReservation(): Promise<void> {
             this.alertStore.reset()
-            const paymentDetails = this.checkCreditCardDetails()
-            const billingAddress = this.checkBillingAddress()
+            const paymentDetails:PaymentDetails ={
+                cardDetails:this.checkCreditCardDetails() ,
+                billingAddress:this.checkBillingAddress() 
+            } as PaymentDetails
             const shippingDetails = this.checkShippingAddress()
 
-            let reservation: userReservation = {} as userReservation
-            if (this.bsameadr && !isObjEmpty(paymentDetails) && !isObjEmpty(billingAddress)) {
-                reservation = {
+            let reservation: UserReservation = {} as UserReservation
+            if (this.bsameadr && !isObjEmpty(paymentDetails)) {
+               reservation = {
                     cart: this.cart,
-                    total_price: this.totalPrice,
-                    payment_details: paymentDetails as CreditCard,
-                    billing_address: billingAddress as BillingAddress
+                    userid:this.user?.userid,
+                    totalPrice: this.totalPrice,
+                    paymentDetails
                 }
                 await this.cartStore.checkOutQueue(reservation)
             } else if (
                 !this.bsameadr &&
                 !isObjEmpty(paymentDetails) &&
-                !isObjEmpty(billingAddress) &&
                 !isObjEmpty(shippingDetails)
             ) {
                 reservation = {
+                    userid:this.user?.userid,
+                    totalPrice: this.totalPrice,
                     cart: this.cart,
-                    total_price: this.totalPrice,
-                    payment_details: paymentDetails as CreditCard,
-                    billing_address: billingAddress as BillingAddress,
-                    shipping_details: shippingDetails as Address
+                    paymentDetails,
+                    shippingAddress: shippingDetails as Address
                 }
                 await this.cartStore.checkOutQueue(reservation)
             } else {
@@ -621,7 +620,7 @@ export default defineComponent({
             return this.user?.admin ? 'admin-icon.png' : 'user-icon.png'
         },
         emptyCartImage() {
-            return new URL('../../src/images/emptyCart.png', import.meta.url).href
+            return new URL('../../src/assets/images/emptyCart.png', import.meta.url).href
         }
     }
 })
