@@ -95,9 +95,9 @@ export interface AuthHeader extends AxiosRequestHeaders {
 }
 
 export type UserReservation = {
-    totalPrice: number;
-    cart: Array<Item>;
     userid:string | undefined;
+    totalPrice: number;
+    cart: Array<ItemInCart>;
     paymentDetails: PaymentDetails;
     shippingAddress?: Address;
 
@@ -109,8 +109,8 @@ export type Alert = {
     message: string;
 }
 export type Booking = {
-    total_price: number;
-    cart: Array<Item>;
+    totalPrice: number;
+    cart: Array<ItemInCart>;
     owner_id: string;
     oid: string;
     createdAt: Date
@@ -155,8 +155,22 @@ export type Product = {
     pid: string;
     price: number;
     reviews: Array<Review>;
-    stock_quantity: number
+    stockQuantity: number
     productDiscount:number
+}
+export type ItemInCart={
+    pid: string;
+    name: string;
+    image: string;
+    category: string;
+    description: string;
+    details: string;
+    stockQuantity: number
+    price: number;
+    productDiscount:number
+    quantity:number
+    calculatedPrice: number
+    
 }
 
 export interface ProductsQuery {
@@ -166,10 +180,12 @@ export interface ProductsQuery {
 
 }
 
-export interface Item extends Product {
-    quantity: number
-    calculated_price: number
+
+
+export type Cart ={
+    itemsList:Array<ItemInCart>
 }
+
 export type CloudLogin = {
     authType: string
     token: string | undefined

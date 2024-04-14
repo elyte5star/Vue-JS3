@@ -6,7 +6,7 @@
                     <div class="col-md-8">
                         <div class="ibox">
                             <div class="ibox-title">
-                                <span class="pull-right">(<strong>{{ itemsInCart }}</strong>) items</span>
+                                <span class="pull-right">(<strong>{{ cartCount }}</strong>) items</span>
                                 <h5>Items in your cart</h5>
                             </div>
                             <div v-for="item in cart" v-bind:key="item.pid" class="ibox-content">
@@ -47,7 +47,7 @@
                                                     </div>
                                                 </td>
 
-                                                <td v-if="item.discount">
+                                                <td v-if="item.productDiscount">
                                                     £{{ item.price }}
                                                     <s class="small text-muted">$230,00</s>
                                                 </td>
@@ -56,14 +56,14 @@
                                                         :placeholder="item.quantity" />
                                                 </td>
                                                 <td>
-                                                    <h4 :style="{ width: '130px' }">£{{ item.calculated_price }}</h4>
+                                                    <h4 :style="{ width: '130px' }">£{{ item.calculatedPrice }}</h4>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div v-if="!itemsInCart" class="col-sm-12 empty-cart-cls text-center">
+                            <div v-if="!cartCount" class="col-sm-12 empty-cart-cls text-center">
                                 <img :src="fetchImage('emptyCart.png')" width="130" height="130"
                                     class="img-fluid mb-4 mr-3" alt="empty_cart_icon" />
                                 <h3><strong>Your Cart is Empty</strong></h3>
@@ -72,7 +72,7 @@
                                     shopping</a>
                             </div>
 
-                            <div v-if="itemsInCart" class="ibox-content">
+                            <div v-if="cartCount" class="ibox-content">
                                 <router-link id="cont_shopping" :to="{ name: 'Home' }"><i class="fa fa-arrow-left"></i>
                                     Continue shopping</router-link>
                             </div>
@@ -274,11 +274,11 @@
                                         <hr />
                                         <div class="m-t-sm">
                                             <div class="btn-group cart-action">
-                                                <button :disabled="!itemsInCart" class="btn btn-primary pull-right"
+                                                <button :disabled="!cartCount" class="btn btn-primary pull-right"
                                                     type="submit" id="submit_payment">
                                                     <i class="fa fa fa-shopping-cart"></i> Checkout
                                                 </button>
-                                                <button :disabled="!itemsInCart" @click="emptyCart()" id="empty_cart"
+                                                <button :disabled="!cartCount" @click="emptyCart()" id="empty_cart"
                                                     class="btn btn-warning pull-right">
                                                     <i class="fa fa-cart-arrow-down"></i> Empty cart
                                                 </button>
@@ -355,7 +355,7 @@ import {
     is_valid_Email,
     isObjEmpty
 } from '@/helpers/script'
-import type { Item, CreditCard, Address, UserReservation, BillingAddress, PaymentDetails, UserAddress } from '@/helpers/my-types'
+import type {ItemInCart, CreditCard, Address, UserReservation, BillingAddress, PaymentDetails, UserAddress } from '@/helpers/my-types'
 import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator'
 import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -366,13 +366,13 @@ export default defineComponent({
         const user_store = userStore()
         const { user } = storeToRefs(user_store)
         const cartStore = userCartStore()
-        const { cart, itemsInCart } = storeToRefs(cartStore)
+        const { cart, cartCount} = storeToRefs(cartStore)
         return {
             user,
             user_store,
             cartStore,
             cart,
-            itemsInCart
+            cartCount
         }
     },
 
@@ -420,7 +420,7 @@ export default defineComponent({
         fetchImage(imageName:string){
             return new URL('../../src/assets/images/' + imageName, import.meta.url).href
         },
-        removeFromCart(item: Item) {
+        removeFromCart(item: ItemInCart) {
             this.cartStore.removeFromCart(item)
         },
         showShippingAddress() {
@@ -587,7 +587,8 @@ export default defineComponent({
                     cart: this.cart,
                     userid:this.user?.userid,
                     totalPrice: this.totalPrice,
-                    paymentDetails
+                    paymentDetails,
+                    shippingAddress: shippingDetails as Address
                 }
                 await this.cartStore.checkOutQueue(reservation)
             } else if (
@@ -612,7 +613,7 @@ export default defineComponent({
         totalPrice() {
             let amount = 0
             for (let item of this.cart) {
-                amount += item.calculated_price
+                amount += item.calculatedPrice
             }
             return Math.round((amount + Number.EPSILON) * 100) / 100
         },

@@ -103,8 +103,10 @@ axiosInstance.interceptors.response.use(function (response) {
                 imageAlt: 'Custom image'
             }).then(logout)
 
-        }
+            return Promise.reject(error);
 
+        }
+        // router.replace({ name: 'Home' });
         return Promise.reject(error);
     }
 

@@ -17,7 +17,7 @@
 
                     <li><router-link :to="{ name: 'Cart',query: { userid: userLoggedIn?.userid }}"><i class="fa fa-shopping-cart" style="font-size: 25px"></i>Cart<span
                                 id="items">{{
-                                    itemsInCart }}</span></router-link></li>
+                                    cartCount }}</span></router-link></li>
 
                     <li><router-link :to="{ name: 'Contact' }" id="contact_us"><i class="fa fa-comments">Contact
                                 us</i></router-link>
@@ -56,9 +56,9 @@ export default defineComponent({
         const cartStore = userCartStore()
         const authStore = userAuthStore()
         const { userLoggedIn } = storeToRefs(authStore);
-        const { itemsInCart } = storeToRefs(cartStore);
+        const { cartCount } = storeToRefs(cartStore);
         return {
-            userLoggedIn, itemsInCart, authStore
+            userLoggedIn, cartCount, authStore
         }
     },
 

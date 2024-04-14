@@ -207,7 +207,7 @@
 import { productStore } from '../stores/products'
 import { userCartStore } from '@/stores/cart'
 import { userAlertStore } from '@/stores/alert'
-import type { CreateReview, Item } from '@/helpers/my-types';
+import type { CreateReview, ItemInCart } from '@/helpers/my-types';
 
 import { is_valid_Email } from '@/helpers/script';
 import { defineComponent } from 'vue'
@@ -246,8 +246,26 @@ export default defineComponent({
 
     methods: {
         addToCart() {
-            const volume = parseInt((<HTMLInputElement>document.getElementById("num_items")).value);
-            if (this.product) this.cartStore.addToCart(this.product as Item, volume);
+            const volume = parseInt((document.getElementById("num_items") as HTMLInputElement).value);
+            
+            if (this.product) {
+                const itemInCart: ItemInCart = {
+                    pid: this.product.pid,
+                    name: this.product.name,
+                    image: this.product.image,
+                    category: this.product.category,
+                    description: this.product.description,
+                    details: this.product.details,
+                    stockQuantity: this.product.stockQuantity,
+                    price: this.product.price,
+                    productDiscount:0.0,
+                    quantity:volume,
+                    calculatedPrice: this.product.price,
+                    
+                }
+                this.cartStore.addToCart(itemInCart, volume);
+
+            }
         },
         formatDate(value: Date) {
             if (value) {
@@ -265,7 +283,7 @@ export default defineComponent({
         async getAProduct(): Promise<void> {
             if (this.pid) {
                 await this.pStore.getProductById(this.pid);
-                const elem = (<HTMLInputElement>document.getElementById("add_to_cart"));
+                const elem = (document.getElementById("add_to_cart") as HTMLInputElement);
                 if (!this.stockQuantity) elem.innerHTML = "Out of Stock";
                 else elem.innerHTML = "Add to Cart";
 

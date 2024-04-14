@@ -50,7 +50,7 @@ export const productStore = defineStore({
                 const response = await axiosInstance.get('products/' + pid);
                 if (response.data.success) {
                     this.product = response.data.result;
-                this.stockQuantity = this.product?.stock_quantity!;
+                this.stockQuantity = this.product?.stockQuantity!;
                 this.reviews = this.product?.reviews!;
                 return;
 

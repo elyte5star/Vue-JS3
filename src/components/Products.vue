@@ -13,8 +13,8 @@
                     <p>{{ product.description }}</p>
 
                     <h4>£{{ product.price }}</h4>
-                    <p v-if="product.stock_quantity">Available in stock {{ product.stock_quantity }}.</p>
-                    <p v-else>Out of stock {{ product.stock_quantity }}.</p>
+                    <p v-if="product. stockQuantity">Available in stock {{ product. stockQuantity }}.</p>
+                    <p v-else>Out of stock {{ product. stockQuantity }}.</p>
                 </div>
                 <router-link :to="{
                     name: 'oneProduct',
