@@ -61,16 +61,12 @@ export type UpdateUserPassword={
     newPassword:string | null
     oldPassword: string | null
 }
-export type Address = {
-    fname: null,
-    baddress: null,
-    bemail: null,
-    bcountry: null,
-    bzip: null,
-    bcity: null,
+
+export interface BillingAddress extends UserAddress {
 
 }
-export interface BillingAddress extends Address {
+
+export interface ShippingDetails extends UserAddress {
 
 }
 export type UserAddress ={
@@ -79,6 +75,7 @@ export type UserAddress ={
     country: string
     zip: string
     state: string
+    email?:string
 
 }
 export type ModifyUserInfo = {
@@ -99,7 +96,7 @@ export type UserReservation = {
     totalPrice: number;
     cart: Array<ItemInCart>;
     paymentDetails: PaymentDetails;
-    shippingAddress?: Address;
+    shippingAddress?: ShippingDetails;
 
 }
 
@@ -108,12 +105,13 @@ export type Alert = {
     type: string;
     message: string;
 }
+
 export type Booking = {
     totalPrice: number;
     cart: Array<ItemInCart>;
     oid: string;
     created: Date
-    shippingDetails: Address
+    shippingDetails: ShippingDetails
 }
 
 export type CreateReview = {
@@ -179,11 +177,6 @@ export interface ProductsQuery {
 
 }
 
-
-
-export type Cart ={
-    itemsList:Array<ItemInCart>
-}
 
 export type CloudLogin = {
     authType: string

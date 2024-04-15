@@ -95,14 +95,13 @@ export const userCartStore = defineStore({
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);
                 const jobId = response.data.result;
                 let finished = false;
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 2; i++) {
                     const jobResponse = await axiosInstance.get("job/" +  jobId);
                 if (jobResponse.data.result.jobStatus.finished) {
                         finished = true;
                         logger.debug("Job done");
                         break;
                     }
-                    this.alertStore.info(`Waiting ${(this.countTime * 0.001) / 2} seconds...`);
                     logger.debug(`Waiting ${(this.countTime * 0.001) / 2} seconds...`);
                     await sleep(this.countTime / 2);
                 }

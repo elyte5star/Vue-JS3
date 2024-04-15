@@ -355,7 +355,7 @@ import {
     is_valid_Email,
     isObjEmpty
 } from '@/helpers/script'
-import type {ItemInCart, CreditCard, Address, UserReservation, BillingAddress, PaymentDetails, UserAddress } from '@/helpers/my-types'
+import type {ItemInCart, CreditCard, UserReservation, BillingAddress, PaymentDetails, UserAddress, ShippingDetails } from '@/helpers/my-types'
 import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator'
 import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -445,7 +445,7 @@ export default defineComponent({
             }
             return true
         },
-        checkShippingAddress(): Address | {} {
+        checkShippingAddress(): ShippingDetails | {} {
             if (
                 validateFullName(this.sfname) &&
                 is_valid_Email(this.semail) &&
@@ -454,12 +454,12 @@ export default defineComponent({
                 this.checkPostCodeAndCountry(this.scountry, this.szip)
             ) {
                 const shippingAddress = {
-                    sfname: this.sfname,
-                    semail: this.semail,
-                    saddress: this.saddress,
-                    scountry: this.scountry,
-                    szip: this.szip,
-                    scity: this.scity
+                    fullName: this.sfname,
+                    email: this.semail,
+                    streetAddress: this.saddress,
+                    country: this.scountry,
+                    zip: this.szip,
+                    state: this.scity
                 }
 
                 return shippingAddress
@@ -476,12 +476,12 @@ export default defineComponent({
                 this.checkPostCodeAndCountry(this.bcountry, this.bzip)
             ) {
                 const billingAddress = {
-                    bfname: this.bfname,
-                    bemail: this.bemail,
-                    baddress: this.baddress,
-                    bcountry: this.bcountry,
-                    bzip: this.bzip,
-                    bcity: this.bcity
+                    fullName: this.bfname,
+                    email: this.bemail,
+                    streetAddress: this.baddress,
+                    country: this.bcountry,
+                    zip: this.bzip,
+                    state: this.bcity
                 }
 
                 return billingAddress
@@ -588,7 +588,7 @@ export default defineComponent({
                     userid:this.user?.userid,
                     totalPrice: this.totalPrice,
                     paymentDetails,
-                    shippingAddress: shippingDetails as Address
+                    shippingAddress: shippingDetails as ShippingDetails
                 }
                 await this.cartStore.checkOutQueue(reservation)
             } else if (
@@ -601,7 +601,7 @@ export default defineComponent({
                     totalPrice: this.totalPrice,
                     cart: this.cart,
                     paymentDetails,
-                    shippingAddress: shippingDetails as Address
+                    shippingAddress: shippingDetails as ShippingDetails
                 }
                 await this.cartStore.checkOutQueue(reservation)
             } else {

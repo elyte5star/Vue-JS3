@@ -308,7 +308,7 @@ export default defineComponent({
                 this.rating = 0;
                 this.review = '';
                 this.reviewer_email = null;
-                (<HTMLInputElement>document.getElementById('alert1')).scrollIntoView();
+                (document.getElementById('alert1') as HTMLInputElement).scrollIntoView();
             } else {
 
                 if (!this.rating) this.alertStore.error("Product evaluation required!");
