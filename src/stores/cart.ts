@@ -74,7 +74,7 @@ export const userCartStore = defineStore({
                 localStorage.setItem('cartCount', JSON.stringify(this.cartCount));
 
             } else {
-                this.alertStore.success("Product not found in cart!")
+                this.alertStore.error("Product not found in cart!")
 
             }
 
@@ -94,31 +94,29 @@ export const userCartStore = defineStore({
             try {
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);
                 const jobId = response.data.result;
-                // let finished = false;
-                // for (let i = 0; i < 5; i++) {
-                //     const job_response = await axiosInstance.get("qbooking/job/" +  jobId);
-                //     if (job_response.data.result.job_status.is_finished) {
-                //         finished = true;
-                //         break;
-                //     }
-                //     logger.warn(`Waiting ${(i * this.countTime)/1000} seconds...`);
-                //     await sleep(i * this.countTime);
-                // }
-                // if (!finished) {
-                //     this.alertStore.error("Timeout!");
-                //     logger.error("Timeout! check the worker server!.")
-                //     return null;
-                // }
-                const jobResponse = await axiosInstance.get("job/" +  jobId);
-                const getBookingResponse = await axiosInstance.get("qbooking/job/" +  jobId);
-
-                if (getBookingResponse.data.success) {
-                    //router.push({ name: 'Confirm', query: { oid: getBookingResponse.data.result.oid } });
-                    //this.clearCart();
-                    logger.info(response.data.result);
+                let finished = false;
+                for (let i = 0; i < 100; i++) {
+                    const jobResponse = await axiosInstance.get("job/" +  jobId);
+                if (jobResponse.data.result.jobStatus.finished) {
+                        finished = true;
+                        logger.debug("Job done");
+                        break;
+                    }
+                    this.alertStore.info(`Waiting ${(this.countTime * 0.001) / 2} seconds...`);
+                    logger.debug(`Waiting ${(this.countTime * 0.001) / 2} seconds...`);
+                    await sleep(this.countTime / 2);
                 }
-
-               
+                if (!finished) {
+                    this.alertStore.error("Timeout!");
+                    logger.error("Timeout! check the worker server!.")
+                    return;
+                }
+                const getBookingResponse = await axiosInstance.get("qbooking/job/" +  jobId);
+                if (getBookingResponse.data.success) {
+                    this.alertStore.success("Your order was successfull, your Order number  is:"+ response.data.result.result);
+                    this.clearCart();
+                    logger.debug(getBookingResponse.data);
+                }
 
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)

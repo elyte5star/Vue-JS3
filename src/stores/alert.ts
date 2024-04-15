@@ -14,6 +14,9 @@ export const userAlertStore = defineStore({
         error(message: string) {
             this.alert = { message: message, type: 'alert-danger' };
         },
+        info(message: string) {
+            this.alert = { message: message, type: 'alert-info' };
+        },
         reset() {
             this.alert = null;
         }

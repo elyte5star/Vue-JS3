@@ -10,7 +10,7 @@ import { userAlertStore } from './alert';
 export const userStore = defineStore({
     id: 'users',
     state: () => ({
-        users: [] as User[], emailSent: false, user: null as User | null, bookingsHistory: [] as Booking | [], alertStore: userAlertStore(), authStore: userAuthStore()
+        users: [] as User[], emailSent: false, user: null as User | null, bookingsHistory: [] as Booking[], alertStore: userAlertStore(), authStore: userAuthStore()
     }),
     actions: {
         async getUsers() {

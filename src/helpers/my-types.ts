@@ -111,10 +111,9 @@ export type Alert = {
 export type Booking = {
     totalPrice: number;
     cart: Array<ItemInCart>;
-    owner_id: string;
     oid: string;
-    createdAt: Date
-    shipping_details: Address
+    created: Date
+    shippingDetails: Address
 }
 
 export type CreateReview = {

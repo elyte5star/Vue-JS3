@@ -69,26 +69,26 @@
                         <tr>
                           <td>
                             <p>
-                              <strong>Date of order:</strong> {{ formatDate(booking.createdAt) }}
+                              <strong>Date of order:</strong> {{ formatDate(booking.created) }}
                             </p>
                             <p><strong>Order number:</strong> {{ booking.oid }}</p>
                             <p>
                               <strong>Shipping details</strong> <i class="fa fa-institution"></i>
                             </p>
                             <p>
-                              Name: <span>{{ booking.shipping_details.fname }}</span>
+                              Name: <span>{{ booking.shippingDetails.fname }}</span>
                             </p>
                             <p>
-                              Email: <span>{{ booking.shipping_details.bemail }}</span>
+                              Email: <span>{{ booking.shippingDetails.bemail }}</span>
                             </p>
 
                             <p>
                               Address:
                               <span
-                                >{{ booking.shipping_details.baddress }},
-                                {{ booking.shipping_details.bzip }}
-                                {{ booking.shipping_details.bcity }}.
-                                {{ booking.shipping_details.bcountry }}.</span
+                                >{{ booking.shippingDetails.baddress }},
+                                {{ booking.shippingDetails.bzip }}
+                                {{ booking.shippingDetails.bcity }}.
+                                {{ booking.shippingDetails.bcountry }}.</span
                               >
                             </p>
                           </td>
@@ -101,7 +101,7 @@
                             />
                           </td>
                           <td>
-                            <h4 :style="{ width: '130px' }">£{{ booking.total_price }}</h4>
+                            <h4 :style="{ width: '130px' }">£{{ booking.totalPrice }}</h4>
                           </td>
                         </tr>
                       </tbody>
@@ -209,7 +209,7 @@ import moment from 'moment'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { userStore } from '@/stores/userAccount'
-import type { User, Booking, Item, Product } from '@/helpers/my-types'
+import type { User, Booking, ItemInCart, Product } from '@/helpers/my-types'
 
 export default defineComponent({
   name: 'UserProfile',
@@ -241,7 +241,8 @@ export default defineComponent({
     }
   },
   methods: {
-    orderDetailsTable(itemsArray: Array<Item>) {
+    orderDetailsTable(itemsArray: Array<ItemInCart>) {
+      console.log(itemsArray);
       let tableDiv = document.getElementById('items_order')!
       tableDiv.innerHTML = ''
       tableDiv.innerHTML =
@@ -251,7 +252,7 @@ export default defineComponent({
         htmltxt += '<td>' + item.quantity + '</td>'
         htmltxt += '<td>' + item.name + '</td>'
         htmltxt += '<td>' + item.pid + '</td>'
-        htmltxt += '<td>' + '£' + item.price + ' (' + item.calculated_price + ')' + '</td>'
+        htmltxt += '<td>' + '£' + item.price + ' (' + item.calculatedPrice + ')' + '</td>'
         htmltxt += '</tr>'
         let tableRef = document.getElementById('order_table')!.getElementsByTagName('tbody')[0]
         let newRow = tableRef.insertRow(tableRef.rows.length)
@@ -280,7 +281,7 @@ export default defineComponent({
       let amount: number = 0
 
       for (let price of this.bookingsHistory) {
-        amount += price.total_price
+        amount += price.totalPrice
       }
       return Math.round((amount + Number.EPSILON) * 100) / 100
     },
