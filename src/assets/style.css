@@ -1167,6 +1167,14 @@ article h3 {
     font-size: 1.2em;
     margin-top: 5px;
     margin-bottom: 10px;
+    text-align: left;
+
+}
+#bookingH{
+    padding: 5px;
+    font-size: 1.2em;
+    margin-top: 5px;
+    margin-bottom: 10px;
     text-align: center;
 
 }

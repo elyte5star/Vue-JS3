@@ -3,12 +3,12 @@
     <component
       :is="{ ...currentTabComponent }"
       :btnText="buttonText"
-      :bookingsHistory="bookingsHistory"
       :user_info="user"
-      :products="products"
       :user_image="userImage"
+      @orderHistory="_getOrderHistory"
       @changeActiveComponent="_changeActiveComponent"
       @enableExternalLogin="enableExternalLogin"
+      
     />
   </div>
 </template>
@@ -16,10 +16,9 @@
 <script lang="ts">
 import { userStore } from '@/stores/userAccount'
 import { storeToRefs } from 'pinia'
-import EditUser from '@/components/EditUser.vue'
-import UserProfile from '@/components/UserProfile.vue'
-import UpdatePassword from '@/components/UpdatePassword.vue'
-import { productStore } from '@/stores/products'
+import EditUser from '@/components/EditUser.vue';
+import UserProfile from '@/components/UserProfile.vue';
+import UpdatePassword from '@/components/UpdatePassword.vue';
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'UserView',
@@ -32,13 +31,11 @@ export default defineComponent({
   },
   setup() {
     const user_store = userStore()
-    const pStore = productStore()
-    const { products } = storeToRefs(pStore)
     const { user, bookingsHistory } = storeToRefs(user_store)
     return {
       user_store,
       user,
-      bookingsHistory,products,pStore
+      bookingsHistory
     }
   },
   data() {
@@ -49,7 +46,6 @@ export default defineComponent({
   },
   created() {
     this.getAUser()
-    this.getAllProducts()
   },
   computed: {
     userImage(): string {
@@ -69,16 +65,16 @@ export default defineComponent({
         this.currentTabComponent = UserProfile
       }
     },
-    async getAllProducts() {
-            await this.pStore.getProducts()
-        },
     async getAUser(): Promise<void> {
       await this.user_store.getUserById(this.userid)
+    },
+    async _getOrderHistory(userid:string): Promise<void>  {
+      await this.user_store.getBookingHistoryByUserId(userid)
     },
 
     async enableExternalLogin(username: string): Promise<void> {
       await this.user_store.enableExternalLogin(username)
-    }
+    },
   }
 })
 </script>

@@ -101,43 +101,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="ibox">
-                            <p class="font-bold">Products you may be interested</p>
-                            <div id="recommendation_list" v-for="item in Array.prototype.slice.call(products, 1, 3)"
-                                v-bind:key="item.pid" class="ibox-content">
-                                <div class="table-responsive">
-                                    <table class="table shoping-cart-table">
-                                        <tbody>
-                                            <tr>
-                                                <td :style="{ width: '90px' }">
-                                                    <div class="cart-product-imitation">
-                                                        <img :src="'../../src/assets/images/products/' + item.image"
-                                                            v-bind:alt="item.name" />
-                                                    </div>
-                                                </td>
-                                                <td class="desc">
-                                                    <h3>
-                                                        <router-link
-                                                            :to="{ name: 'oneProduct', params: { pid: item.pid } }"
-                                                            class="text-navy">
-                                                            {{ item.name }}
-                                                        </router-link>
-                                                    </h3>
-                                                    <p class="small">
-                                                        {{ item.details }}
-                                                    </p>
-                                                    <dl class="small m-b-none">
-                                                        <dt>Description</dt>
-                                                        <dd>{{ item.description }}</dd>
-                                                    </dl>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
+                        
                     </div>
                 </div>
             </div>
@@ -193,10 +157,7 @@ export default defineComponent({
             type: Object as PropType<User>,
             required: true
         },
-        products: {
-            type: Array<Product>,
-            required: true
-        }
+        
     },
     methods: {
         changeActiveComponent(str: string) {

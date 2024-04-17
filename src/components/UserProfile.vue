@@ -38,6 +38,17 @@
         >
           {{ btnText }}
         </button>
+        <button
+          id="bookingH"
+          @click="getOrderHistory(user_info.userid)"
+          type="button"
+          class="btn btn-outline-secondary"
+        >
+          SHOW BOOKING HISTORY<span class="pull-right"
+                  >(<strong>{{ bookingsHistoryCount }}</strong
+                  >) orders</span
+                >
+        </button>
       </div>
     </div>
     <div class="container">
@@ -167,13 +178,14 @@ import moment from 'moment'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { userStore } from '@/stores/userAccount'
-import type { User, Booking, ItemInCart, Product } from '@/helpers/my-types'
+import type { User, Booking, ItemInCart} from '@/helpers/my-types'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'UserProfile',
   data() {
     return {
-      isDisabled: true
+      isDisabled: true, user_store:userStore()
     }
   },
   props: {
@@ -192,12 +204,11 @@ export default defineComponent({
     bookingsHistory: {
       type: Array<Booking>,
       required: true
-    }
-    
+    },
+   
   },
   methods: {
     orderDetailsTable(itemsArray: Array<ItemInCart>) {
-      console.log(itemsArray);
       let tableDiv = document.getElementById('items_order')!
       tableDiv.innerHTML = ''
       tableDiv.innerHTML =
@@ -214,10 +225,17 @@ export default defineComponent({
         newRow.innerHTML = htmltxt
       }
     },
+    async getOrderHistory(userid:string){
+      await this.user_store.getBookingHistoryByUserId(userid);
+    },
     formatDate(value: Date) {
       if (value) {
         return moment(String(value)).format('DD-MM-YYYY hh:mm')
       }
+    },
+    orderHistory(userid:string){
+      console.log(userid)
+
     },
     changeActiveComponent(str: string) {
       this.$emit('changeActiveComponent', str)
@@ -225,9 +243,8 @@ export default defineComponent({
     async twoFactorLogin(username: string) {
       this.$emit('enableExternalLogin', username)
     },
-    async deleteUser(pid: string) {
-      const user_store = userStore()
-      await user_store.deleteUserAccount(pid)
+    async deleteUser(userid: string) {
+      await this.user_store.deleteUserAccount(userid)
     }
   },
 
