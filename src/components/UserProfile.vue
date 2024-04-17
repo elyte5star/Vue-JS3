@@ -32,7 +32,7 @@
       <div class="d-grid col-12 mx-auto">
         <button
           id="using2F"
-          @click="twoFactorLogin(user_info.username)"
+          @click.prevent="twoFactorLogin(user_info.username)"
           type="button"
           class="btn btn-outline-secondary"
         >
@@ -40,11 +40,11 @@
         </button>
         <button
           id="bookingH"
-          @click="getOrderHistory(user_info.userid)"
+          @click.prevent="orderHistory(user_info.userid)"
           type="button"
           class="btn btn-outline-secondary"
         >
-          SHOW BOOKING HISTORY<span class="pull-right"
+          SHOW BOOKING HISTORY<span v-if="bookingsHistoryCount" class="pull-right"
                   >(<strong>{{ bookingsHistoryCount }}</strong
                   >) orders</span
                 >
@@ -92,7 +92,6 @@
                             <p>
                               Email: <span>{{ booking.shippingDetails.email }}</span>
                             </p>
-
                             <p>
                               Address:
                               <span
@@ -183,9 +182,11 @@ import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'UserProfile',
-  data() {
+  setup() {
+    const user_store = userStore()
+    const {bookingsHistory} = storeToRefs(user_store);
     return {
-      isDisabled: true, user_store:userStore()
+      isDisabled: true, user_store,bookingsHistory
     }
   },
   props: {
@@ -199,10 +200,6 @@ export default defineComponent({
     },
     btnText: {
       type: String,
-      required: true
-    },
-    bookingsHistory: {
-      type: Array<Booking>,
       required: true
     },
    
@@ -225,16 +222,15 @@ export default defineComponent({
         newRow.innerHTML = htmltxt
       }
     },
-    async getOrderHistory(userid:string){
-      await this.user_store.getBookingHistoryByUserId(userid);
-    },
+   
     formatDate(value: Date) {
       if (value) {
         return moment(String(value)).format('DD-MM-YYYY hh:mm')
       }
     },
-    orderHistory(userid:string){
-      console.log(userid)
+    async orderHistory(userid:string){
+      
+        await this.user_store.getBookingHistoryByUserId(userid)
 
     },
     changeActiveComponent(str: string) {

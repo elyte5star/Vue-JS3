@@ -1167,7 +1167,7 @@ article h3 {
     font-size: 1.2em;
     margin-top: 5px;
     margin-bottom: 10px;
-    text-align: left;
+    text-align: center;
 
 }
 #bookingH{
@@ -1175,7 +1175,6 @@ article h3 {
     font-size: 1.2em;
     margin-top: 5px;
     margin-bottom: 10px;
-    text-align: center;
 
 }
 /** USER CARD **/

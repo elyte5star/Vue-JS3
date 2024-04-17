@@ -3,9 +3,9 @@
     <component
       :is="{ ...currentTabComponent }"
       :btnText="buttonText"
+      :bookingsHistory="bookingsHistory"
       :user_info="user"
       :user_image="userImage"
-      @orderHistory="_getOrderHistory"
       @changeActiveComponent="_changeActiveComponent"
       @enableExternalLogin="enableExternalLogin"
       
@@ -68,10 +68,6 @@ export default defineComponent({
     async getAUser(): Promise<void> {
       await this.user_store.getUserById(this.userid)
     },
-    async _getOrderHistory(userid:string): Promise<void>  {
-      await this.user_store.getBookingHistoryByUserId(userid)
-    },
-
     async enableExternalLogin(username: string): Promise<void> {
       await this.user_store.enableExternalLogin(username)
     },

@@ -155,7 +155,7 @@ export const userStore = defineStore({
                 const response = await axiosInstance.get(`qbooking/${userid}/bookings`);
                 if (response.data.success) {
                     this.bookingsHistory = response.data.result
-                    return;
+                    return ;
                 }
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)
