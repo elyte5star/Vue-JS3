@@ -17,7 +17,7 @@ import { userAlertStore } from './alert';
 
 import logger from '@/helpers/logger';
 
-import router from '@/router/index';
+import { loadingStore } from './loading';
 
 const countTime = import.meta.env.VITE_APP_WAIT_TIME;
 
@@ -25,7 +25,7 @@ export const userCartStore = defineStore({
     id: 'cart',
     state: () => ({
         cart: cart ? JSON.parse(cart) : [] as ItemInCart[], cartCount: cartCount ? parseInt(cartCount) : 0,
-        alertStore: userAlertStore(), countTime: countTime ? parseInt(countTime) : 0
+        alertStore: userAlertStore(), countTime: countTime ? parseInt(countTime) : 0,loading:loadingStore()
     }),
     actions: {
         addToCart(item: ItemInCart, volume: number) {
@@ -100,21 +100,23 @@ export const userCartStore = defineStore({
                 if (jobResponse.data.result.jobStatus.finished) {
                         finished = true;
                         logger.debug("Job done");
+                        this.loading.setLoading(false)
                         break;
                     }
-                    logger.debug(`Waiting ${(this.countTime * 0.001) / 2} seconds...`);
+                    this.loading.setLoading(true)
                     await sleep(this.countTime / 2);
                 }
                 if (!finished) {
                     this.alertStore.error("Timeout!");
                     logger.error("Timeout! check the worker server!.")
+                    this.loading.setLoading(false)
                     return;
                 }
                 const getBookingResponse = await axiosInstance.get("qbooking/job/" +  jobId);
                 if (getBookingResponse.data.success) {
-                    this.alertStore.success("Your order was successfull, your Order number  is:"+ response.data.result.result);
+                    this.alertStore.success("Your order was successfull, your Order number  is:"+ getBookingResponse.data.result.result);
                     this.clearCart();
-                    logger.debug(getBookingResponse.data);
+                    logger.debug(getBookingResponse.data.result);
                 }
 
             } catch (error: any) {

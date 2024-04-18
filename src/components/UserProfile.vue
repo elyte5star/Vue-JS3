@@ -229,7 +229,6 @@ export default defineComponent({
       }
     },
     async orderHistory(userid:string){
-      
         await this.user_store.getBookingHistoryByUserId(userid)
 
     },
