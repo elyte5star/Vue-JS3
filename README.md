@@ -28,6 +28,10 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
   ```
   git clone git@github.com:elyte5star/Vue-JS3.git
   ```
+  
+  git clone git@github.com:elyte5star/mark.js.git
+  - place the mark.js folder under src/assets 
+  ```
 
   - Create file .env and set values for the environment variables below:
 
