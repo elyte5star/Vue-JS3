@@ -2,8 +2,8 @@ import type { AxiosRequestHeaders } from 'axios'
 
 
 export type tokenData = {
-    access_token: string
-    token_type: string
+    accessToken: string
+    tokenType: string
     username: string
     email: string;
     enabled: boolean
