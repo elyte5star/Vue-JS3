@@ -151,6 +151,7 @@ export default defineComponent({
                 const registerUser: Registration = {
                     username: this.registerUsername,
                     email: this.registerEmail,
+                    confirmPassword:this.registerRepeatPassword,
                     password: this.registerPassword,
                     telephone: this.registerTel
                 }
