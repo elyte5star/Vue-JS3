@@ -14,12 +14,14 @@ export type Registration = {
     username: string | null
     email: string | null
     password: string | null
+    confirmPassword: string | null
     telephone: string | null
 }
 
 export type PasswordChange = {
-    password:string | null
-    resetToken:string | null
+    password: string | null
+    confirmPassword: string | null
+    resetToken: string | null
 }
 
 export interface User {
@@ -29,7 +31,7 @@ export interface User {
     lastModifiedAt: Date
     userid: string
     username: string
-    email: string 
+    email: string
     accountNonLocked: boolean
     failedAttempt: number
     lockTime: Date
@@ -40,7 +42,7 @@ export interface User {
     telephone: string
     userDiscount: null
     using2FA: false
-    address:UserAddress
+    address: UserAddress
 }
 
 export type CreditCard = {
@@ -52,13 +54,13 @@ export type CreditCard = {
 
 }
 
-export type PaymentDetails ={
-    cardDetails:CreditCard
-    billingAddress:BillingAddress
+export type PaymentDetails = {
+    cardDetails: CreditCard
+    billingAddress: BillingAddress
 }
 
-export type UpdateUserPassword={
-    newPassword:string | null
+export type UpdateUserPassword = {
+    newPassword: string | null
     oldPassword: string | null
 }
 
@@ -69,19 +71,19 @@ export interface BillingAddress extends UserAddress {
 export interface ShippingDetails extends UserAddress {
 
 }
-export type UserAddress ={
-    fullName: string 
-    streetAddress:string
+export type UserAddress = {
+    fullName: string
+    streetAddress: string
     country: string
     zip: string
     state: string
-    email?:string
+    email?: string
 
 }
 export type ModifyUserInfo = {
-    email: string | null
+    username: string | null
     telephone: string | null
-    address:UserAddress
+    address: UserAddress
 
 }
 
@@ -92,7 +94,7 @@ export interface AuthHeader extends AxiosRequestHeaders {
 }
 
 export type UserReservation = {
-    userid:string | undefined;
+    userid: string | undefined;
     totalPrice: number;
     cart: Array<ItemInCart>;
     paymentDetails: PaymentDetails;
@@ -153,9 +155,9 @@ export type Product = {
     price: number;
     reviews: Array<Review>;
     stockQuantity: number
-    productDiscount:number
+    productDiscount: number
 }
-export type ItemInCart={
+export type ItemInCart = {
     pid: string;
     name: string;
     image: string;
@@ -164,10 +166,10 @@ export type ItemInCart={
     details: string;
     stockQuantity: number
     price: number;
-    productDiscount:number
-    quantity:number
+    productDiscount: number
+    quantity: number
     calculatedPrice: number
-    
+
 }
 
 export interface ProductsQuery {
