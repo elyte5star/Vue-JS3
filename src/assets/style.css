@@ -604,7 +604,10 @@ article:hover {
     width: 230px;
 }
 
+.product-review-table tr {
+    border: 1px solid #E9E9E9;
 
+}
 .product-review-table img {
     width: 50px;
     height: 50px;
@@ -652,10 +655,7 @@ article:hover {
     border: 1px solid #ccc;
 }
 
-.product-review-table tr {
-    border: 1px solid #E9E9E9;
 
-}
 
 #evaluate {
     position: absolute;

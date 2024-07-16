@@ -34,7 +34,7 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row">
                     <div class="col-md-7">
-                        <div class="ibox">
+                        <div v-if="reviewCount" class="ibox">
                             <div class="ibox-title">
                                 <span class="pull-right">(<strong>{{ reviewCount }}</strong>) reviews</span>
                                 <h5>Product Review</h5>
@@ -78,15 +78,9 @@
                                     </table>
                                 </div>
                             </div>
-
-                            <div class="ibox-content">
-                                <router-link id="cont_shopping" :to="{ name: 'Home' }"><i class="fa fa-arrow-left"></i>
-                                    Continue
-                                    shopping</router-link>
-                            </div>
-
+                            
                         </div>
-
+                        
                     </div>
                     <!-- Write Product Review -->
                     <div class="col-md-5">
@@ -334,7 +328,8 @@ export default defineComponent({
             return Number(this.stockQuantity);
         },
         reviewCount() {
-            return Number(this.reviews.length)
+            if(!this.reviews?.length) return 0;
+            else return Number(this.reviews?.length)
         }
 
     }

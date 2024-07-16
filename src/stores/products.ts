@@ -49,11 +49,10 @@ export const productStore = defineStore({
             try {
                 const response = await axiosInstance.get('products/' + pid);
                 if (response.data.success) {
-                    this.product = response.data.result;
+                this.product = response.data.result;
                 this.stockQuantity = this.product?.stockQuantity!;
                 this.reviews = this.product?.reviews!;
                 return;
-
                 }
                 
             } catch (error: any) {
