@@ -7,6 +7,7 @@ export type tokenData = {
     username: string
     email: string;
     enabled: boolean
+    accountNonLocked: boolean
     admin: boolean
     userid: string
 }
