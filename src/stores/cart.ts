@@ -25,11 +25,10 @@ export const userCartStore = defineStore({
     id: 'cart',
     state: () => ({
         cart: cart ? JSON.parse(cart) : [] as ItemInCart[], cartCount: cartCount ? parseInt(cartCount) : 0,
-        alertStore: userAlertStore(), countTime: countTime ? parseInt(countTime) : 0,loading:loadingStore()
+        alertStore: userAlertStore(), countTime: countTime ? parseInt(countTime) : 0, loading: loadingStore()
     }),
     actions: {
         addToCart(item: ItemInCart, volume: number) {
-
             for (let i = 0; i < volume; i++) {
                 const found = this.cart.find((itemInCart: ItemInCart) => itemInCart.pid == item.pid);
 
@@ -70,7 +69,7 @@ export const userCartStore = defineStore({
                 }
 
                 localStorage.setItem('cart', JSON.stringify(this.cart));
-                this.cartCount= this.cart.reduce((accumulator: number, currentValue: ItemInCart) => accumulator + currentValue.quantity, 0);
+                this.cartCount = this.cart.reduce((accumulator: number, currentValue: ItemInCart) => accumulator + currentValue.quantity, 0);
                 localStorage.setItem('cartCount', JSON.stringify(this.cartCount));
 
             } else {
@@ -89,15 +88,15 @@ export const userCartStore = defineStore({
             localStorage.removeItem('cartCount');
 
         },
-        
+
         async checkOutQueue(bookingDetails: UserReservation) {
             try {
                 const response = await axiosInstance.post('qbooking/create', bookingDetails);
                 const jobId = response.data.result;
                 let finished = false;
                 for (let i = 0; i < 2; i++) {
-                    const jobResponse = await axiosInstance.get("job/" +  jobId);
-                if (jobResponse.data.result.jobStatus.finished) {
+                    const jobResponse = await axiosInstance.get("job/" + jobId);
+                    if (jobResponse.data.result.jobStatus.finished) {
                         finished = true;
                         logger.debug("Job done");
                         this.loading.setLoading(false)
@@ -112,9 +111,9 @@ export const userCartStore = defineStore({
                     this.loading.setLoading(false)
                     return;
                 }
-                const getBookingResponse = await axiosInstance.get("qbooking/job/" +  jobId);
+                const getBookingResponse = await axiosInstance.get("qbooking/job/" + jobId);
                 if (getBookingResponse.data.success) {
-                    this.alertStore.success("Your order was successfull, your Order number  is:"+ getBookingResponse.data.result.result);
+                    this.alertStore.success("Your order was successfull, your Order number  is:" + getBookingResponse.data.result.result);
                     this.clearCart();
                     logger.debug(getBookingResponse.data.result);
                 }

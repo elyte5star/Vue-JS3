@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia';
 
 import { userAlertStore } from './alert';
-
+import { userCartStore } from './cart';
 import router from '@/router/index'
 
 import { axiosInstance } from '@/helpers/axiosHttp';
@@ -17,7 +17,7 @@ export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         userLoggedIn: userLoggedIn ? JSON.parse(userLoggedIn) : null as tokenData | null,
-        returnUrl: '', alert: userAlertStore(),
+        returnUrl: '', alert: userAlertStore(),cartStore:userCartStore(),
     }),
     actions: {
         async login(userData: URLSearchParams) {
@@ -27,18 +27,12 @@ export const userAuthStore = defineStore({
                     this.userLoggedIn = response.data.result;
                     localStorage.setItem('userLoggedIn', JSON.stringify(response.data.result));
                     router.push(this.returnUrl || '/');
-                } else {
-                    this.alert.error(response.data.message);
                 }
             } catch (error: any) {
                 if (Object.prototype.hasOwnProperty.call(error.response.data.result, "disabled") || error.response.data.result.disabled) {
                     router.replace({ name: 'OtpEmail', query: error.response.data.result })
-                // } else if (Object.prototype.hasOwnProperty.call(error.response.data.result, "locked") && error.response.data.result.locked) {
-                //     router.replace({ name: 'OtpEmail', query: error.response.data.result })
-                } else {
-                    this.alert.error(error.response.data.message);
                 }
-
+                this.alert.error(error.response.data.message);
             }
         },
 
@@ -49,13 +43,10 @@ export const userAuthStore = defineStore({
                     this.userLoggedIn = response.data.result;
                     localStorage.setItem('userLoggedIn', JSON.stringify(response.data.result));
                     router.push(this.returnUrl || '/');
-
                 }
                 this.alert.error(response.data.message);
             } catch (error: any) {
-                if (Object.prototype.hasOwnProperty.call(error.response.data.result, "disabled") && error.response.data.result.disabled) {
-                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
-                } else if (Object.prototype.hasOwnProperty.call(error.response.data.result, "locked") && error.response.data.result.locked) {
+                if (error.response.data.result.disabled || error.response.data.result.locked) {
                     router.replace({ name: 'OtpEmail', query: error.response.data.result })
                 } else {
                     this.alert.error(error.response.data.message);
@@ -64,11 +55,11 @@ export const userAuthStore = defineStore({
             }
 
         },
-        async logout() {
+        async logout(): Promise<void> {
             this.userLoggedIn = null;
             localStorage.removeItem('userLoggedIn');
+            this.cartStore.clearCart()
             router.push({ name: 'Login' });
-            return true;
         }
 
     }

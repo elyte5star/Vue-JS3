@@ -2,7 +2,6 @@
 import { userAlertStore } from "@/stores/alert";
 import type { Product } from "./my-types";
 import Mark from 'mark.js'
-
 import logger from "./logger";
 
 /* eslint-disable */
@@ -48,14 +47,16 @@ export const decodeJwtResponse = (token: string) => {
     return JSON.parse(jsonPayload);
 }
 
-export const isUserNameValid = (username: string | null) => {
+export const isUserNameValid = (username: string) => {
     /* 
       Usernames can only have: 
       - Lowercase Letters (a-z) 
       - Numbers (0-9)
       - Dots (.)
       - Underscores (_)
+      - 5 or more xter
     */
+      if (username !== undefined && username.length < 5 ) return false;
     const res = /^[a-z0-9_\.]+$/.exec(username as string);
     const valid = !!res;
     return valid;

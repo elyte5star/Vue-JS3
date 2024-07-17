@@ -27,7 +27,7 @@
                                 <label class="form-label" for="editUsername"><i class="fa fa-user"
                                         aria-hidden="true"></i>
                                     Username:</label>
-                                <input :disabled="true" v-model="editUsername" type="text" id="editUsername"
+                                <input  v-model="editUsername" type="text" id="editUsername"
                                     class="form-control" aria-describedby="usernameHelpBlock" />
                             </div>
 
@@ -35,7 +35,7 @@
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editEmail"><i class="fa fa-envelope-o"></i>
                                     Email:</label>
-                                <input v-model="editEmail" type="email" id="editEmail" class="form-control" />
+                                <input :disabled="true" v-model="editEmail" type="email" id="editEmail" class="form-control" />
                             </div>
 
                             <!-- Telephone input -->
@@ -134,7 +134,8 @@ import {
     countries,
     validateFullName,
     is_valid_Email,
-    isObjEmpty, isValidTel
+    isObjEmpty, isValidTel,
+isUserNameValid
 } from '@/helpers/script';
 export default defineComponent({
     name: 'EditUser',
@@ -216,11 +217,11 @@ export default defineComponent({
         checkAddress(): ModifyUserInfo | {} {
             if (validateFullName(this.fname) &&
                 is_valid_Email(this.editEmail) &&
-                this.address && this.state && this.editTel &&
+                this.address && this.state && this.editTel && isUserNameValid(this.editUsername) &&
                 this.checkPostCodeAndCountry(this.bcountry, this.zip)
             ) {
                 const update: ModifyUserInfo = {
-                    email: this.editEmail,
+                    username: this.editUsername,
                     telephone: this.editTel,
                     address: {
                         fullName: this.fname,

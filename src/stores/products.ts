@@ -30,7 +30,6 @@ export const productStore = defineStore({
             }
 
         },
-
         async submitReview(review: CreateReview):Promise<void> {
             try {
                 const response = await axiosInstance.post('products/create/review', review);
@@ -60,37 +59,6 @@ export const productStore = defineStore({
                 logger.error(error);
             }
         },
-        async deleteProductById(pid: string) :Promise<void>{
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!',
-                showLoaderOnConfirm: true,
-            }).then(async (result: any) => {
-                if (result.isConfirmed) {
-                    try {
-                        const response = await axiosInstance.delete('products/' + pid);
-                        if (response.data.success) {
-                            this.products = this.products.filter(x => x.pid !== pid);//Shallow copy
-                            this.alertStore.success('The product has been deleted.');
-                            return;
-                        }
-                       
-
-                    } catch (error: any) {
-                        this.alertStore.error(error.response.data.message|| 'Operation unsuccessful');
-                        logger.error(error);
-                    }
-
-                }
-
-            })
-        },
-
         async sortProductsBykey(data?: ProductsQuery) {
             try {
                 const response = await axiosInstance.get('products', { params: data });

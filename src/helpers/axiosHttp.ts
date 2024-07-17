@@ -19,10 +19,10 @@ export const axiosInstance: AxiosInstance = axios.create({
 function authHeader(url: string): AuthHeader | {} {
     const authStorage: any = localStorage.getItem('userLoggedIn');
     const userLoggedIn = JSON.parse(authStorage);
-    const isLoggedIn = !!userLoggedIn?.access_token;
+    const isLoggedIn = !!userLoggedIn?.accessToken;
     const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL ?? "");
     if (isLoggedIn && isApiUrl) {
-        return { Authorization: 'Bearer ' + userLoggedIn.access_token, 'Content-Type': 'application/json', Accept: 'application/json' };
+        return { Authorization: 'Bearer ' + userLoggedIn.accessToken, 'Content-Type': 'application/json', Accept: 'application/json' };
     } else {
         return {};
     }

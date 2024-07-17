@@ -26,7 +26,7 @@
           <h5>EMAIL : {{ user_info.email }}</h5>
           <h6>CLIENT ID : {{ user_info.userid }}.</h6>
           <h6>MEMBER SINCE : {{ formatDate(user_info.createdAt) }}.</h6>
-          <h6>LAST MODIFIED : {{ formatDate(user_info.lastModifiedAt) }}.</h6>
+          <h6 v-if="user_info.lastModifiedAt">LAST MODIFIED : {{ formatDate(user_info.lastModifiedAt) }}.</h6>
         </div>
       </div>
       <div class="d-grid col-12 mx-auto">
@@ -38,7 +38,7 @@
         >
           {{ btnText }}
         </button>
-        <button
+        <button v-if="bookingsHistoryCount"
           id="bookingH"
           @click.prevent="orderHistory(user_info.userid)"
           type="button"
