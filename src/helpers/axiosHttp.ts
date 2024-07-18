@@ -103,7 +103,7 @@ axiosInstance.interceptors.response.use(function (response) {
                 imageHeight: 200,
                 imageAlt: 'Custom image'
             }).then(logout)
-
+            logger.error(error);
             return Promise.reject(error);
 
         }

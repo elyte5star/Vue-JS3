@@ -29,6 +29,10 @@
                                     Username:</label>
                                 <input  v-model="editUsername" type="text" id="editUsername"
                                     class="form-control" aria-describedby="usernameHelpBlock" />
+                                    <div id="usernameHelpBlock" class="form-text">
+                                Username must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -
+                                Dots(.) - Underscores(_)
+                                </div>
                             </div>
 
                             <!-- Email input -->

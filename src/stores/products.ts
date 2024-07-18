@@ -20,7 +20,7 @@ export const productStore = defineStore({
                     this.productsRes = response.data.result
                     this.products = this.productsRes?.products!
                     this.numberOfElements = this.productsRes?.numberOfElements!
-                    this.pageNum = this.productsRes?.number!   
+                    this.pageNum = this.productsRes?.number ?? 1  
                     return;
                 }
                 
@@ -71,7 +71,7 @@ export const productStore = defineStore({
                 }
                 
             } catch (error: any) {
-                this.alertStore.error(error.response.data.message|| 'Operation unsuccessful');
+                this.alertStore.error(error.response.data.message || 'Operation unsuccessful');
                 logger.error(error);
             }
         }

@@ -29,7 +29,7 @@ const routes = [
   {
     path: '/reset-passowrd',
     name: 'ChangePassword',
-    component:  ChangePassword
+    component: ChangePassword
   },
 
   {
@@ -54,12 +54,12 @@ const routes = [
   {
     path: '/admin',
     children: [
-      { path: '',name: 'Admin', component: AdminView},
+      { path: '', name: 'Admin', component: AdminView },
       { path: 'users', component: AdminUserList },
       { path: 'users/:id', component: AdminUserDetails },
-    ], 
+    ],
   },
-   
+
 
   {
     path: '/user/:userid',
@@ -72,7 +72,7 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: CartView,
-   
+
 
   },
   {
@@ -130,19 +130,24 @@ router.beforeEach(async (to: any, from, next) => {
 
   alertStore.reset();
 
-  const maintenance  = process.env.VUE_MAINTENANCE_MODE;
-  
+  const maintenance = process.env.VUE_MAINTENANCE_MODE;
+
 
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login','ChangePassword', 'Confirm', 'Home','OtpEmail', 'oneProduct', 'ServerError', 'Contact', 'Register'];
+  const publicPages = ['Login', 'ChangePassword', 'Confirm', 'Home', 'OtpEmail', 'oneProduct', 'ServerError', 'Contact', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
 
   const auth = userAuthStore();
 
   if (to.name !== 'ServerError' && maintenance === 'true') {
-    
+
     next({ name: 'ServerError' });
+
+  } else if (to.name == 'Login' && auth.userLoggedIn) {
+
+    auth.returnUrl = to.fullPath;
+    next({ name: 'Home', replace: true });
 
   } else if (to.name !== 'Login' && authRequired && !auth.userLoggedIn) {
 

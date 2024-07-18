@@ -23,7 +23,6 @@
                             <label class="form-label" for="loginUsername">Username:</label>
                             <input type="text" id="loginUsername" v-model="username" class="form-control"
                                 aria-describedby="usernameHelpBlock" maxlength="20" />
-
                         </div>
 
                         <!-- Password input -->
@@ -115,7 +114,7 @@
 /* eslint-disable */
 import { userAuthStore } from '@/stores/auth_store'
 import { storeToRefs } from 'pinia'
-import { isUserNameValid, showPassword, decodeJwtResponse } from '@/helpers/script'
+import { is_valid_Email, isUserNameValid, showPassword, decodeJwtResponse } from '@/helpers/script'
 import { loginRequest, _msalInstance } from '@/helpers/msoftAuthConfig'
 import { googleProvider } from '@/helpers/gmailAuthConfig'
 import { defineComponent } from 'vue'
@@ -191,7 +190,7 @@ export default defineComponent({
             await this.msalInstance.handleRedirectPromise()
         },
         async onSubmitLogin(): Promise<void> {
-            if (isUserNameValid(this.username) && this.password) {
+            if (this.isValidUsername(this.username) && this.password) {
                 let form = new FormData()
                 form.append('username', this.username)
                 form.append('password', this.password)
@@ -207,13 +206,17 @@ export default defineComponent({
             }
         },
         invalidFeedback() {
-            if (!isUserNameValid(this.username)) {
-                this.authStore.alert.error('Invalid username!');
+            if (!this.isValidUsername(this.username)) {
+                this.authStore.alert.error('Invalid username! Usernames must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -Dots(.) - Underscores(_)');
                 (document.getElementById('loginUsername') as HTMLInputElement).focus();
             } else {
                 (document.getElementById('password') as HTMLInputElement).focus();
                 this.authStore.alert.error('Password required!');
             }
+        },
+        //check for valid username or valid email as username if it is possible to login in with email
+        isValidUsername(username: string): boolean {
+            return (username && (isUserNameValid(username) || is_valid_Email(username))) ? true : false;
         }
     },
     mounted() {

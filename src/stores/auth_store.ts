@@ -17,7 +17,7 @@ export const userAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         userLoggedIn: userLoggedIn ? JSON.parse(userLoggedIn) : null as tokenData | null,
-        returnUrl: '', alert: userAlertStore(),cartStore:userCartStore(),
+        returnUrl: '', alert: userAlertStore(), cartStore: userCartStore(),
     }),
     actions: {
         async login(userData: URLSearchParams) {
@@ -29,9 +29,6 @@ export const userAuthStore = defineStore({
                     router.push(this.returnUrl || '/');
                 }
             } catch (error: any) {
-                if (Object.prototype.hasOwnProperty.call(error.response.data.result, "disabled") || error.response.data.result.disabled) {
-                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
-                }
                 this.alert.error(error.response.data.message);
             }
         },
@@ -44,14 +41,8 @@ export const userAuthStore = defineStore({
                     localStorage.setItem('userLoggedIn', JSON.stringify(response.data.result));
                     router.push(this.returnUrl || '/');
                 }
-                this.alert.error(response.data.message);
             } catch (error: any) {
-                if (error.response.data.result.disabled || error.response.data.result.locked) {
-                    router.replace({ name: 'OtpEmail', query: error.response.data.result })
-                } else {
-                    this.alert.error(error.response.data.message);
-                }
-
+                this.alert.error(error.response.data.message);
             }
 
         },
