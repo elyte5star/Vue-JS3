@@ -146,7 +146,6 @@ router.beforeEach(async (to: any, from, next) => {
 
   } else if (to.name == 'Login' && auth.userLoggedIn) {
 
-    auth.returnUrl = to.fullPath;
     next({ name: 'Home', replace: true });
 
   } else if (to.name !== 'Login' && authRequired && !auth.userLoggedIn) {

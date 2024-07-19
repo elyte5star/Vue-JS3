@@ -27,11 +27,11 @@
                                 <label class="form-label" for="editUsername"><i class="fa fa-user"
                                         aria-hidden="true"></i>
                                     Username:</label>
-                                <input  v-model="editUsername" type="text" id="editUsername"
-                                    class="form-control" aria-describedby="usernameHelpBlock" />
-                                    <div id="usernameHelpBlock" class="form-text">
-                                Username must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -
-                                Dots(.) - Underscores(_)
+                                <input v-model="editUsername" type="text" id="editUsername" class="form-control"
+                                    aria-describedby="usernameHelpBlock" />
+                                <div id="usernameHelpBlock" class="form-text">
+                                    Username must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -
+                                    Dots(.) - Underscores(_)
                                 </div>
                             </div>
 
@@ -39,7 +39,8 @@
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="editEmail"><i class="fa fa-envelope-o"></i>
                                     Email:</label>
-                                <input :disabled="true" v-model="editEmail" type="email" id="editEmail" class="form-control" />
+                                <input :disabled="true" v-model="editEmail" type="email" id="editEmail"
+                                    class="form-control" />
                             </div>
 
                             <!-- Telephone input -->
@@ -72,7 +73,7 @@
                                     <select v-if="countries" v-model="bcountry" class="form-select" id="country"
                                         name="country">
                                         <option v-for="country in countries" :key="country.text" :value=country.value>{{
-        country.text }}</option>
+                                            country.text }}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6"> <label class="form-label" for="zip"><i class="fa fa-map-pin"
@@ -105,7 +106,7 @@
                                 </span>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -139,7 +140,7 @@ import {
     validateFullName,
     is_valid_Email,
     isObjEmpty, isValidTel,
-isUserNameValid
+    isUserNameValid
 } from '@/helpers/script';
 export default defineComponent({
     name: 'EditUser',
@@ -162,24 +163,26 @@ export default defineComponent({
             type: Object as PropType<User>,
             required: true
         },
-        
+
     },
     methods: {
         changeActiveComponent(str: string) {
             this.$emit('changeActiveComponent', str);
         },
         async updateDetails() {
-            const address = this.checkAddress();
-            if (!isObjEmpty(address)) {
-                await this.userStore.updateUserById(this.user_info.userid, address);
+            const info = this.checkUserDetails();
+            if (!isObjEmpty(info)) {
+                await this.userStore.updateUserById(this.user_info.userid, info);
                 return;
             }
             this.invalidFeedback();
-
-
         },
         invalidFeedback() {
-            if (!this.editEmail || !is_valid_Email(this.editEmail)) {
+            if (!isUserNameValid(this.editUsername)) {
+                this.userStore.alertStore.error("Username must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -Dots(.) - Underscores(_)");
+                (document.getElementById('editUsername') as HTMLInputElement).focus();
+            }
+            else if (!this.editEmail || !is_valid_Email(this.editEmail)) {
                 this.userStore.alertStore.error("Invalid email address!");
                 (document.getElementById('editEmail') as HTMLInputElement).focus();
             } else if (!this.editTel || !isValidTel(this.editTel)) {
@@ -189,12 +192,21 @@ export default defineComponent({
                 this.userStore.alertStore.error("Invalid full name!");
                 (document.getElementById('fname') as HTMLInputElement).focus();
             } else if (!this.address) {
-                this.userStore.alertStore.error("Invalid billing address!");
+                this.userStore.alertStore.error("Invalid  address!");
                 (document.getElementById('adr') as HTMLInputElement).focus();
             }
-            else {
+            else if (!this.state) {
                 this.userStore.alertStore.error("Please enter valid state!");
                 (document.getElementById('state') as HTMLInputElement).focus();
+            } else if (!postcodeValidatorExistsForCountry(this.bcountry)) {
+                this.userStore.alertStore.error("No valid postcode for the selected country!");
+                (document.getElementById('country') as HTMLInputElement).focus();
+            } else if (!postcodeValidator(this.bcountry, this.zip)) {
+                this.userStore.alertStore.error("Invalid postcode for the selected country!");
+                (document.getElementById('zip') as HTMLInputElement).focus();
+
+            } else {
+                this.userStore.alertStore.error("Form Error!");
             }
 
 
@@ -204,13 +216,8 @@ export default defineComponent({
         },
         checkPostCodeAndCountry(countryCode: string | null, zip: string | null): boolean {
             if (!postcodeValidatorExistsForCountry(countryCode as string)) {
-                this.userStore.alertStore.error("No valid postcode for the selected country!");
-                (document.getElementById('country') as HTMLInputElement).focus();
                 return false;
-
             } else if (!postcodeValidator(zip as string, countryCode as string)) {
-                this.userStore.alertStore.error("Invalid postcode for the selected country!");
-                (document.getElementById('zip') as HTMLInputElement).focus();
                 return false;
 
             } else {
@@ -218,7 +225,7 @@ export default defineComponent({
             }
 
         },
-        checkAddress(): ModifyUserInfo | {} {
+        checkUserDetails(): ModifyUserInfo | {} {
             if (validateFullName(this.fname) &&
                 is_valid_Email(this.editEmail) &&
                 this.address && this.state && this.editTel && isUserNameValid(this.editUsername) &&
