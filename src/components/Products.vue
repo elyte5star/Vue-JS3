@@ -13,16 +13,16 @@
                     <p>{{ product.description }}</p>
 
                     <h4>£{{ product.price }}</h4>
-                    <p v-if="product. stockQuantity">Available in stock {{ product. stockQuantity }}.</p>
-                    <p v-else>Out of stock {{ product. stockQuantity }}.</p>
+                    <p v-if="product.stockQuantity">Available in stock {{ product.stockQuantity }}.</p>
+                    <p v-else>Out of stock {{ product.stockQuantity }}.</p>
                 </div>
                 <router-link :to="{
-                    name: 'oneProduct',
+                name: 'oneProduct',
 
-                    params: {
-                        pid: product.pid
-                    }
-                }">
+                params: {
+                    pid: product.pid
+                }
+            }">
                     <div class="details">Details</div>
                 </router-link>
             </article>
@@ -54,15 +54,15 @@ export default defineComponent({
             required: true
         }
     },
-    data(){
-        return{pageNum:this.pageNumumber}
+    data() {
+        return { PaginationBar, pageNum: this.pageNumumber }
     },
     methods: {
         getImage(image: string): string {
             return new URL('../../src/assets/images/products/' + image, import.meta.url).href
         },
         pageChange(data: PageInfo) {
-            const params:ProductsQuery = {
+            const params: ProductsQuery = {
                 page: (data.pageNumber - 1),
                 size: this.totalRow,
 
@@ -70,7 +70,7 @@ export default defineComponent({
             this.$emit('changePage', params);
         }
     },
-    
+
 
 
 })

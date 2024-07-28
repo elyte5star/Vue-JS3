@@ -68,42 +68,7 @@
                             </span>
                         </div>
                     </div>
-                    <div v-if="products" class="ibox">
-                        <p class="font-bold">Products you may be interested</p>
-                        <div id="recommendation_list" v-for="item in Array.prototype.slice.call(products, 1, 3)"
-                            v-bind:key="item.pid" class="ibox-content">
-                            <div class="table-responsive">
-                                <table class="table shoping-cart-table">
-                                    <tbody>
-                                        <tr>
-                                            <td :style="{ width: '90px' }">
-                                                <div class="cart-product-imitation">
-                                                    <img :src="'src/assets/images/products/' + item.image"
-                                                        v-bind:alt="item.name" />
-                                                </div>
-                                            </td>
-                                            <td class="desc">
-                                                <h3>
-                                                    <router-link :to="{ name: 'oneProduct', params: { pid: item.pid } }"
-                                                        class="text-navy">
-                                                        {{ item.name }}
-                                                    </router-link>
-                                                </h3>
-                                                <p class="small">
-                                                    {{ item.details }}
-                                                </p>
-                                                <dl class="small m-b-none">
-                                                    <dt>Description</dt>
-                                                    <dd>{{ item.description }}</dd>
-                                                </dl>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <hr />
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -125,11 +90,6 @@ import type { CredentialResponse, PromptMomentNotification } from 'google-oauth-
 
 export default defineComponent({
     name: 'LoginView',
-    setup() {
-        const pStore = productStore()
-        const { products } = storeToRefs(pStore)
-        return { products, pStore }
-    },
     data() {
         return {
             user: {},
@@ -142,9 +102,6 @@ export default defineComponent({
         }
     },
     methods: {
-        async getAllProducts() {
-            await this.pStore.getProducts()
-        },
         async googleLogin(): Promise<void> {
             const oneTap = googleProvider.useGoogleOneTapLogin({
                 cancel_on_tap_outside: true,
@@ -210,8 +167,8 @@ export default defineComponent({
                 this.authStore.alert.error('Invalid username! Usernames must be 5-20 and can only have: - Lowercase Letters(a-z) - Numbers(0-9) -Dots(.) - Underscores(_)');
                 (document.getElementById('loginUsername') as HTMLInputElement).focus();
             } else {
-                (document.getElementById('password') as HTMLInputElement).focus();
                 this.authStore.alert.error('Password required!');
+                (document.getElementById('password') as HTMLInputElement).focus();
             }
         },
         //check for valid username or valid email as username if it is possible to login in with email
@@ -221,9 +178,7 @@ export default defineComponent({
     },
     mounted() {
         this.handleMsalRedirect()
-    },
-    async created() {
-        this.getAllProducts()
     }
+
 })
 </script>

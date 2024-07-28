@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <form @submit.prevent="registerUser">
-                        <p  class="text-center">New Account Registration Form</p>
+                        <p class="text-center">New Account Registration Form</p>
                         <!-- Username input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="registerUsername">Username:</label>
@@ -30,8 +30,9 @@
                                 @click="showPassword('registerPassword', 'toggleRegisterPassword')"><i
                                     class="bi bi-eye-slash" id="toggleRegisterPassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Password must be at least 8 characters in length, must contain at least 1 uppercase characters.
-                                must contain at least 1 digit characters, must contain at least 1 special characters.
+                                Password must be at least 8 characters in length, must contain at least 1 uppercase
+                                characters. must contain at least 1 digit characters, must contain at least 1
+                                special characters.
                             </div>
                         </div>
 
@@ -45,8 +46,9 @@
                                 @click="showPassword('registerRepeatPassword', 'toggleRegisterRepeatPassword')"><i
                                     class="bi bi-eye-slash" id="toggleRegisterRepeatPassword"></i></a>
                             <div id="passwordHelpBlock" class="form-text">
-                                Password must be at least 8 characters in length, must contain at least 1 uppercase characters.
-                                must contain at least 1 digit characters, must contain at least 1 special characters.
+                                Password must be at least 8 characters in length, must contain at least 1 uppercase
+                                characters. must contain at least 1 digit characters, must contain at least 1
+                                special characters.
                             </div>
                         </div>
                         <!-- Telephone input -->
@@ -82,7 +84,6 @@
                             </span>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -95,17 +96,9 @@ import { userStore } from '@/stores/userAccount'
 import { _msalInstance } from '@/helpers/msoftAuthConfig'
 import { defineComponent } from 'vue'
 import type { Registration } from '@/helpers/my-types'
-import { userAuthStore } from '@/stores/auth_store'
-import { productStore } from '@/stores/products'
-import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     name: 'RegisterUser',
-    setup() {
-        const pStore = productStore()
-        const { products } = storeToRefs(pStore)
-        return { products, pStore }
-    },
     data() {
         return {
             msalInstance: _msalInstance,
@@ -115,24 +108,19 @@ export default defineComponent({
             registerEmail: null,
             registerUsername: null,
             showPassword,
-            authStore: userAuthStore(),
             user_store: userStore()
         }
     },
     async created() {
-        this.getAllProducts()
         this.handleMsalRedirect()
     },
     methods: {
         checkIfpasswordMatch() {
             if (this.registerPassword != this.registerRepeatPassword) {
-                this.user_store.alertStore.error('Password does not match!');
+                this.user_store.alertStore.error('Password does not match!')
             } else {
                 this.user_store.alertStore.reset()
             }
-        },
-        async getAllProducts() {
-            await this.pStore.getProducts()
         },
         async handleMsalRedirect() {
             await this.msalInstance.handleRedirectPromise()
@@ -151,17 +139,11 @@ export default defineComponent({
                 const registerUser: Registration = {
                     username: this.registerUsername,
                     email: this.registerEmail,
-                    confirmPassword:this.registerRepeatPassword,
+                    confirmPassword: this.registerRepeatPassword,
                     password: this.registerPassword,
                     telephone: this.registerTel
                 }
-                const user_store = userStore()
-                await user_store.signUP(registerUser)
-                this.registerUsername = null
-                this.registerEmail = null
-                this.registerPassword = null
-                this.registerRepeatPassword = null
-                this.registerTel = null
+                await this.user_store.signUP(registerUser)
             }
         }
     }

@@ -315,7 +315,6 @@ export default defineComponent({
     },
     watch: {
         async stockQuantity(newVal) {
-
             logger.info(newVal, "this changed");
 
         }

@@ -15,6 +15,16 @@
                     </p>
                 </div>
             </div>
+            <div v-else-if="userid">
+                <div class="wrapper-2">
+                    <h1>Thank you !</h1>
+                    <p> Your account ID is: {{ userid }} !</p>
+                    <router-link :to="{ name: 'Login' }" class="go-home btn btn-lg">Login</router-link>
+                </div>
+                <div class="footer-like">
+                    <p>Please sign in.</p>
+                </div>
+            </div>
             <div v-else>
                 <div class="wrapper-2">
                     <h1>Thank you !</h1>
@@ -26,6 +36,7 @@
                 </div>
             </div>
 
+
         </div>
     </div>
 </template>
@@ -36,10 +47,10 @@ export default defineComponent({
     name: "ConfirmationPage",
     setup() {
         const route = useRoute();
-        const { oid } = route.query;
-        return { oid }
+        const { oid, userid } = route.query;
+        return { oid, userid }
     },
-   
+
 
 })
 
