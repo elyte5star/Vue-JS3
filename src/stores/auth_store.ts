@@ -50,7 +50,7 @@ export const userAuthStore = defineStore({
             this.userLoggedIn = null;
             localStorage.removeItem('userLoggedIn');
             this.cartStore.clearCart()
-            router.push({ name: 'Login' });
+            router.replace({ name: 'Home' });
         }
 
     }

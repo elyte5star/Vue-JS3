@@ -126,10 +126,7 @@ export type CreateReview = {
 }
 
 export type Review = {
-    createdBy: string
     createdAt: Date
-    lastModifiedBy: string
-    lastModifiedAt: string
     rating: number;
     rid: string;
     email: string;

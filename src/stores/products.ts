@@ -9,7 +9,7 @@ import logger from '@/helpers/logger';
 export const productStore = defineStore({
     id: 'products',
     state: () => ({
-        pageNum: 0, numberOfElements: 0, products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[], stockQuantity: 0
+        pageNum: 0, numberOfElements: 0, products: [] as Product[], productsRes: null as ProductsResponse | null, product: null as Product | null, alertStore: userAlertStore(), key: "", reviews: [] as Review[]  | number, stockQuantity: 0
     }),
     actions: {
         async getProducts(data?: ProductsQuery): Promise<void> {
@@ -18,14 +18,14 @@ export const productStore = defineStore({
                 if (response.data.success) {
                     this.productsRes = response.data.result
                     this.products = this.productsRes?.products!
-                    this.numberOfElements = this.productsRes?.numberOfElements!
+                    this.numberOfElements = this.productsRes?.numberOfElements ?? 0
                     this.pageNum = this.productsRes?.number ?? 1
                     return;
                 }
 
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message || 'Operation unsuccessful');
-                logger.error(error);
+                //logger.error(error);
             }
 
         },
