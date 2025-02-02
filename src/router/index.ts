@@ -27,7 +27,7 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/reset-passowrd',
+    path: '/reset-password',
     name: 'ChangePassword',
     component: ChangePassword
   },

@@ -28,7 +28,7 @@ export const userStore = defineStore({
         },
         async reSendOtpEmail(email: string) {
             try {
-                const response = await axiosInstance.get('users/signup/resendOtp', { params: { "email": email } });
+                const response = await axiosInstance.get('users/signup/resend-otp', { params: { "email": email } });
                 if (response.data.success) {
                     this.emailSent = true;
                     this.alertStore.success(response.data.result);
@@ -98,7 +98,7 @@ export const userStore = defineStore({
         },
         async updatePassword(passChange: UpdateUserPassword) {
             try {
-                const response = await axiosInstance.post('users/password/updatePassword', passChange);
+                const response = await axiosInstance.post('users/password/update-password', passChange);
                 if (response.data.success) {
                     //return router.replace({ name: 'Confirm', query: { "message": response.data.result } })
                     this.alertStore.success(response.data.result);
