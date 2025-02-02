@@ -59,51 +59,21 @@ axiosInstance.interceptors.response.use(function (response) {
     const { userLoggedIn, logout } = userAuthStore()
 
     if (!error.response) {
-
         if (error.code === 'ERR_NETWORK' && error.message.includes('Network Error')) {
-            router.replace({ name: 'ServerError' });
             logout();
+            router.replace({ name: 'ServerError' });
             return Promise.reject(error)
-
         } else if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Oops...',
-                text: "Request timed out",
-                footer: '<a href="/">Please, return to home page.</a>',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                imageUrl: new URL('../../src/assets/images/ai.jpg', import.meta.url).href,
-                imageWidth: 400,
-                imageHeight: 200,
-                imageAlt: 'Custom image'
-
-            })
-
             return Promise.reject(error);
-
         } else {
-
             logger.error(error);
             return Promise.reject(error);
-
         }
 
     } else {
-
         if ([401, 403].includes(error.response.status) && userLoggedIn) {
-
-            Swal.fire({
-                icon: 'warning',
-                title: '<strong>Oops...</strong>',
-                text: 'Session Expired',
-                allowOutsideClick: false,
-                imageUrl: new URL('../../src/assets/images/ai.jpg', import.meta.url).href,
-                imageWidth: 400,
-                imageHeight: 200,
-                imageAlt: 'Custom image'
-            }).then(logout)
             logger.error(error);
+            logout();
             return Promise.reject(error);
 
         }

@@ -133,7 +133,7 @@ export default {
             } else if (this.email && is_valid_Email(this.email) && this.passwordReset == 'true') {
                 await this.user_store.sendPasswordResetToken(this.email)
             } else {
-                (<HTMLInputElement>document.getElementById('verifyEmail')).focus()
+                (document.getElementById('verifyEmail') as HTMLInputElement).focus()
                 this.alertStore.error('Empty email Field')
             }
         },
@@ -143,7 +143,7 @@ export default {
             } else if (this.token && this.passwordReset == 'true') {
                 await this.user_store.confirmPasswordResetToken(this.token)
             } else {
-                ; (<HTMLInputElement>document.getElementById('token')).focus()
+                (document.getElementById('token') as HTMLInputElement).focus()
                 this.alertStore.error('Empty Token Field')
             }
         }

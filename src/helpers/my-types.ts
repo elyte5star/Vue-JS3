@@ -126,10 +126,7 @@ export type CreateReview = {
 }
 
 export type Review = {
-    createdBy: string
     createdAt: Date
-    lastModifiedBy: string
-    lastModifiedAt: string
     rating: number;
     rid: string;
     email: string;
@@ -154,7 +151,7 @@ export type Product = {
     name: string;
     pid: string;
     price: number;
-    reviews: Array<Review>;
+    reviews: Array<Review> | number;
     stockQuantity: number
     productDiscount: number
 }

@@ -74,7 +74,7 @@ export const userStore = defineStore({
                 const response = await axiosInstance.post('users/signup', user);
                 if (response.data.success) {
                     this.emailSent = true;
-                    return router.replace({ name: 'OtpEmail', query: response.data.result })
+                    router.replace({ name: 'ConfirmationPage', query: { "userid": response.data.result } })
                 }
             } catch (error: any) {
                 this.alertStore.error(error.response.data.message)

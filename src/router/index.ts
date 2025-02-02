@@ -134,7 +134,7 @@ router.beforeEach(async (to: any, from, next) => {
 
 
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['Login', 'ChangePassword', 'Confirm', 'Home', 'OtpEmail', 'oneProduct', 'ServerError', 'Contact', 'Register'];
+  const publicPages = ['Login', 'ChangePassword', 'ConfirmationPage', 'Home', 'OtpEmail', 'oneProduct', 'ServerError', 'Contact', 'Register'];
 
   const authRequired = !publicPages.includes(to.name);
 

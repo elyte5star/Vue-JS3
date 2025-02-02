@@ -42,10 +42,6 @@ export default defineComponent({
    
   },
 
-  created() {
-    //this.getAllProducts();
-  },
-
 })
 
 </script>

@@ -355,7 +355,7 @@ import {
     is_valid_Email,
     isObjEmpty
 } from '@/helpers/script'
-import type {ItemInCart, CreditCard, UserReservation, BillingAddress, PaymentDetails, UserAddress, ShippingDetails } from '@/helpers/my-types'
+import type {ItemInCart, CreditCard, UserReservation, BillingAddress, PaymentDetails,ShippingDetails } from '@/helpers/my-types'
 import { postcodeValidator, postcodeValidatorExistsForCountry } from 'postcode-validator'
 import { defineComponent } from 'vue'
 import { storeToRefs } from 'pinia'

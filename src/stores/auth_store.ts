@@ -11,7 +11,7 @@ import type { CloudLogin, tokenData } from '@/helpers/my-types';
 import { URLSearchParams } from "url";
 
 
-let userLoggedIn = localStorage.getItem('userLoggedIn');
+const userLoggedIn = localStorage.getItem('userLoggedIn');
 
 export const userAuthStore = defineStore({
     id: 'auth',
@@ -50,7 +50,7 @@ export const userAuthStore = defineStore({
             this.userLoggedIn = null;
             localStorage.removeItem('userLoggedIn');
             this.cartStore.clearCart()
-            router.push({ name: 'Login' });
+            router.replace({ name: 'Home' });
         }
 
     }
