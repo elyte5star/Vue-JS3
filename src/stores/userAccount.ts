@@ -26,9 +26,9 @@ export const userStore = defineStore({
                 logger.error(error);
             }
         },
-        async reSendOtpEmail(email: string) {
+        async reSendOtpEmail(token: string) {
             try {
-                const response = await axiosInstance.get('users/signup/resend-otp', { params: { "email": email } });
+                const response = await axiosInstance.get('users/signup/resend-registration-otp', { params: { "token": token } });
                 if (response.data.success) {
                     this.emailSent = true;
                     this.alertStore.success(response.data.result);
